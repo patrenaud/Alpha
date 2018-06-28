@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public bool m_RangeAttack = false;
     public Slider m_HealthBar;
     public Slider m_XpBar;
+
     #region Button List
     [Header("Button List")]
     public Button m_AttackButton;
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public Button m_Ability4;
     public Button m_LevelUpButton;
     #endregion
+    
     [HideInInspector]
     public float m_CurrentHealth;
 
