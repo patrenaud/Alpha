@@ -21,7 +21,7 @@ public class UpgradeManager : MonoBehaviour
     private PlayerData m_PlayerData;
 
     private static UpgradeManager m_Instance;
-    private static UpgradeManager Instance
+    public static UpgradeManager Instance
     {
         get { return m_Instance; }
     }

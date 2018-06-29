@@ -1182,7 +1182,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1491772472915354, guid: 1b159687aa7b89c40895494014249072, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114428695723447976, guid: 1b159687aa7b89c40895494014249072,
         type: 2}
@@ -2969,7 +2969,6 @@ MonoBehaviour:
   m_ArcanistButton4: {fileID: 428285416}
   m_ArcanistButton5: {fileID: 428285415}
   m_PlayerController: {fileID: 725997615}
-  m_UpgradeManager: {fileID: 0}
 --- !u!4 &559527099
 Transform:
   m_ObjectHideFlags: 0
