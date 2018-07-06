@@ -24,7 +24,7 @@ public class TurnManager : MonoBehaviour
     private int m_Turn = 1;
 
     private static TurnManager m_Instance; // Application d'un Singleton
-    private static TurnManager Instance // Application d'un Singleton
+    public static TurnManager Instance // Application d'un Singleton
     {
         get { return m_Instance; }
     }
@@ -41,7 +41,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -53,7 +52,8 @@ public class TurnManager : MonoBehaviour
         {
             if (m_Turn < m_Characters.Count)
             {
-                m_Characters[m_Turn].GetComponent<EnemyController>().m_IsPlaying = true;
+                //m_Characters[m_Turn].GetComponent<EnemyController>().m_IsPlaying = true;
+                m_Characters[m_Turn].GetComponent<EnemyAI>().m_IsPlaying = true;
                 m_Turn++;
             }
             else

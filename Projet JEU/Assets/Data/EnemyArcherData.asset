@@ -11,15 +11,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3aa29f6c194c9f488af89014563a8d1, type: 3}
   m_Name: EnemyArcherData
   m_EditorClassIdentifier: 
-  m_EnemyMeleeAttackRange: 1
+  m_EnemyMeleeAttackRange: 8
   m_EnemyMoveSpeed: 1
-  m_WarriorAttackDamage: 20
-  m_WarriorAttackDamagePerLevel: 5
-  m_WarriorMoveDistance: 1.1
-  m_WarriorMoveDistancePerLevel: 0.1
-  m_WarriorMaxHealth: 50
-  m_WarriorHealthPerLevel: 5
-  m_ArcherDamage: 15
-  m_ArcherDamagePerLevel: 5
-  m_ArcherRange: 1
+  m_EnemyMoveDistance: 5
+  m_EnemySight: 20
+  m_MeleeAttackDamage: 10
+  m_MeleeAttackDamagePerLevel: 5
+  m_MoveDistance: 1.1
+  m_MoveDistancePerLevel: 0.1
+  m_EnemyMaxHealth: 50
+  m_EnemyHealthPerLevel: 5
+  m_EnemyRangeDamage: 15
+  m_EnemyRangeDamagePerLevel: 5
+  m_EnemyRange: 1
   m_ArcherRangePerLevel: 0.05

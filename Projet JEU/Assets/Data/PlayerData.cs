@@ -14,7 +14,7 @@ public class PlayerData : ScriptableObject
     }
 
     [SerializeField]
-    private float m_MoveSpeed = 1f;
+    private float m_MoveSpeed = 0.5f;
     public float MoveSpeed
     {
         get { return m_MoveSpeed; }

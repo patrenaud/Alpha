@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
+
     public TurnManager m_Turnmanager;
     [HideInInspector]
     public bool m_CanMove = false;
@@ -32,9 +34,10 @@ public class PlayerController : MonoBehaviour
     public Button m_Ability4;
     public Button m_LevelUpButton;
     #endregion
-    
+
     [HideInInspector]
     public float m_CurrentHealth;
+    public float m_MaxHealth;
 
     public GameObject m_UpgradeCanvas;
     [Header("Player Zones")]
@@ -47,6 +50,8 @@ public class PlayerController : MonoBehaviour
     private PlayerData m_PlayerData;
     [SerializeField]
     private GameObject m_ProjectilePrefab;
+    [SerializeField]
+    private NavMeshAgent m_PlayerAgent;
     private Vector3 m_ScaleOfAttackZone;
     private Vector3 m_ScaleOfRangeAttackZone;
     // private Vector3 m_ScaleOfMoveZone;
@@ -55,7 +60,7 @@ public class PlayerController : MonoBehaviour
     private bool m_RangeButtonIsPressed = false;
     private float m_BulletSpeed = 50f;
     private float m_MoveSpeed;
-    private float m_MaxHealth;
+    
     private float m_HealthRegenAbility;
 
     private void Awake()
@@ -79,7 +84,6 @@ public class PlayerController : MonoBehaviour
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
 
-
         m_MoveSpeed = m_PlayerData.MoveSpeed;
         m_MaxHealth = m_PlayerData.MaxHealth;
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
@@ -87,6 +91,7 @@ public class PlayerController : MonoBehaviour
         m_CurrentHealth = m_MaxHealth;
         m_HealthBar.value = 1;
         m_XpBar.value = 0f;
+        UpgradeManager.Instance.m_Player = this;
     }
 
     private void Update()
@@ -152,7 +157,9 @@ public class PlayerController : MonoBehaviour
                 m_TargetPosition.z = Hitinfo.point.z;
                 m_TargetPosition.y = transform.position.y;
 
-                StartCoroutine(MovetoPoint()); // Lorsque les conditions sont
+                MovetoPoint(Hitinfo);
+
+
                 m_CanMove = false;
                 m_MoveButton.interactable = false;
                 m_MoveZone.SetActive(false);
@@ -162,9 +169,13 @@ public class PlayerController : MonoBehaviour
     }
 
     // Permet le déplacment du joueur 
-    private IEnumerator MovetoPoint()
+    private void MovetoPoint(RaycastHit Hitinfo)
     {
-        float Timer = 0f;
+        m_PlayerAgent.SetDestination(Hitinfo.point);
+        
+        
+        // Old Code
+        /* float Timer = 0f;
         {
             // ****** Ce céplacement devra être changé par le NavMesh. Si le click est hors zone, ne confirmation sera demandée pour la distance max
             transform.LookAt(m_TargetPosition);
@@ -174,7 +185,7 @@ public class PlayerController : MonoBehaviour
                 Timer += Time.deltaTime * m_MoveSpeed / 60;
                 yield return new WaitForEndOfFrame();
             }
-        }
+        }*/  
     }
 
     // Permet l'attaque du joueur vers l'ennemi
@@ -405,4 +416,39 @@ public class PlayerController : MonoBehaviour
     {
         m_UpgradeCanvas.gameObject.SetActive(true);
     }
+
+
+    /*float CalculatePathLength(Vector3 targetPosition)
+    {
+        // Create a path and set it based on a target position.
+        NavMeshPath path = new NavMeshPath();
+        if (nav.enabled)
+            nav.CalculatePath(targetPosition, path);
+
+        // Create an array of points which is the length of the number of corners in the path + 2.
+        Vector3[] allWayPoints = new Vector3[path.corners.Length + 2];
+
+        // The first point is the enemy's position.
+        allWayPoints[0] = transform.position;
+
+        // The last point is the target position.
+        allWayPoints[allWayPoints.Length - 1] = targetPosition;
+
+        // The points inbetween are the corners of the path.
+        for (int i = 0; i < path.corners.Length; i++)
+        {
+            allWayPoints[i + 1] = path.corners[i];
+        }
+
+        // Create a float to store the path length that is by default 0.
+        float pathLength = 0;
+
+        // Increment the path length by an amount equal to the distance between each waypoint and the next.
+        for (int i = 0; i < allWayPoints.Length - 1; i++)
+        {
+            pathLength += Vector3.Distance(allWayPoints[i], allWayPoints[i + 1]);
+        }
+
+        return pathLength;
+    }*/
 }

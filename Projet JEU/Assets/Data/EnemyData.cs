@@ -8,7 +8,7 @@ public class EnemyData : ScriptableObject
 
     [Header("Base Enemy Stats")]
     [SerializeField]
-    private float m_EnemyMeleeAttackRange = 1;
+    private float m_EnemyMeleeAttackRange = 2;
     public float EnemyMeleeAttackRange
     {
         get { return m_EnemyMeleeAttackRange; }
@@ -22,7 +22,14 @@ public class EnemyData : ScriptableObject
     }
 
     [SerializeField]
-    private float m_EnemySight = 15f;
+    private float m_EnemyMoveDistance = 8f;
+    public float EnemyMoveDistance
+    {
+        get { return m_EnemyMoveDistance; }
+    }
+
+    [SerializeField]
+    private float m_EnemySight = 20f;
     public float EnemySight
     {
         get { return m_EnemySight; }
@@ -30,65 +37,65 @@ public class EnemyData : ScriptableObject
 
     [Header("Enemy Strenght")]
     [SerializeField]
-    private float m_WarriorAttackDamage = 20;
-    public float WarriorAttackDamage
+    private float m_MeleeAttackDamage = 20;
+    public float MeleeAttackDamage
     {
-        get { return m_WarriorAttackDamage; }
+        get { return m_MeleeAttackDamage; }
     }
     [SerializeField]
-    private float m_WarriorAttackDamagePerLevel = 5;
-    public float WarriorAttackDamagePerLevel
+    private float m_MeleeAttackDamagePerLevel = 5;
+    public float MeleeAttackDamagePerLevel
     {
-        get { return m_WarriorAttackDamagePerLevel; }
+        get { return m_MeleeAttackDamagePerLevel; }
     }
     [Header("Enemy Dexterity")]
     [SerializeField]
-    private float m_WarriorMoveDistance = 1.1f;
-    public float WarriorMoveDistance
+    private float m_MoveDistance = 1.1f;
+    public float MoveDistance
     {
-        get { return m_WarriorMoveDistance; }
+        get { return m_MoveDistance; }
     }
     [SerializeField]
-    private float m_WarriorMoveDistancePerLevel = 0.1f;
-    public float WarriorMoveDistancePerLevel
+    private float m_MoveDistancePerLevel = 0.1f;
+    public float MoveDistancePerLevel
     {
-        get { return m_WarriorMoveDistancePerLevel; }
+        get { return m_MoveDistancePerLevel; }
     }
     [Header("Enemy Constitution")]
     [SerializeField]
-    private float m_WarriorMaxHealth = 50;
-    public float WarriorMaxHealth
+    private float m_EnemyMaxHealth = 50;
+    public float EnemyMaxHealth
     {
-        get { return m_WarriorMaxHealth; }
+        get { return m_EnemyMaxHealth; }
     }
     [SerializeField]
-    private float m_WarriorHealthPerLevel = 5;
-    public float WarriorHealthPerLevel
+    private float m_EnemyHealthPerLevel = 5;
+    public float EnemyHealthPerLevel
     {
-        get { return m_WarriorHealthPerLevel; }
+        get { return m_EnemyHealthPerLevel; }
     }
 
     [Header("Enemy Perception")]
     [SerializeField]
-    private float m_ArcherDamage = 15;
-    public float ArcherDamage
+    private float m_EnemyRangeDamage = 15;
+    public float EnemyRangeDamage
     {
-        get { return m_ArcherDamage; }
+        get { return m_EnemyRangeDamage; }
     }
 
     [SerializeField]
-    private float m_ArcherDamagePerLevel = 5;
-    public float ArcherDamagePerLevel
+    private float m_EnemyRangeDamagePerLevel = 5;
+    public float EnemyRangeDamagePerLevel
     {
-        get { return m_ArcherDamagePerLevel; }
+        get { return m_EnemyRangeDamagePerLevel; }
     }
 
     [Header("Enemy Range")]
     [SerializeField]
-    private float m_ArcherRange = 1;
-    public float ArcherRange
+    private float m_EnemyRange = 1;
+    public float EnemyRange
     {
-        get { return m_ArcherRange; }
+        get { return m_EnemyRange; }
     }
 
     [SerializeField]

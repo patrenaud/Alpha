@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
 {
+    public PlayerController m_Player;
+
     [HideInInspector]
     public int m_PlayerStrenght = 0;
     [HideInInspector]
@@ -38,7 +40,6 @@ public class UpgradeManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
 
     public float PlayerMeleeDamage()
     {
