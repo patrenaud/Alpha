@@ -4,22 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class TurnManager : MonoBehaviour
+public class TurnManager : DontDestroyOnLoad
 {
+    public MainUI m_MainUI;
     public List<GameObject> m_Characters = new List<GameObject>();
-    #region ButtonsAndPrefabs
-    public Button m_AttackButton;
-    public Button m_MoveButton;
-    public Button m_AbilityButton;
-    public Button m_EndTurnButton;
-    public Button m_MeleeAttackButton;
-    public Button m_RangeAttackButton;
-    public GameObject m_AttackZone;
-    public GameObject m_MoveZone;
-    public GameObject m_RangeAttackZone;
-    #endregion
     public bool m_SwitchCharacter = false;
-
 
     private int m_Turn = 1;
 
@@ -29,7 +18,7 @@ public class TurnManager : MonoBehaviour
         get { return m_Instance; }
     }
 
-    private void Awake() // Application d'un Singleton
+    protected override void Awake() // Application d'un Singleton
     {
         if (m_Instance != null)
         {
@@ -61,15 +50,15 @@ public class TurnManager : MonoBehaviour
                 m_Turn = 1;
 
                 // Les boutons sont activés pour le tour du joueur
-                m_AttackButton.interactable = true;
-                m_MoveButton.interactable = true;
-                m_AbilityButton.interactable = true;
-                m_EndTurnButton.interactable = true;
-                m_MeleeAttackButton.interactable = true;
-                m_RangeAttackButton.interactable = true;
-                m_AttackZone.GetComponent<CapsuleCollider>().enabled = true;
-                m_MoveZone.GetComponent<CapsuleCollider>().enabled = true;
-                m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = true;
+                m_MainUI.m_AttackButton.interactable = true;
+                m_MainUI.m_MoveButton.interactable = true;
+                m_MainUI.m_AbilityButton.interactable = true;
+                m_MainUI.m_EndTurnButton.interactable = true;
+                m_MainUI.m_MeleeAttackButton.interactable = true;
+                m_MainUI.m_RangeAttackButton.interactable = true;
+                PlayerManager.Instance.m_Player.m_AttackZone.GetComponent<CapsuleCollider>().enabled = true;
+                PlayerManager.Instance.m_Player.m_MoveZone.GetComponent<CapsuleCollider>().enabled = true;
+                PlayerManager.Instance.m_Player.m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = true;
             }
             m_SwitchCharacter = false;
         }
@@ -77,7 +66,7 @@ public class TurnManager : MonoBehaviour
         if (m_Characters.Count <= 1)
         {
             Debug.Log("Win the game");
-            LoadMain();
+            LevelManager.Instance.ChangeLevel("Main");
         }
     }
 
@@ -85,11 +74,5 @@ public class TurnManager : MonoBehaviour
     public void ActivateSwitchCharacter()
     {
         m_SwitchCharacter = true;
-    }
-
-    // Ceci recommence la scene de combat
-    public void LoadMain()
-    {
-        SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
 }

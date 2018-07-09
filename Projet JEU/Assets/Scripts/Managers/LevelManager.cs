@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : DontDestroyOnLoad
 {
     [SerializeField]
     private GameObject m_LoadingScreen;
@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
         get { return m_Instance; }
     }
 
-    private void Awake()
+    protected override void Awake()
     {
         if (m_Instance != null)
         {
@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
             m_Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        base.Awake();
         m_LoadingScreen.SetActive(false);
     }
 
@@ -51,7 +52,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LoadSceneTimer(string i_Scene)
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(i_Scene);
     }
 }

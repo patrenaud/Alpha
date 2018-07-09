@@ -61,12 +61,12 @@ public class EnemyAI : MonoBehaviour
     {
         if (m_IsPlaying)
         {
-            if ((UpgradeManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
+            if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
             {
                 ChangeState(BehaviorState.Attack);
 
             }
-            else if ((UpgradeManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemySight)
+            else if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemySight)
             {
                 ChangeState(BehaviorState.MoveToPlayer);
             }
@@ -86,7 +86,7 @@ public class EnemyAI : MonoBehaviour
             
         }
 
-        if ((UpgradeManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemySight)
+        if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemySight)
         {
             ChangeState(BehaviorState.MoveToPlayer);
         }
@@ -103,10 +103,10 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateMovetoPlayer()
     {
-        m_EnemyAgent.SetDestination(UpgradeManager.Instance.m_Player.gameObject.transform.position);
+        m_EnemyAgent.SetDestination(PlayerManager.Instance.m_Player.gameObject.transform.position);
         m_CurrentTime += Time.deltaTime;
 
-        if ((UpgradeManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
+        if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;   
@@ -142,8 +142,8 @@ public class EnemyAI : MonoBehaviour
                     {
                         // Activate Anim / Camera
                         // Attack();
-                        UpgradeManager.Instance.m_Player.m_CurrentHealth -= m_EnemyData.MeleeAttackDamage;
-                        UpgradeManager.Instance.m_Player.m_HealthBar.value = UpgradeManager.Instance.m_Player.m_CurrentHealth / UpgradeManager.Instance.m_Player.m_MaxHealth;
+                        PlayerManager.Instance.m_Player.m_CurrentHealth -= m_EnemyData.MeleeAttackDamage;
+                        TurnManager.Instance.m_MainUI.m_HealthBar.value = PlayerManager.Instance.m_Player.m_CurrentHealth / PlayerManager.Instance.m_Player.m_MaxHealth;
                     }
                     break;
                 }
@@ -162,7 +162,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.MoveToPlayer)
                     {
-                        m_EnemyAgent.SetDestination(UpgradeManager.Instance.m_Player.gameObject.transform.position);
+                        m_EnemyAgent.SetDestination(PlayerManager.Instance.m_Player.gameObject.transform.position);
                     }
                 }
                 break;

@@ -17,29 +17,11 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool m_EndTurn = false;
     public bool m_RangeAttack = false;
-    public Slider m_HealthBar;
-    public Slider m_XpBar;
-
-    #region Button List
-    [Header("Button List")]
-    public Button m_AttackButton;
-    public Button m_MeleeAttackButton;
-    public Button m_RangeAttackButton;
-    public Button m_MoveButton;
-    public Button m_AbilityButton;
-    public Button m_EndTurnButton;
-    public Button m_Ability1;
-    public Button m_Ability2;
-    public Button m_Ability3;
-    public Button m_Ability4;
-    public Button m_LevelUpButton;
-    #endregion
 
     [HideInInspector]
     public float m_CurrentHealth;
     public float m_MaxHealth;
 
-    public GameObject m_UpgradeCanvas;
     [Header("Player Zones")]
     public GameObject m_MoveZone;
     public GameObject m_AttackZone;
@@ -60,24 +42,19 @@ public class PlayerController : MonoBehaviour
     private bool m_RangeButtonIsPressed = false;
     private float m_BulletSpeed = 50f;
     private float m_MoveSpeed;
-    
+
     private float m_HealthRegenAbility;
 
     private void Awake()
     {
-        m_UpgradeCanvas.gameObject.SetActive(false);
-        m_Ability1.gameObject.SetActive(false);
-        m_Ability2.gameObject.SetActive(false);
-        m_Ability3.gameObject.SetActive(false);
-        m_Ability4.gameObject.SetActive(false);
-        m_LevelUpButton.gameObject.SetActive(false);
-        m_RangeAttackButton.gameObject.SetActive(false);
-        m_MeleeAttackButton.gameObject.SetActive(false);
+        PlayerManager.Instance.m_Player = this;
         m_MoveZone.SetActive(false);
     }
 
     private void Start()
     {
+        TurnManager.Instance.m_MainUI.StartingUI();
+
         m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_PlayerData.MeleeAttackRange;
         m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_PlayerData.RangeAttackRange;
         // m_ScaleOfMoveZone = m_MoveZone.transform.localScale * m_PlayerData.MoveDistance;
@@ -89,9 +66,9 @@ public class PlayerController : MonoBehaviour
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
 
         m_CurrentHealth = m_MaxHealth;
-        m_HealthBar.value = 1;
-        m_XpBar.value = 0f;
-        UpgradeManager.Instance.m_Player = this;
+        TurnManager.Instance.m_MainUI.m_HealthBar.value = 1;
+        TurnManager.Instance.m_MainUI.m_XpBar.value = 0f;
+        PlayerManager.Instance.m_Player = this;
     }
 
     private void Update()
@@ -114,14 +91,14 @@ public class PlayerController : MonoBehaviour
             EndTurn();
         }
 
-        if (m_XpBar.value >= 1)
+        if (TurnManager.Instance.m_MainUI.m_XpBar.value >= 1)
         {
-            m_LevelUpButton.gameObject.SetActive(true);
+            TurnManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(true);
         }
 
-        if (m_HealthBar.value <= 0)
+        if (TurnManager.Instance.m_MainUI.m_HealthBar.value <= 0)
         {
-            m_Turnmanager.LoadMain();
+            LevelManager.Instance.ChangeLevel("Main");
         }
     }
 
@@ -159,9 +136,8 @@ public class PlayerController : MonoBehaviour
 
                 MovetoPoint(Hitinfo);
 
-
                 m_CanMove = false;
-                m_MoveButton.interactable = false;
+                TurnManager.Instance.m_MainUI.m_MoveButton.interactable = false;
                 m_MoveZone.SetActive(false);
 
             }
@@ -172,8 +148,6 @@ public class PlayerController : MonoBehaviour
     private void MovetoPoint(RaycastHit Hitinfo)
     {
         m_PlayerAgent.SetDestination(Hitinfo.point);
-        
-        
         // Old Code
         /* float Timer = 0f;
         {
@@ -185,7 +159,7 @@ public class PlayerController : MonoBehaviour
                 Timer += Time.deltaTime * m_MoveSpeed / 60;
                 yield return new WaitForEndOfFrame();
             }
-        }*/  
+        }*/
     }
 
     // Permet l'attaque du joueur vers l'ennemi
@@ -238,14 +212,14 @@ public class PlayerController : MonoBehaviour
     {
         StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
 
-        m_XpBar.value += 0.40f;
+        TurnManager.Instance.m_MainUI.m_XpBar.value += 0.40f;
 
         m_CanAttack = false;
-        m_AttackButton.interactable = false;
+        TurnManager.Instance.m_MainUI.m_AttackButton.interactable = false;
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
-        m_MeleeAttackButton.gameObject.SetActive(false);
-        m_RangeAttackButton.gameObject.SetActive(false);
+        TurnManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
+        TurnManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
         m_MeleeButtonIsPressed = false;
         m_RangeButtonIsPressed = false;
     }
@@ -268,7 +242,7 @@ public class PlayerController : MonoBehaviour
     {
         // Place to Apply damage
         m_CurrentHealth -= i_AttackDamage;
-        m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
+        TurnManager.Instance.m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
 
         StartCoroutine(ApplyDamageFeedback());
     }
@@ -282,21 +256,13 @@ public class PlayerController : MonoBehaviour
 
     public void Ability()
     {
-        m_Ability1.gameObject.SetActive(true);
-        m_Ability2.gameObject.SetActive(true);
-        m_Ability3.gameObject.SetActive(true);
-        m_Ability4.gameObject.SetActive(true);
+        TurnManager.Instance.m_MainUI.ActivateAbilityButtons();
     }
 
     public void EndTurn()
     {
         // Ici on reset les buttons du joueur
-        m_AttackButton.interactable = false;
-        m_MoveButton.interactable = false;
-        m_AbilityButton.interactable = false;
-        m_EndTurnButton.interactable = false;
-        m_MeleeAttackButton.interactable = false;
-        m_RangeAttackButton.interactable = false;
+        TurnManager.Instance.m_MainUI.DeactivateUI();
 
         // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
         m_AttackZone.transform.localScale = Vector3.zero;
@@ -342,16 +308,12 @@ public class PlayerController : MonoBehaviour
             if (m_CanAttack)
             {
                 m_CanAttack = false;
-
-                m_MeleeAttackButton.gameObject.SetActive(false);
-                m_RangeAttackButton.gameObject.SetActive(false);
+                TurnManager.Instance.m_MainUI.DeactivateAttackChoice();
             }
             else if (!m_CanAttack)
             {
                 m_CanAttack = true;
-
-                m_MeleeAttackButton.gameObject.SetActive(true);
-                m_RangeAttackButton.gameObject.SetActive(true);
+                TurnManager.Instance.m_MainUI.ActivateAttackChoice();
             }
         }
     }
@@ -374,19 +336,13 @@ public class PlayerController : MonoBehaviour
     {
         if (m_CanAbility)
         {
-            m_Ability1.gameObject.SetActive(false);
-            m_Ability2.gameObject.SetActive(false);
-            m_Ability3.gameObject.SetActive(false);
-            m_Ability4.gameObject.SetActive(false);
             m_CanAbility = false;
+            TurnManager.Instance.m_MainUI.DeactivateAbilityButtons();            
         }
         else if (!m_CanAbility)
         {
             m_CanAbility = true;
-            m_Ability1.gameObject.SetActive(true);
-            m_Ability2.gameObject.SetActive(true);
-            m_Ability3.gameObject.SetActive(true);
-            m_Ability4.gameObject.SetActive(true);
+            TurnManager.Instance.m_MainUI.ActivateAbilityButtons();
         }
     }
 
@@ -407,48 +363,13 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility4()
     {
-        m_HealthBar.value += m_HealthRegenAbility;
-        m_Ability4.interactable = false;
+        TurnManager.Instance.m_MainUI.m_HealthBar.value += m_HealthRegenAbility;
+        TurnManager.Instance.m_MainUI.m_Ability4.interactable = false;
     }
     #endregion
 
     public void LevelUp()
     {
-        m_UpgradeCanvas.gameObject.SetActive(true);
+        TurnManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
     }
-
-
-    /*float CalculatePathLength(Vector3 targetPosition)
-    {
-        // Create a path and set it based on a target position.
-        NavMeshPath path = new NavMeshPath();
-        if (nav.enabled)
-            nav.CalculatePath(targetPosition, path);
-
-        // Create an array of points which is the length of the number of corners in the path + 2.
-        Vector3[] allWayPoints = new Vector3[path.corners.Length + 2];
-
-        // The first point is the enemy's position.
-        allWayPoints[0] = transform.position;
-
-        // The last point is the target position.
-        allWayPoints[allWayPoints.Length - 1] = targetPosition;
-
-        // The points inbetween are the corners of the path.
-        for (int i = 0; i < path.corners.Length; i++)
-        {
-            allWayPoints[i + 1] = path.corners[i];
-        }
-
-        // Create a float to store the path length that is by default 0.
-        float pathLength = 0;
-
-        // Increment the path length by an amount equal to the distance between each waypoint and the next.
-        for (int i = 0; i < allWayPoints.Length - 1; i++)
-        {
-            pathLength += Vector3.Distance(allWayPoints[i], allWayPoints[i + 1]);
-        }
-
-        return pathLength;
-    }*/
 }

@@ -33,9 +33,9 @@ public class Upgrades : MonoBehaviour
     // Cette fonction est appelée après le choix du joueur pour fermer le HUD d'upgrades.
     public void ReturnToGame()
     {
-        m_PlayerController.m_UpgradeCanvas.gameObject.SetActive(false);
-        m_PlayerController.m_LevelUpButton.gameObject.SetActive(false);
-        m_PlayerController.m_XpBar.value = 0f;
+        TurnManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(false);
+        TurnManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(false);
+        TurnManager.Instance.m_MainUI.m_XpBar.value = 0f;
     }
 
 
@@ -50,8 +50,8 @@ public class Upgrades : MonoBehaviour
 
     public void Archer2()
     {
-        UpgradeManager.Instance.m_PlayerPrecision += 1;
-        UpgradeManager.Instance.m_PlayerPerception += 1;
+        PlayerManager.Instance.m_PlayerPrecision += 1;
+        PlayerManager.Instance.m_PlayerPerception += 1;
         m_ArcherButton2.interactable = false;
         m_ArcherButton3.interactable = true;
         ReturnToGame();
@@ -59,46 +59,46 @@ public class Upgrades : MonoBehaviour
     public void Archer3()
     {
 
-        UpgradeManager.Instance.m_PlayerPrecision += 1;
-        UpgradeManager.Instance.m_PlayerPerception += 1;
+        PlayerManager.Instance.m_PlayerPrecision += 1;
+        PlayerManager.Instance.m_PlayerPerception += 1;
         m_ArcherButton3.interactable = false;
         m_ArcherButton4.interactable = true;
         ReturnToGame();
     }
     public void Archer4()
     {
-        UpgradeManager.Instance.m_PlayerRange += 1;
+        PlayerManager.Instance.m_PlayerRange += 1;
         m_ArcherButton4.interactable = false;
         m_ArcherButton5.interactable = true;
         ReturnToGame();
     }
     public void Archer5()
     {
-        UpgradeManager.Instance.m_PlayerPrecision += 1;
-        UpgradeManager.Instance.m_PlayerPerception += 1;
-        UpgradeManager.Instance.m_PlayerRange += 1;
+        PlayerManager.Instance.m_PlayerPrecision += 1;
+        PlayerManager.Instance.m_PlayerPerception += 1;
+        PlayerManager.Instance.m_PlayerRange += 1;
         m_ArcherButton5.interactable = false;
         ReturnToGame();
     }
 
     public void Brute1()
     {
-        UpgradeManager.Instance.m_PlayerStrenght += 1;
+        PlayerManager.Instance.m_PlayerStrenght += 1;
         m_BruteButton1.interactable = false;
         m_BruteButton2.interactable = true;
         ReturnToGame();
     }
     public void Brute2()
     {
-        UpgradeManager.Instance.m_PlayerConstitution += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
         m_BruteButton2.interactable = false;
         m_BruteButton3.interactable = true;
         ReturnToGame();
     }
     public void Brute3()
     {
-        UpgradeManager.Instance.m_PlayerConstitution += 1;
-        UpgradeManager.Instance.m_PlayerStrenght += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
+        PlayerManager.Instance.m_PlayerStrenght += 1;
         m_BruteButton3.interactable = false;
         m_BruteButton4.interactable = true;
         ReturnToGame();
@@ -106,36 +106,36 @@ public class Upgrades : MonoBehaviour
     public void Brute4()
     {
         // Activate : Extreme Force
-        UpgradeManager.Instance.m_PlayerConstitution += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
         m_BruteButton4.interactable = false;
         m_BruteButton5.interactable = true;
         ReturnToGame();
     }
     public void Brute5()
     {
-        UpgradeManager.Instance.m_PlayerConstitution += 1;
-        UpgradeManager.Instance.m_PlayerStrenght += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
+        PlayerManager.Instance.m_PlayerStrenght += 1;
         m_BruteButton5.interactable = false;
         ReturnToGame();
     }
 
     public void Athlete1()
     {
-        UpgradeManager.Instance.m_PlayerPrecision += 1;
+        PlayerManager.Instance.m_PlayerPrecision += 1;
         m_AthleteButton1.interactable = false;
         m_AthleteButton2.interactable = true;
         ReturnToGame();
     }
     public void Athlete2()
     {
-        UpgradeManager.Instance.m_PlayerDexterity += 1;
+        PlayerManager.Instance.m_PlayerDexterity += 1;
         m_AthleteButton2.interactable = false;
         m_AthleteButton3.interactable = true;
         ReturnToGame();
     }
     public void Athlete3()
     {
-        UpgradeManager.Instance.m_PlayerStrenght += 1;
+        PlayerManager.Instance.m_PlayerStrenght += 1;
         m_AthleteButton3.interactable = false;
         m_AthleteButton4.interactable = true;
         ReturnToGame();
@@ -143,16 +143,16 @@ public class Upgrades : MonoBehaviour
     public void Athlete4()
     {
         // Activate : Precise hit
-        UpgradeManager.Instance.m_PlayerDexterity += 1;
+        PlayerManager.Instance.m_PlayerDexterity += 1;
         m_AthleteButton4.interactable = false;
         m_AthleteButton5.interactable = true;
         ReturnToGame();
     }
     public void Athlete5()
     {
-        UpgradeManager.Instance.m_PlayerPrecision += 1;
-        UpgradeManager.Instance.m_PlayerDexterity += 1;
-        UpgradeManager.Instance.m_PlayerConstitution += 1;
+        PlayerManager.Instance.m_PlayerPrecision += 1;
+        PlayerManager.Instance.m_PlayerDexterity += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
         m_AthleteButton5.interactable = false;
         ReturnToGame();
     }
@@ -173,7 +173,7 @@ public class Upgrades : MonoBehaviour
     }
     public void Arcanist3()
     {
-        UpgradeManager.Instance.m_PlayerConstitution += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
         m_ArcanistButton3.interactable = false;
         m_ArcanistButton4.interactable = true;
         ReturnToGame();
@@ -189,7 +189,7 @@ public class Upgrades : MonoBehaviour
     {
         // Boosts Root Damage
         // Boosts Regenerate Heal
-        UpgradeManager.Instance.m_PlayerStrenght += 1;
+        PlayerManager.Instance.m_PlayerStrenght += 1;
         m_ArcanistButton5.interactable = false;
         ReturnToGame();
     }
