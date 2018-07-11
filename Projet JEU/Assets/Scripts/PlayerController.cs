@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public TurnManager m_Turnmanager;
     [HideInInspector]
     public bool m_CanMove = false;
     [HideInInspector]
@@ -27,6 +26,8 @@ public class PlayerController : MonoBehaviour
     public GameObject m_AttackZone;
     public GameObject m_RangeAttackZone;
     public Material m_PlayerMaterial;
+
+    public Action m_FinishTurn;
 
     [SerializeField]
     private PlayerData m_PlayerData;
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        TurnManager.Instance.m_MainUI.StartingUI();
+        PlayerManager.Instance.m_MainUI.StartingUI();
 
         m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_PlayerData.MeleeAttackRange;
         m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_PlayerData.RangeAttackRange;
@@ -66,13 +67,22 @@ public class PlayerController : MonoBehaviour
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
 
         m_CurrentHealth = m_MaxHealth;
-        TurnManager.Instance.m_MainUI.m_HealthBar.value = 1;
-        TurnManager.Instance.m_MainUI.m_XpBar.value = 0f;
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;
+        PlayerManager.Instance.m_MainUI.m_XpBar.value = 0f;
         PlayerManager.Instance.m_Player = this;
     }
 
     private void Update()
     {
+        /*if(Input.GetKeyDown(KeyCode.A))
+        {
+            if(m_FinishTurn != null)
+            {
+                m_FinishTurn();
+            }
+        }
+        return;*/
+
         // Lorsque les bools sont activés par les boutons, les fonctions respectives sont appelées
         if (m_CanMove)
         {
@@ -91,12 +101,12 @@ public class PlayerController : MonoBehaviour
             EndTurn();
         }
 
-        if (TurnManager.Instance.m_MainUI.m_XpBar.value >= 1)
+        if (PlayerManager.Instance.m_MainUI.m_XpBar.value >= 1)
         {
-            TurnManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(true);
+            PlayerManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(true);
         }
 
-        if (TurnManager.Instance.m_MainUI.m_HealthBar.value <= 0)
+        if (PlayerManager.Instance.m_MainUI.m_HealthBar.value <= 0)
         {
             LevelManager.Instance.ChangeLevel("Main");
         }
@@ -137,7 +147,7 @@ public class PlayerController : MonoBehaviour
                 MovetoPoint(Hitinfo);
 
                 m_CanMove = false;
-                TurnManager.Instance.m_MainUI.m_MoveButton.interactable = false;
+                PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;
                 m_MoveZone.SetActive(false);
 
             }
@@ -212,14 +222,14 @@ public class PlayerController : MonoBehaviour
     {
         StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
 
-        TurnManager.Instance.m_MainUI.m_XpBar.value += 0.40f;
+        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.40f;
 
         m_CanAttack = false;
-        TurnManager.Instance.m_MainUI.m_AttackButton.interactable = false;
+        PlayerManager.Instance.m_MainUI.m_AttackButton.interactable = false;
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
-        TurnManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
+        PlayerManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
+        PlayerManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
         m_MeleeButtonIsPressed = false;
         m_RangeButtonIsPressed = false;
     }
@@ -234,7 +244,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        m_Turnmanager.m_Characters.Remove(i_Hitinfo.collider.gameObject);
+        TurnManager.Instance.m_Characters.Remove(i_Hitinfo.collider.gameObject);
         Destroy(i_Hitinfo.collider.gameObject);
     }
 
@@ -242,7 +252,9 @@ public class PlayerController : MonoBehaviour
     {
         // Place to Apply damage
         m_CurrentHealth -= i_AttackDamage;
-        TurnManager.Instance.m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
+
+
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
 
         StartCoroutine(ApplyDamageFeedback());
     }
@@ -256,13 +268,13 @@ public class PlayerController : MonoBehaviour
 
     public void Ability()
     {
-        TurnManager.Instance.m_MainUI.ActivateAbilityButtons();
+        PlayerManager.Instance.m_MainUI.ActivateAbilityButtons();
     }
 
     public void EndTurn()
     {
         // Ici on reset les buttons du joueur
-        TurnManager.Instance.m_MainUI.DeactivateUI();
+        PlayerManager.Instance.m_MainUI.DeactivateUI();
 
         // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
         m_AttackZone.transform.localScale = Vector3.zero;
@@ -308,12 +320,12 @@ public class PlayerController : MonoBehaviour
             if (m_CanAttack)
             {
                 m_CanAttack = false;
-                TurnManager.Instance.m_MainUI.DeactivateAttackChoice();
+                PlayerManager.Instance.m_MainUI.DeactivateAttackChoice();
             }
             else if (!m_CanAttack)
             {
                 m_CanAttack = true;
-                TurnManager.Instance.m_MainUI.ActivateAttackChoice();
+                PlayerManager.Instance.m_MainUI.ActivateAttackChoice();
             }
         }
     }
@@ -337,12 +349,12 @@ public class PlayerController : MonoBehaviour
         if (m_CanAbility)
         {
             m_CanAbility = false;
-            TurnManager.Instance.m_MainUI.DeactivateAbilityButtons();            
+            PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();            
         }
         else if (!m_CanAbility)
         {
             m_CanAbility = true;
-            TurnManager.Instance.m_MainUI.ActivateAbilityButtons();
+            PlayerManager.Instance.m_MainUI.ActivateAbilityButtons();
         }
     }
 
@@ -363,13 +375,13 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility4()
     {
-        TurnManager.Instance.m_MainUI.m_HealthBar.value += m_HealthRegenAbility;
-        TurnManager.Instance.m_MainUI.m_Ability4.interactable = false;
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value += m_HealthRegenAbility;
+        PlayerManager.Instance.m_MainUI.m_Ability4.interactable = false;
     }
     #endregion
 
     public void LevelUp()
     {
-        TurnManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
+        PlayerManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
     }
 }

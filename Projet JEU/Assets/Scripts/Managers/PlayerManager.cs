@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    public MainUI m_MainUI;
     public PlayerController m_Player;
+    public string m_PlayerPath = "Assets/Prefabs/Player";
 
     [HideInInspector]
     public int m_PlayerStrenght = 0;

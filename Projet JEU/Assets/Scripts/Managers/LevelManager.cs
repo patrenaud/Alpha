@@ -38,7 +38,10 @@ public class LevelManager : DontDestroyOnLoad
     {
         //We remove the function from the action/event list
         SceneManager.sceneLoaded -= OnLoadingDone;
-        m_LoadingScreen.SetActive(false);
+        if (m_LoadingScreen != null)
+        {
+            m_LoadingScreen.SetActive(false);
+        }
     }
 
     public void ChangeLevel(string i_Scene)

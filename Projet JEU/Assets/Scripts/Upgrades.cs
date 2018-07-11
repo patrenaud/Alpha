@@ -33,9 +33,9 @@ public class Upgrades : MonoBehaviour
     // Cette fonction est appelée après le choix du joueur pour fermer le HUD d'upgrades.
     public void ReturnToGame()
     {
-        TurnManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_XpBar.value = 0f;
+        PlayerManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(false);
+        PlayerManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(false);
+        PlayerManager.Instance.m_MainUI.m_XpBar.value = 0f;
     }
 
 

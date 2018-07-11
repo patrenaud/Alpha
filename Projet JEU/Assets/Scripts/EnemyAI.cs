@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,10 +14,16 @@ public enum BehaviorState
 
 public class EnemyAI : MonoBehaviour
 {
+    public Action m_FinishTurn;
+    public Action<EnemyAI> m_OnDeath;
+
     public bool m_IsPlaying = false;
+    public Vector3 m_PatrolPos;
 
     private BehaviorState m_State;
-    // private Vector3 m_InitialePos;
+    private Vector3 m_InitialePos;
+    Vector3 m_PatrolDestination = new Vector3();
+
     [SerializeField]
     private EnemyData m_EnemyData;
     private NavMeshAgent m_EnemyAgent;
@@ -25,7 +32,9 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         m_State = BehaviorState.Idle;
-        // m_InitialePos = transform.position;
+        m_InitialePos = transform.position;
+        m_PatrolPos = m_InitialePos  + new Vector3(2,0,0);
+        m_PatrolDestination = m_PatrolPos;
         m_EnemyAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -79,26 +88,31 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdatePatrol()
     {
-       
+        m_EnemyAgent.SetDestination(m_PatrolDestination);
         m_CurrentTime += Time.deltaTime;
-        if (m_EnemyAgent.destination == m_EnemyAgent.transform.position)
+
+        if (m_EnemyAgent.destination == m_EnemyAgent.transform.position && m_PatrolDestination != m_InitialePos)
         {
-            
+            m_PatrolDestination = m_InitialePos;
+        }
+        if (m_EnemyAgent.destination == m_EnemyAgent.transform.position && m_PatrolDestination != m_PatrolPos)
+        {
+            m_PatrolDestination = m_PatrolPos;
         }
 
         if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemySight)
         {
             ChangeState(BehaviorState.MoveToPlayer);
         }
-        else
+
+        if (m_CurrentTime >= 2f)
         {
-            // Ici je dois faire un move entre 2 points dans la map. ADD STUFF
-            
+            m_EnemyAgent.SetDestination(transform.position);
+            m_CurrentTime = 0;
             StopPlaying();
             ChangeState(BehaviorState.Idle);
             EndTurn();
         }
-
     }
 
     private void UpdateMovetoPlayer()
@@ -109,15 +123,15 @@ public class EnemyAI : MonoBehaviour
         if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
         {
             m_EnemyAgent.SetDestination(transform.position);
-            m_CurrentTime = 0;   
+            m_CurrentTime = 0;
             ChangeState(BehaviorState.Attack);
         }
 
         if (m_CurrentTime >= 2f)
         {
             m_EnemyAgent.SetDestination(transform.position);
-            m_CurrentTime = 0;  
-                                              
+            m_CurrentTime = 0;
+
             StopPlaying();
             ChangeState(BehaviorState.Idle);
             EndTurn();
@@ -143,7 +157,7 @@ public class EnemyAI : MonoBehaviour
                         // Activate Anim / Camera
                         // Attack();
                         PlayerManager.Instance.m_Player.m_CurrentHealth -= m_EnemyData.MeleeAttackDamage;
-                        TurnManager.Instance.m_MainUI.m_HealthBar.value = PlayerManager.Instance.m_Player.m_CurrentHealth / PlayerManager.Instance.m_Player.m_MaxHealth;
+                        PlayerManager.Instance.m_MainUI.m_HealthBar.value = PlayerManager.Instance.m_Player.m_CurrentHealth / PlayerManager.Instance.m_Player.m_MaxHealth;
                     }
                     break;
                 }
@@ -186,6 +200,15 @@ public class EnemyAI : MonoBehaviour
     private void EndTurn()
     {
         TurnManager.Instance.ActivateSwitchCharacter();
+    }
+
+    private void Die()
+    {
+        if(m_OnDeath != null)
+        {
+            m_OnDeath(this);
+        }
+        Destroy(gameObject);
     }
 }
 

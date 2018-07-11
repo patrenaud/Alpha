@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class TurnManager : DontDestroyOnLoad
 {
-    public MainUI m_MainUI;
+    public PlayerManager m_PlayerManager;
     public List<GameObject> m_Characters = new List<GameObject>();
     public bool m_SwitchCharacter = false;
 
@@ -50,12 +50,12 @@ public class TurnManager : DontDestroyOnLoad
                 m_Turn = 1;
 
                 // Les boutons sont activés pour le tour du joueur
-                m_MainUI.m_AttackButton.interactable = true;
-                m_MainUI.m_MoveButton.interactable = true;
-                m_MainUI.m_AbilityButton.interactable = true;
-                m_MainUI.m_EndTurnButton.interactable = true;
-                m_MainUI.m_MeleeAttackButton.interactable = true;
-                m_MainUI.m_RangeAttackButton.interactable = true;
+                m_PlayerManager.m_MainUI.m_AttackButton.interactable = true;
+                m_PlayerManager.m_MainUI.m_MoveButton.interactable = true;
+                m_PlayerManager.m_MainUI.m_AbilityButton.interactable = true;
+                m_PlayerManager.m_MainUI.m_EndTurnButton.interactable = true;
+                m_PlayerManager.m_MainUI.m_MeleeAttackButton.interactable = true;
+                m_PlayerManager.m_MainUI.m_RangeAttackButton.interactable = true;
                 PlayerManager.Instance.m_Player.m_AttackZone.GetComponent<CapsuleCollider>().enabled = true;
                 PlayerManager.Instance.m_Player.m_MoveZone.GetComponent<CapsuleCollider>().enabled = true;
                 PlayerManager.Instance.m_Player.m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = true;

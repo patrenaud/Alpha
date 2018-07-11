@@ -24,57 +24,57 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
-        TurnManager.Instance.m_MainUI = this;
+        PlayerManager.Instance.m_MainUI = this;
     }
 
     public void StartingUI()
     {
-        TurnManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability1.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability2.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability3.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability4.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
+        m_UpgradeCanvas.gameObject.SetActive(false);
+        m_Ability1.gameObject.SetActive(false);
+        m_Ability2.gameObject.SetActive(false);
+        m_Ability3.gameObject.SetActive(false);
+        m_Ability4.gameObject.SetActive(false);
+        m_LevelUpButton.gameObject.SetActive(false);
+        m_RangeAttackButton.gameObject.SetActive(false);
+        m_MeleeAttackButton.gameObject.SetActive(false);
     }
 
     public void ActivateAbilityButtons()
     {
-        TurnManager.Instance.m_MainUI.m_Ability1.gameObject.SetActive(true);
-        TurnManager.Instance.m_MainUI.m_Ability2.gameObject.SetActive(true);
-        TurnManager.Instance.m_MainUI.m_Ability3.gameObject.SetActive(true);
-        TurnManager.Instance.m_MainUI.m_Ability4.gameObject.SetActive(true);
+        m_Ability1.gameObject.SetActive(true);
+        m_Ability2.gameObject.SetActive(true);
+        m_Ability3.gameObject.SetActive(true);
+        m_Ability4.gameObject.SetActive(true);
     }
 
     public void DeactivateAbilityButtons()
     {
-        TurnManager.Instance.m_MainUI.m_Ability1.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability2.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability3.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_Ability4.gameObject.SetActive(false);
+        m_Ability1.gameObject.SetActive(false);
+        m_Ability2.gameObject.SetActive(false);
+        m_Ability3.gameObject.SetActive(false);
+        m_Ability4.gameObject.SetActive(false);
     }
 
     public void DeactivateUI()
     {
-        TurnManager.Instance.m_MainUI.m_AttackButton.interactable = false;
-        TurnManager.Instance.m_MainUI.m_MoveButton.interactable = false;
-        TurnManager.Instance.m_MainUI.m_AbilityButton.interactable = false;
-        TurnManager.Instance.m_MainUI.m_EndTurnButton.interactable = false;
-        TurnManager.Instance.m_MainUI.m_MeleeAttackButton.interactable = false;
-        TurnManager.Instance.m_MainUI.m_RangeAttackButton.interactable = false;
+        m_AttackButton.interactable = false;
+        m_MoveButton.interactable = false;
+        m_AbilityButton.interactable = false;
+        m_EndTurnButton.interactable = false;
+        m_MeleeAttackButton.interactable = false;
+        m_RangeAttackButton.interactable = false;
     }
 
     public void ActivateAttackChoice()
     {
-        TurnManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(true);
-        TurnManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(true);
+        m_MeleeAttackButton.gameObject.SetActive(true);
+        m_RangeAttackButton.gameObject.SetActive(true);
     }
 
     public void DeactivateAttackChoice()
     {
-        TurnManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
-        TurnManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
+        m_MeleeAttackButton.gameObject.SetActive(false);
+        m_RangeAttackButton.gameObject.SetActive(false);
     }
 
     
@@ -82,7 +82,7 @@ public class MainUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        TurnManager.Instance.m_MainUI = null;
+        PlayerManager.Instance.m_MainUI = null;
     }
 
 }
