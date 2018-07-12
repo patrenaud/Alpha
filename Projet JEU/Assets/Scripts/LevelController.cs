@@ -13,7 +13,6 @@ public class LevelController : MonoBehaviour
     private Transform m_BossSpawnPoint;
     [SerializeField]
     private List<Transform> m_EnemySpawnPoints;
-
     private List<EnemyAI> m_Enemies;
 
     private int m_TurnIndex = 0;
@@ -38,13 +37,13 @@ public class LevelController : MonoBehaviour
         {
             m_Enemies[i].gameObject.transform.position = m_EnemySpawnPoints[Random.Range(0, m_EnemySpawnPoints.Count)].transform.position;
             m_Enemies[i].m_OnDeath += OnEnemyDeath;
+            // NEED TO INSTANTIATE
         }
-
     }
 
     private void GenerateBoss()
     {
-
+        
     }
 
     private void GeneratePlayer()
@@ -60,7 +59,7 @@ public class LevelController : MonoBehaviour
     private void OnPlayerDone()
     {
         Debug.Log("Player finished turn");
-		// HUD FERME
+        PlayerManager.Instance.m_MainUI.DeactivateUI();
         NextTurn();
     }
 
@@ -73,9 +72,16 @@ public class LevelController : MonoBehaviour
     private void NextTurn()
     {
         // si turnIndex < enemyList.count -> tour de l'ennemi 
-        // 
-        // sinon -> phase terminé donc reviens au joueur (HUD OUVRE) et Turnindex = 0
-        //
+        if(m_TurnIndex < m_Enemies.Count)
+        {
+            m_Enemies[m_TurnIndex - 1].m_IsPlaying = false;
+            m_Enemies[m_TurnIndex].m_IsPlaying = true;
+        }
+        else
+        {
+            PlayerManager.Instance.m_MainUI.ActivatePlayerUiOnTurnBegin();
+            m_TurnIndex = 0;
+        } 
     }
 
     private void OnEnemyDeath(EnemyAI aEnemy)

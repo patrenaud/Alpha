@@ -199,7 +199,7 @@ public class EnemyAI : MonoBehaviour
 
     private void EndTurn()
     {
-        TurnManager.Instance.ActivateSwitchCharacter();
+        TurnManager.Instance.ActivateSwitchCharacter(); // THIS HAS TO BE CHANGED
     }
 
     private void Die()

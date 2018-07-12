@@ -12,13 +12,13 @@ public class TurnManager : DontDestroyOnLoad
 
     private int m_Turn = 1;
 
-    private static TurnManager m_Instance; // Application d'un Singleton
-    public static TurnManager Instance // Application d'un Singleton
+    private static TurnManager m_Instance;
+    public static TurnManager Instance
     {
         get { return m_Instance; }
     }
 
-    protected override void Awake() // Application d'un Singleton
+    protected override void Awake()
     {
         if (m_Instance != null)
         {
@@ -50,12 +50,8 @@ public class TurnManager : DontDestroyOnLoad
                 m_Turn = 1;
 
                 // Les boutons sont activés pour le tour du joueur
-                m_PlayerManager.m_MainUI.m_AttackButton.interactable = true;
-                m_PlayerManager.m_MainUI.m_MoveButton.interactable = true;
-                m_PlayerManager.m_MainUI.m_AbilityButton.interactable = true;
-                m_PlayerManager.m_MainUI.m_EndTurnButton.interactable = true;
-                m_PlayerManager.m_MainUI.m_MeleeAttackButton.interactable = true;
-                m_PlayerManager.m_MainUI.m_RangeAttackButton.interactable = true;
+                PlayerManager.Instance.m_MainUI.ActivatePlayerUiOnTurnBegin();
+
                 PlayerManager.Instance.m_Player.m_AttackZone.GetComponent<CapsuleCollider>().enabled = true;
                 PlayerManager.Instance.m_Player.m_MoveZone.GetComponent<CapsuleCollider>().enabled = true;
                 PlayerManager.Instance.m_Player.m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = true;

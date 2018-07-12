@@ -77,12 +77,55 @@ public class MainUI : MonoBehaviour
         m_RangeAttackButton.gameObject.SetActive(false);
     }
 
-    
+    public void ActivatePlayerUiOnTurnBegin()
+    {
+        m_AttackButton.interactable = true;
+        m_MoveButton.interactable = true;
+        m_AbilityButton.interactable = true;
+        m_EndTurnButton.interactable = true;
+        m_MeleeAttackButton.interactable = true;
+        if (PlayerManager.Instance.m_Player.m_RangeAttack)
+        {
+            m_RangeAttackButton.interactable = true;
+        }
+    }
 
+    public void StartHpAndExp()
+    {
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;
+        PlayerManager.Instance.m_MainUI.m_XpBar.value = 0f;
+    }
+
+    public void OnPlayerAttackEnd()
+    {
+        PlayerManager.Instance.m_MainUI.m_AttackButton.interactable = false;
+        PlayerManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
+        PlayerManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
+    }
 
     private void OnDestroy()
     {
         PlayerManager.Instance.m_MainUI = null;
     }
 
+    public void OnActivateAbility1()
+    {
+        // Has to be filled with Abilities
+    }
+
+    public void OnActivateAbility2()
+    {
+        // Has to be filled with Abilities
+    }
+
+    public void OnActivateAbility3()
+    {
+        // Has to be filled with Abilities
+    }
+
+    public void OnActivateAbility4(float aHealthRegen)
+    {
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value += aHealthRegen;
+        PlayerManager.Instance.m_MainUI.m_Ability4.interactable = false;
+    }
 }

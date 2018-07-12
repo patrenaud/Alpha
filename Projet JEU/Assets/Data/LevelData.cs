@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelData : MonoBehaviour
+
+[CreateAssetMenu(menuName = "ScriptableObject/Data", fileName = "LevelData", order = 1)]
+public class LevelData : ScriptableObject
 {
 
 	public List<EnemyAI> m_EnemyListData;

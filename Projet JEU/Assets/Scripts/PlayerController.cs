@@ -8,12 +8,6 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector]
-    public bool m_CanMove = false;
-    [HideInInspector]
-    public bool m_CanAttack = false;
-    [HideInInspector]
-    public bool m_CanAbility = false;
-    [HideInInspector]
     public bool m_EndTurn = false;
     public bool m_RangeAttack = false;
 
@@ -37,10 +31,14 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent m_PlayerAgent;
     private Vector3 m_ScaleOfAttackZone;
     private Vector3 m_ScaleOfRangeAttackZone;
-    // private Vector3 m_ScaleOfMoveZone;
+    private Vector3 m_ScaleOfMoveZone;
+
     private Vector3 m_TargetPosition;
     private bool m_MeleeButtonIsPressed = false;
     private bool m_RangeButtonIsPressed = false;
+    private bool m_CanMove = false;
+    private bool m_CanAttack = false;
+    private bool m_CanAbility = false;
     private float m_BulletSpeed = 50f;
     private float m_MoveSpeed;
 
@@ -55,21 +53,14 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         PlayerManager.Instance.m_MainUI.StartingUI();
-
-        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_PlayerData.MeleeAttackRange;
-        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_PlayerData.RangeAttackRange;
-        // m_ScaleOfMoveZone = m_MoveZone.transform.localScale * m_PlayerData.MoveDistance;
-        m_AttackZone.transform.localScale = Vector3.zero;
-        m_RangeAttackZone.transform.localScale = Vector3.zero;
+        PlayerManager.Instance.m_MainUI.StartHpAndExp();
+        SetZoneStats(); // Sets the attack zones (range of both melee and range)
 
         m_MoveSpeed = m_PlayerData.MoveSpeed;
         m_MaxHealth = m_PlayerData.MaxHealth;
-        m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
-
         m_CurrentHealth = m_MaxHealth;
-        PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;
-        PlayerManager.Instance.m_MainUI.m_XpBar.value = 0f;
-        PlayerManager.Instance.m_Player = this;
+
+        m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
     }
 
     private void Update()
@@ -108,8 +99,17 @@ public class PlayerController : MonoBehaviour
 
         if (PlayerManager.Instance.m_MainUI.m_HealthBar.value <= 0)
         {
-            LevelManager.Instance.ChangeLevel("Main");
+            LevelManager.Instance.ChangeLevel("Main"); // THIS IS WHERE THE PLAYER DIES
         }
+    }
+
+    private void SetZoneStats()
+    {
+        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_PlayerData.MeleeAttackRange;
+        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_PlayerData.RangeAttackRange;
+        m_ScaleOfMoveZone = m_MoveZone.transform.localScale * m_PlayerData.MoveDistance;
+        m_AttackZone.transform.localScale = Vector3.zero;
+        m_RangeAttackZone.transform.localScale = Vector3.zero;
     }
 
     public void Move()
@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable)
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable) // MIGHT NEED TO CHANGE
                 {
                     //ApplyDamage(); // Le joueur peut attaquer un ennemi dans sa zone de move seulement si elle est dans la zone d'attaque aussi
                     AttackEnd(Hitinfo);
@@ -149,7 +149,6 @@ public class PlayerController : MonoBehaviour
                 m_CanMove = false;
                 PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;
                 m_MoveZone.SetActive(false);
-
             }
         }
     }
@@ -160,8 +159,7 @@ public class PlayerController : MonoBehaviour
         m_PlayerAgent.SetDestination(Hitinfo.point);
         // Old Code
         /* float Timer = 0f;
-        {
-            // ****** Ce céplacement devra être changé par le NavMesh. Si le click est hors zone, ne confirmation sera demandée pour la distance max
+        {           
             transform.LookAt(m_TargetPosition);
             while (Vector3.Distance(m_TargetPosition, transform.position) > 0)
             {
@@ -182,7 +180,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable)
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable) // ENEMYCONTROLLER
                 {
                     ShootProjectile(Hitinfo);
                     //ApplyDamage();
@@ -193,7 +191,7 @@ public class PlayerController : MonoBehaviour
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && m_RangeAttack)
             {
                 // This part is the condition to defeat the Boss
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable)
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable) // ENEMYCONTROLLER
                 {
                     ShootProjectile(Hitinfo);
                     //ApplyDamage();
@@ -222,14 +220,12 @@ public class PlayerController : MonoBehaviour
     {
         StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
 
-        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.40f;
+        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;        
+
+        DeactivateAttackZones();
+        PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
 
         m_CanAttack = false;
-        PlayerManager.Instance.m_MainUI.m_AttackButton.interactable = false;
-        m_AttackZone.transform.localScale = Vector3.zero;
-        m_RangeAttackZone.transform.localScale = Vector3.zero;
-        PlayerManager.Instance.m_MainUI.m_MeleeAttackButton.gameObject.SetActive(false);
-        PlayerManager.Instance.m_MainUI.m_RangeAttackButton.gameObject.SetActive(false);
         m_MeleeButtonIsPressed = false;
         m_RangeButtonIsPressed = false;
     }
@@ -244,7 +240,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        TurnManager.Instance.m_Characters.Remove(i_Hitinfo.collider.gameObject);
+        TurnManager.Instance.m_Characters.Remove(i_Hitinfo.collider.gameObject); // This will change for the death of enemies by getting their HP out
         Destroy(i_Hitinfo.collider.gameObject);
     }
 
@@ -253,13 +249,12 @@ public class PlayerController : MonoBehaviour
         // Place to Apply damage
         m_CurrentHealth -= i_AttackDamage;
 
-
         PlayerManager.Instance.m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
 
         StartCoroutine(ApplyDamageFeedback());
     }
 
-    private IEnumerator ApplyDamageFeedback()
+    private IEnumerator ApplyDamageFeedback() // Feedback will change for ANIM
     {
         gameObject.GetComponent<Renderer>().material.color = Color.red;
         yield return new WaitForSeconds(1f);
@@ -276,12 +271,18 @@ public class PlayerController : MonoBehaviour
         // Ici on reset les buttons du joueur
         PlayerManager.Instance.m_MainUI.DeactivateUI();
 
+        DeactivateAttackZones();
+
         // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
-        m_AttackZone.transform.localScale = Vector3.zero;
-        m_RangeAttackZone.transform.localScale = Vector3.zero;
         m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
         m_MoveZone.GetComponent<CapsuleCollider>().enabled = false;
         m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = false;
+    }
+
+    private void DeactivateAttackZones()
+    {
+        m_AttackZone.transform.localScale = Vector3.zero;
+        m_RangeAttackZone.transform.localScale = Vector3.zero;
     }
 
     // Cette région permet aux boutons d'appaler ces fonctions. Les Booleens sont activés et permettent les Move/Attack/Ability/EndTurn
@@ -349,7 +350,7 @@ public class PlayerController : MonoBehaviour
         if (m_CanAbility)
         {
             m_CanAbility = false;
-            PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();            
+            PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();
         }
         else if (!m_CanAbility)
         {
@@ -375,8 +376,7 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility4()
     {
-        PlayerManager.Instance.m_MainUI.m_HealthBar.value += m_HealthRegenAbility;
-        PlayerManager.Instance.m_MainUI.m_Ability4.interactable = false;
+        PlayerManager.Instance.m_MainUI.OnActivateAbility4(m_HealthRegenAbility); 
     }
     #endregion
 
