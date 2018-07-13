@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour
 {
-
-
     public Slider m_HealthBar;
     public Slider m_XpBar;
     public Button m_AttackButton;
@@ -21,6 +19,7 @@ public class MainUI : MonoBehaviour
     public Button m_Ability4;
     public Button m_LevelUpButton;
     public GameObject m_UpgradeCanvas;
+
 
     private void Awake()
     {
@@ -90,10 +89,32 @@ public class MainUI : MonoBehaviour
         }
     }
 
+    public void OnPlayerAttackEnd()
+    {
+        m_AttackButton.interactable = false;
+        m_RangeAttackButton.interactable = false;
+        m_MeleeAttackButton.interactable = false;
+    }
 
     private void OnDestroy()
     {
         PlayerManager.Instance.m_MainUI = null;
     }
 
+    public void StartHpAndExp()
+    {
+        m_HealthBar.value = 1;
+        m_XpBar.value = 0;
+    }
+
+    public void OnActivateAbility4(float aRegenHealth)
+    {
+        m_Ability4.interactable = false;
+        m_HealthBar.value += aRegenHealth;
+    }
+
+    public void DeactivateMove()
+    {
+        PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;        
+    }
 }

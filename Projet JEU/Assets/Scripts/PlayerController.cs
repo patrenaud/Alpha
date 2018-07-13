@@ -146,9 +146,9 @@ public class PlayerController : MonoBehaviour
 
                 MovetoPoint(Hitinfo);
 
-                m_CanMove = false;
-                PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;
+                //m_CanMove = false;
                 m_MoveZone.SetActive(false);
+                PlayerManager.Instance.m_MainUI.DeactivateMove();
             }
         }
     }
@@ -220,10 +220,9 @@ public class PlayerController : MonoBehaviour
     {
         StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
 
-        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;        
-
-        DeactivateAttackZones();
+        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f; // Only when enemy dies
         PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
+        DeactivateAttackZones();
 
         m_CanAttack = false;
         m_MeleeButtonIsPressed = false;
@@ -268,15 +267,17 @@ public class PlayerController : MonoBehaviour
 
     public void EndTurn()
     {
-        // Ici on reset les buttons du joueur
-        PlayerManager.Instance.m_MainUI.DeactivateUI();
-
         DeactivateAttackZones();
 
         // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
         m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
         m_MoveZone.GetComponent<CapsuleCollider>().enabled = false;
         m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = false;
+
+        if (m_FinishTurn != null)
+        {
+            m_FinishTurn();
+        }
     }
 
     private void DeactivateAttackZones()
@@ -376,12 +377,19 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility4()
     {
-        PlayerManager.Instance.m_MainUI.OnActivateAbility4(m_HealthRegenAbility); 
+        PlayerManager.Instance.m_MainUI.OnActivateAbility4(m_HealthRegenAbility);
     }
     #endregion
 
     public void LevelUp()
     {
         PlayerManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
+    }
+
+    public void ActivateActions()
+    {
+        m_CanAbility = true;
+        m_CanAttack = true;
+        m_CanMove = true;
     }
 }

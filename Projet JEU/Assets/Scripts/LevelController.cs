@@ -13,37 +13,51 @@ public class LevelController : MonoBehaviour
     private Transform m_BossSpawnPoint;
     [SerializeField]
     private List<Transform> m_EnemySpawnPoints;
-    private List<EnemyAI> m_Enemies;
+    private List<int> m_RandomIndex = new List<int>();
+    private List<EnemyAI> m_Enemies = new List<EnemyAI>();
 
     private int m_TurnIndex = 0;
 
     private void Awake()
     {
-		m_Enemies = m_Data.m_EnemyListData;
+        //m_Enemies = m_Data.m_EnemyListData;
     }
 
     private void Start()
     {
-        GenerateEnemies();
-        GenerateBoss();
         GeneratePlayer();
+        GenerateEnemies();
+        GenerateBoss();        
     }
 
     private void GenerateEnemies()
     {
-        // Place les enemies du m_Data au hazard des points m_EnemySpawnPoints
-        // On ajoute OnEnemyDeath à l'action des enemies (m_OnDeath)
-        for (int i = 0; i < m_Enemies.Count; i++)
+        for (int i = 0; i < m_EnemySpawnPoints.Count; i++)
         {
-            m_Enemies[i].gameObject.transform.position = m_EnemySpawnPoints[Random.Range(0, m_EnemySpawnPoints.Count)].transform.position;
-            m_Enemies[i].m_OnDeath += OnEnemyDeath;
-            // NEED TO INSTANTIATE
+            m_RandomIndex.Add(i);
+        }
+
+        for (int i = 0; i < m_Data.m_EnemyListData.Count; i++)
+        {
+            // Le SpawnIndex sert à ce que les enemies ne se spawn pas l'un par dessu l'autre. Merci Raph !! :)
+            int Spawnindex = m_RandomIndex[Random.Range(0, m_RandomIndex.Count)];
+
+            // Ceci représente ce que GeneratePlayer fait en 3 lignes. On instancie la liste d'enemy dans les spawnpoitnts au hazard
+            GameObject enemy = Instantiate(m_Data.m_EnemyListData[i].gameObject, m_EnemySpawnPoints[Spawnindex].transform.position, Quaternion.identity);
+            EnemyAI enemyAi = enemy.GetComponent<EnemyAI>();
+            m_Enemies.Add(enemyAi);
+            enemyAi.m_FinishTurn += OnEnemyDone; // Action
+            enemyAi.m_OnDeath += OnEnemyDeath; // Action
+           
+            m_RandomIndex.Remove(Spawnindex);
+
+            enemyAi.m_IsPlaying = false;
         }
     }
 
     private void GenerateBoss()
     {
-        
+
     }
 
     private void GeneratePlayer()
@@ -53,7 +67,7 @@ public class LevelController : MonoBehaviour
         // Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity).GetComponent<PlayerController>().m_FinishTurn += OnPlayerDone;
         GameObject go = Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity);
         PlayerController player = go.GetComponent<PlayerController>();
-        player.m_FinishTurn += OnPlayerDone;
+        player.m_FinishTurn += OnPlayerDone; // Action
     }
 
     private void OnPlayerDone()
@@ -65,23 +79,35 @@ public class LevelController : MonoBehaviour
 
     private void OnEnemyDone()
     {
+        //m_Enemies[m_TurnIndex].GetComponent<EnemyAI>().m_IsPlaying = false;
         m_TurnIndex++;
         NextTurn();
     }
 
     private void NextTurn()
     {
-        // si turnIndex < enemyList.count -> tour de l'ennemi 
-        if(m_TurnIndex < m_Enemies.Count)
+        if (m_TurnIndex < m_Enemies.Count)
         {
-            m_Enemies[m_TurnIndex - 1].m_IsPlaying = false;
-            m_Enemies[m_TurnIndex].m_IsPlaying = true;
+            /*Debug.Log("First Step");
+            if (m_TurnIndex != 0)
+            {
+                Debug.Log("Not First Enemy");
+                m_Enemies[m_TurnIndex].GetComponent<EnemyAI>().m_IsPlaying = true;
+                m_Enemies[m_TurnIndex - 1].GetComponent<EnemyAI>().m_IsPlaying = false;
+            }
+            else
+            {
+                Debug.Log("First Enemy");
+                m_Enemies[m_TurnIndex].GetComponent<EnemyAI>().m_IsPlaying = true;
+            }*/
+            m_Enemies[m_TurnIndex].PlayTurn();
         }
         else
         {
             PlayerManager.Instance.m_MainUI.ActivatePlayerUiOnTurnBegin();
+            PlayerManager.Instance.m_Player.ActivateActions();
             m_TurnIndex = 0;
-        } 
+        }
     }
 
     private void OnEnemyDeath(EnemyAI aEnemy)

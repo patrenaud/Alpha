@@ -45,6 +45,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("Update Plz Collapse");
         if (m_IsPlaying)
         {
             if (CompareState(BehaviorState.Idle))
@@ -109,7 +110,7 @@ public class EnemyAI : MonoBehaviour
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
-            StopPlaying();
+
             ChangeState(BehaviorState.Idle);
             EndTurn();
         }
@@ -132,7 +133,6 @@ public class EnemyAI : MonoBehaviour
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
 
-            StopPlaying();
             ChangeState(BehaviorState.Idle);
             EndTurn();
         }
@@ -141,7 +141,7 @@ public class EnemyAI : MonoBehaviour
     private void UpdateAttack()
     {
         // Animation d'attaque         
-        StopPlaying();
+
         ChangeState(BehaviorState.Idle);
         EndTurn();
     }
@@ -192,14 +192,15 @@ public class EnemyAI : MonoBehaviour
         m_State = i_State;
     }
 
-    private void StopPlaying()
-    {
-        m_IsPlaying = false;
-    }
-
     private void EndTurn()
     {
-        TurnManager.Instance.ActivateSwitchCharacter(); // THIS HAS TO BE CHANGED
+        m_IsPlaying = false;
+        m_FinishTurn();        
+    }
+
+    public void PlayTurn()
+    {
+        m_IsPlaying = true;
     }
 
     private void Die()
