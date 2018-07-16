@@ -63,7 +63,7 @@ public class LevelController : MonoBehaviour
     private void GeneratePlayer()
     {
         GameObject prefab = Resources.Load("Prefabs/Player") as GameObject;
-
+        // Ceci est le OneLiner
         // Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity).GetComponent<PlayerController>().m_FinishTurn += OnPlayerDone;
         GameObject go = Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity);
         PlayerController player = go.GetComponent<PlayerController>();
@@ -72,14 +72,12 @@ public class LevelController : MonoBehaviour
 
     private void OnPlayerDone()
     {
-        Debug.Log("Player finished turn");
-        PlayerManager.Instance.m_MainUI.DeactivateUI();
+        PlayerManager.Instance.m_MainUI.DeactivateUI();        
         NextTurn();
     }
 
     private void OnEnemyDone()
     {
-        //m_Enemies[m_TurnIndex].GetComponent<EnemyAI>().m_IsPlaying = false;
         m_TurnIndex++;
         NextTurn();
     }
@@ -88,18 +86,6 @@ public class LevelController : MonoBehaviour
     {
         if (m_TurnIndex < m_Enemies.Count)
         {
-            /*Debug.Log("First Step");
-            if (m_TurnIndex != 0)
-            {
-                Debug.Log("Not First Enemy");
-                m_Enemies[m_TurnIndex].GetComponent<EnemyAI>().m_IsPlaying = true;
-                m_Enemies[m_TurnIndex - 1].GetComponent<EnemyAI>().m_IsPlaying = false;
-            }
-            else
-            {
-                Debug.Log("First Enemy");
-                m_Enemies[m_TurnIndex].GetComponent<EnemyAI>().m_IsPlaying = true;
-            }*/
             m_Enemies[m_TurnIndex].PlayTurn();
         }
         else

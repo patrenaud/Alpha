@@ -45,7 +45,6 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Update Plz Collapse");
         if (m_IsPlaying)
         {
             if (CompareState(BehaviorState.Idle))

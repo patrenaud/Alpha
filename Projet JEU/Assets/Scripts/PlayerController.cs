@@ -280,6 +280,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Désactive la zone d'attack et de range attack
     private void DeactivateAttackZones()
     {
         m_AttackZone.transform.localScale = Vector3.zero;
@@ -386,10 +387,14 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
     }
 
+    // Lors de la fin du tour des ennemies, le UI des boutons et des zones sont Reset
     public void ActivateActions()
     {
-        m_CanAbility = true;
-        m_CanAttack = true;
-        m_CanMove = true;
+        m_CanAbility = false;
+        m_CanAttack = false;
+        m_CanMove = false;
+        m_AttackZone.GetComponent<CapsuleCollider>().enabled = true;
+        m_MoveZone.GetComponent<CapsuleCollider>().enabled = true;
+        m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = true;
     }
 }
