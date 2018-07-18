@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable) // MIGHT NEED TO CHANGE
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) // MIGHT NEED TO CHANGE
                 {
                     //ApplyDamage(); // Le joueur peut attaquer un ennemi dans sa zone de move seulement si elle est dans la zone d'attaque aussi
                     AttackEnd(Hitinfo);
@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable) // ENEMYCONTROLLER
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) 
                 {
                     ShootProjectile(Hitinfo);
                     //ApplyDamage();
@@ -191,9 +191,9 @@ public class PlayerController : MonoBehaviour
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && m_RangeAttack)
             {
                 // This part is the condition to defeat the Boss
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyController>().m_Attackable) // ENEMYCONTROLLER
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) 
                 {
-                    ShootProjectile(Hitinfo);
+                    //ShootProjectile(Hitinfo);
                     //ApplyDamage();
                     AttackEnd(Hitinfo);
                 }
@@ -218,9 +218,12 @@ public class PlayerController : MonoBehaviour
 
     private void AttackEnd(RaycastHit i_Hitinfo)
     {
-        StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
+        // The Enemy takes Damage
+        i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerMeleeDamage());
+        
+        // StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
 
-        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f; // Only when enemy dies
+         // Only when enemy dies
         PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
         DeactivateAttackZones();
 
@@ -238,9 +241,6 @@ public class PlayerController : MonoBehaviour
             i_Hitinfo.collider.gameObject.transform.localScale -= new Vector3(0.1F, 0.1f, 0.1f);
             yield return new WaitForSeconds(0.1f);
         }
-
-        TurnManager.Instance.m_Characters.Remove(i_Hitinfo.collider.gameObject); // This will change for the death of enemies by getting their HP out
-        Destroy(i_Hitinfo.collider.gameObject);
     }
 
     public void ApplyDamage(float i_AttackDamage)

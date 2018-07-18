@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33751594373866066}
   - component: {fileID: 65346693881011208}
   - component: {fileID: 23426599566018564}
-  - component: {fileID: 114151062367726738}
   - component: {fileID: 54999467258927440}
   - component: {fileID: 114394590516715682}
   - component: {fileID: 195826924244191094}
@@ -114,24 +113,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114151062367726738
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1668235397090492}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab9a498510d3e040ae251f767c3b96a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AttackDamage: 10
-  m_Turnmanager: {fileID: 0}
-  m_Player: {fileID: 0}
-  m_AttackZonePrefab: {fileID: 0}
-  m_Attackable: 0
-  m_IsPlaying: 0
-  m_EnemyMaterial: {fileID: 2100000, guid: d390acdfcc6686045bbdd5b320b388e7, type: 2}
 --- !u!114 &114394590516715682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19cad52887f74a84f9ec116fd081f19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Attackable: 0
   m_IsPlaying: 0
   m_PatrolPos: {x: 5, y: -2.6, z: 12.7}
   m_EnemyData: {fileID: 11400000, guid: 0a4e612f7f2ec4e46b43ddfc6e9b4aab, type: 2}

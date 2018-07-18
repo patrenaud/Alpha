@@ -17,6 +17,9 @@ public class EnemyAI : MonoBehaviour
     public Action m_FinishTurn;
     public Action<EnemyAI> m_OnDeath;
 
+    private Material m_EnemyMaterial;
+
+    public bool m_Attackable = false;
     public bool m_IsPlaying = false;
     public Vector3 m_PatrolPos;
 
@@ -26,6 +29,8 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField]
     private EnemyData m_EnemyData;
+
+    private float m_CurrentHealth;
     private NavMeshAgent m_EnemyAgent;
     private float m_CurrentTime = 0;
 
@@ -36,6 +41,8 @@ public class EnemyAI : MonoBehaviour
         m_PatrolPos = m_InitialePos  + new Vector3(2,0,0);
         m_PatrolDestination = m_PatrolPos;
         m_EnemyAgent = GetComponent<NavMeshAgent>();
+        m_CurrentHealth = m_EnemyData.EnemyMaxHealth;
+        m_EnemyMaterial = GetComponent<Renderer>().material;
     }
 
     private bool CompareState(BehaviorState i_State)
@@ -63,6 +70,10 @@ public class EnemyAI : MonoBehaviour
             {
                 UpdateAttack();
             }
+        }
+        if(m_CurrentHealth <= 0)
+        {
+            Die();
         }
     }
 
@@ -139,8 +150,7 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateAttack()
     {
-        // Animation d'attaque         
-
+        
         ChangeState(BehaviorState.Idle);
         EndTurn();
     }
@@ -202,6 +212,11 @@ public class EnemyAI : MonoBehaviour
         m_IsPlaying = true;
     }
 
+    public void TakeDamage(float aDamage)
+    {
+        m_CurrentHealth -= aDamage;
+    }
+
     private void Die()
     {
         if(m_OnDeath != null)
@@ -209,6 +224,26 @@ public class EnemyAI : MonoBehaviour
             m_OnDeath(this);
         }
         Destroy(gameObject);
+    }
+
+    // Les changements de couleurs et le changement du bool se font lorsque la zone d'attaque du joueur entre en collision avec les ennemis
+    private void OnTriggerStay(Collider a_Other)
+    {
+        if (a_Other.gameObject.layer == LayerMask.NameToLayer("Interractible"))
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+            m_Attackable = true;
+        }
+    }
+
+    // Lorsque la zone d'attaque quitte l'ennemi, il reprend sa couleur d'avant
+    private void OnTriggerExit(Collider a_Other)
+    {
+        if (a_Other.gameObject.layer == LayerMask.NameToLayer("Interractible"))
+        {
+            gameObject.GetComponent<Renderer>().material.color = m_EnemyMaterial.color;
+            m_Attackable = false;
+        }
     }
 }
 

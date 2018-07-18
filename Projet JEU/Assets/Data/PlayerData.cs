@@ -29,7 +29,7 @@ public class PlayerData : ScriptableObject
 
     [Header("Strenght")]
     [SerializeField]
-    private float m_AttackDamage = 50;
+    private float m_AttackDamage = 30;
     public float AttackDamage
     {
         get { return m_AttackDamage; }

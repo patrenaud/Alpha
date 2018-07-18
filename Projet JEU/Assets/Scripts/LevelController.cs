@@ -98,6 +98,7 @@ public class LevelController : MonoBehaviour
 
     private void OnEnemyDeath(EnemyAI aEnemy)
     {
+        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;
         m_Enemies.Remove(aEnemy);
     }
 }

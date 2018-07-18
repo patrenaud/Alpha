@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   m_MeleeAttackRange: 1
-  m_RangeAttackRange: 1
   m_MoveSpeed: 35
-  m_MaxHealth: 100
   m_HealthRegenAbility: 0.25
+  m_AttackDamage: 30
+  m_AttackDamagePerLevel: 10
+  m_MoveDistance: 1
+  m_MoveDistancePerLevel: 0.1
+  m_RangeAttackDamage: 25
+  m_RangeAttackDamagePerLevel: 10
+  m_RangeAttackRange: 1
+  m_RangeAttackRangePerLevel: 0.1
+  m_MaxHealth: 100
+  m_HealthPerLevel: 10
