@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public enum BehaviorState
 {
@@ -15,13 +16,12 @@ public enum BehaviorState
 public class EnemyAI : MonoBehaviour
 {
     public Action m_FinishTurn;
-    public Action<EnemyAI> m_OnDeath;
-
-    private Material m_EnemyMaterial;
+    public Action<EnemyAI> m_OnDeath;       
 
     public bool m_Attackable = false;
     public bool m_IsPlaying = false;
-    public Vector3 m_PatrolPos;
+
+    public Vector3 m_PatrolPos; // maybe private serialized after done
 
     private BehaviorState m_State;
     private Vector3 m_InitialePos;
@@ -29,10 +29,19 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField]
     private EnemyData m_EnemyData;
+    [SerializeField]
+    private Slider m_HealthBar;
 
+    private float m_CurrentTime = 0;
     private float m_CurrentHealth;
     private NavMeshAgent m_EnemyAgent;
-    private float m_CurrentTime = 0;
+    private Material m_EnemyMaterial;
+
+    public GameObject m_AttackZone;
+    public GameObject m_RangeAttackZone;
+    private Vector3 m_ScaleOfAttackZone;
+    private Vector3 m_ScaleOfRangeAttackZone;
+    private Vector3 m_ScaleOfMoveZone;
 
     private void Start()
     {
@@ -43,6 +52,18 @@ public class EnemyAI : MonoBehaviour
         m_EnemyAgent = GetComponent<NavMeshAgent>();
         m_CurrentHealth = m_EnemyData.EnemyMaxHealth;
         m_EnemyMaterial = GetComponent<Renderer>().material;
+        m_HealthBar.value = 1;
+        m_HealthBar.gameObject.SetActive(false);
+        SetZoneStats();
+    }
+
+    private void SetZoneStats()
+    {
+        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_EnemyData.EnemyMeleeAttackRange ;
+        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_EnemyData.EnemyRange ;
+
+        m_AttackZone.transform.localScale = Vector3.zero;
+        m_RangeAttackZone.transform.localScale = Vector3.zero;
     }
 
     private bool CompareState(BehaviorState i_State)
@@ -131,7 +152,7 @@ public class EnemyAI : MonoBehaviour
         m_EnemyAgent.SetDestination(PlayerManager.Instance.m_Player.gameObject.transform.position);
         m_CurrentTime += Time.deltaTime;
 
-        if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
+        if ((Vector3.Distance(PlayerManager.Instance.m_Player.transform.position, transform.position) < m_ScaleOfAttackZone.magnitude * 0.5f))
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
@@ -204,17 +225,40 @@ public class EnemyAI : MonoBehaviour
     private void EndTurn()
     {
         m_IsPlaying = false;
+        if (gameObject.CompareTag("Archer"))
+        {
+            m_RangeAttackZone.transform.localScale = Vector3.zero;
+        }
+        else if (gameObject.CompareTag("Warrior") || (gameObject.CompareTag("Tank")))
+        {
+            m_AttackZone.transform.localScale = Vector3.zero;
+        }
         m_FinishTurn();        
     }
 
     public void PlayTurn()
     {
         m_IsPlaying = true;
+        m_AttackZone.transform.localScale = Vector3.zero;
+        m_RangeAttackZone.transform.localScale = Vector3.zero;
+        if (gameObject.CompareTag("Archer"))
+        {            
+            m_RangeAttackZone.transform.localScale = m_ScaleOfRangeAttackZone;
+        }
+        else if (gameObject.CompareTag("Warrior") || (gameObject.CompareTag("Tank")))
+        {
+            m_AttackZone.transform.localScale = m_ScaleOfAttackZone;
+        }
     }
 
     public void TakeDamage(float aDamage)
     {
+        if (m_HealthBar.value == 1)
+        {
+            m_HealthBar.gameObject.SetActive(true);
+        }
         m_CurrentHealth -= aDamage;
+        m_HealthBar.value = m_CurrentHealth / m_EnemyData.EnemyMaxHealth;
     }
 
     private void Die()

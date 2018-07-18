@@ -11,13 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3aa29f6c194c9f488af89014563a8d1, type: 3}
   m_Name: EnemyWarriorData
   m_EditorClassIdentifier: 
-  m_EnemyMeleeAttackRange: 3
+  m_EnemyMeleeAttackRange: 1
   m_EnemyMoveSpeed: 1
-  m_EnemyMoveDistance: 5
+  m_EnemyMoveDistance: 1
   m_EnemySight: 100
   m_MeleeAttackDamage: 15
   m_MeleeAttackDamagePerLevel: 5
-  m_MoveDistance: 1.1
+  m_MoveDistance: 1
   m_MoveDistancePerLevel: 0.1
   m_EnemyMaxHealth: 50
   m_EnemyHealthPerLevel: 5

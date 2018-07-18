@@ -8,7 +8,7 @@ public class EnemyData : ScriptableObject
 
     [Header("Base Enemy Stats")]
     [SerializeField]
-    private float m_EnemyMeleeAttackRange = 2;
+    private float m_EnemyMeleeAttackRange = 1;
     public float EnemyMeleeAttackRange
     {
         get { return m_EnemyMeleeAttackRange; }

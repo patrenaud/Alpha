@@ -127,8 +127,7 @@ public class PlayerController : MonoBehaviour
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) // MIGHT NEED TO CHANGE
-                {
-                    //ApplyDamage(); // Le joueur peut attaquer un ennemi dans sa zone de move seulement si elle est dans la zone d'attaque aussi
+                {                    
                     AttackEnd(Hitinfo);
                 }
             }

@@ -100,5 +100,9 @@ public class LevelController : MonoBehaviour
     {
         PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;
         m_Enemies.Remove(aEnemy);
+        if(m_Data.m_EnemyListData.Count == 0)
+        {
+            LevelManager.Instance.ChangeLevel("Results");
+        }
     }
 }

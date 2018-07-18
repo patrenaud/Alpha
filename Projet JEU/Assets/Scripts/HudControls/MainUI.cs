@@ -117,4 +117,14 @@ public class MainUI : MonoBehaviour
     {
         PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;        
     }
+
+    public void ActivateSelf()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void DeactivateSelf()
+    {
+        gameObject.SetActive(false);
+    }
 }

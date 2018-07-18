@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelManager : DontDestroyOnLoad
 {
     [SerializeField]
     private GameObject m_LoadingScreen;
+    [SerializeField]
+    private GameObject m_BackGround;
+    [SerializeField]
+    private Button m_StartButton;
 
     private static LevelManager m_Instance;
     public static LevelManager Instance
@@ -27,11 +32,16 @@ public class LevelManager : DontDestroyOnLoad
         }
         base.Awake();
         m_LoadingScreen.SetActive(false);
+        m_BackGround.SetActive(true);
+        m_StartButton.gameObject.SetActive(true);
     }
 
     private void StartLoading()
     {
+        PlayerManager.Instance.m_MainUI.DeactivateSelf();
         m_LoadingScreen.SetActive(true);
+        m_BackGround.SetActive(false);
+        m_StartButton.gameObject.SetActive(false);
     }
 
     private void OnLoadingDone(Scene i_Scene, LoadSceneMode i_Mode)
@@ -42,6 +52,7 @@ public class LevelManager : DontDestroyOnLoad
         {
             m_LoadingScreen.SetActive(false);
         }
+        PlayerManager.Instance.m_MainUI.ActivateSelf();
     }
 
     public void ChangeLevel(string i_Scene)
