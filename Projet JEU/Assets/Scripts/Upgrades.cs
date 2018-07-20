@@ -27,9 +27,6 @@ public class Upgrades : MonoBehaviour
     [SerializeField] private Button m_ArcanistButton4;
     [SerializeField] private Button m_ArcanistButton5;
 
-    [Space(20)]
-    public PlayerController m_PlayerController; // Needs to go away
-
     // Cette fonction est appelée après le choix du joueur pour fermer le HUD d'upgrades.
     public void ReturnToGame()
     {
@@ -42,7 +39,7 @@ public class Upgrades : MonoBehaviour
     // Seulement le premier Upgrade a été fait
     public void ActivateRangedAttack()
     {
-        m_PlayerController.m_RangeAttack = true;
+        PlayerManager.Instance.m_RangeAttack = true;
         m_ArcherButton1.interactable = false;
         m_ArcherButton2.interactable = true;
         ReturnToGame();

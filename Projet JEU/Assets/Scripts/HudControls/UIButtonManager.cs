@@ -47,6 +47,6 @@ public class UIButtonManager : MonoBehaviour
 
 	public void LevelUp()
 	{
-		PlayerManager.Instance.m_Player.LevelUp();
+		PlayerManager.Instance.LevelUp();
 	}
 }

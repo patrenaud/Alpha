@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33047989968139038}
   - component: {fileID: 136676216319791008}
   - component: {fileID: 23579723082577982}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: RangeAttack Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33691536748718380}
   - component: {fileID: 136122704770201106}
   - component: {fileID: 23497924674023922}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: AttackZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,14 +344,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EndTurn: 0
-  m_RangeAttack: 0
-  m_CurrentHealth: 0
-  m_MaxHealth: 0
+  m_MeleeButtonIsPressed: 0
+  m_RangeButtonIsPressed: 0
+  m_ScaleOfAttackZone: {x: 0, y: 0, z: 0}
+  m_ScaleOfRangeAttackZone: {x: 0, y: 0, z: 0}
   m_MoveZone: {fileID: 1232894202961404}
   m_AttackZone: {fileID: 1162753626683230}
   m_RangeAttackZone: {fileID: 1157162925071988}
   m_PlayerMaterial: {fileID: 2100000, guid: 4a6f5a45810e56c469bc0f1c116d4451, type: 2}
-  m_PlayerData: {fileID: 11400000, guid: b079e6fc77528074b95b831d815a336b, type: 2}
   m_ProjectilePrefab: {fileID: 1806713388442488, guid: 58d24857e4a95d34bb36d1ae8869433b,
     type: 2}
   m_PlayerAgent: {fileID: 195197739193785742}

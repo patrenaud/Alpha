@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1169486558813846
 GameObject:
   m_ObjectHideFlags: 1
@@ -873,13 +873,14 @@ GameObject:
   - component: {fileID: 223182113234484454}
   - component: {fileID: 114167742878512524}
   - component: {fileID: 114742491685337332}
+  - component: {fileID: 114429840066276250}
   m_Layer: 5
   m_Name: Upgrade Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1629102594213970
 GameObject:
   m_ObjectHideFlags: 1
@@ -929,7 +930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1632851141909514
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,7 +1177,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1902448892497498
 GameObject:
   m_ObjectHideFlags: 1
@@ -1211,7 +1212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1913622272938000
 GameObject:
   m_ObjectHideFlags: 1
@@ -1606,7 +1607,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Arcanist4
         m_Mode: 1
         m_Arguments:
@@ -1852,7 +1853,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Athlete4
         m_Mode: 1
         m_Arguments:
@@ -1904,7 +1905,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Archer4
         m_Mode: 1
         m_Arguments:
@@ -1961,10 +1962,10 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2010,7 +2011,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Arcanist2
         m_Mode: 1
         m_Arguments:
@@ -2062,7 +2063,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: ActivateRangedAttack
         m_Mode: 1
         m_Arguments:
@@ -2273,7 +2274,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Archer5
         m_Mode: 1
         m_Arguments:
@@ -2437,7 +2438,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Brute4
         m_Mode: 1
         m_Arguments:
@@ -2516,7 +2517,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Arcanist3
         m_Mode: 1
         m_Arguments:
@@ -2688,7 +2689,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Archer2
         m_Mode: 1
         m_Arguments:
@@ -2740,7 +2741,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Athlete1
         m_Mode: 1
         m_Arguments:
@@ -2858,7 +2859,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Brute2
         m_Mode: 1
         m_Arguments:
@@ -2943,7 +2944,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Archer3
         m_Mode: 1
         m_Arguments:
@@ -3028,7 +3029,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Athlete3
         m_Mode: 1
         m_Arguments:
@@ -3224,6 +3225,37 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Attack
+--- !u!114 &114429840066276250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1621100661653942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50897013f81b89b438296aefe70d0332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ArcherButton1: {fileID: 114172483211144616}
+  m_ArcherButton2: {fileID: 114304701985688076}
+  m_ArcherButton3: {fileID: 114369782734624604}
+  m_ArcherButton4: {fileID: 114127992249648434}
+  m_ArcherButton5: {fileID: 114218906294532578}
+  m_AthleteButton1: {fileID: 114318896470620100}
+  m_AthleteButton2: {fileID: 114973056212982938}
+  m_AthleteButton3: {fileID: 114379835453223550}
+  m_AthleteButton4: {fileID: 114112365619200866}
+  m_AthleteButton5: {fileID: 114814480987148376}
+  m_BruteButton1: {fileID: 114600769758503620}
+  m_BruteButton2: {fileID: 114346609324176356}
+  m_BruteButton3: {fileID: 114801734235805958}
+  m_BruteButton4: {fileID: 114267076951518846}
+  m_BruteButton5: {fileID: 114857286874943524}
+  m_ArcanistButton1: {fileID: 114527185168326968}
+  m_ArcanistButton2: {fileID: 114170259547446252}
+  m_ArcanistButton3: {fileID: 114275545123131230}
+  m_ArcanistButton4: {fileID: 114061839892906358}
+  m_ArcanistButton5: {fileID: 114999402512564518}
 --- !u!114 &114434170365954028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3538,7 +3570,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Arcanist1
         m_Mode: 1
         m_Arguments:
@@ -3789,7 +3821,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Brute1
         m_Mode: 1
         m_Arguments:
@@ -4510,7 +4542,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Brute3
         m_Mode: 1
         m_Arguments:
@@ -4647,7 +4679,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Athlete5
         m_Mode: 1
         m_Arguments:
@@ -4753,7 +4785,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Brute5
         m_Mode: 1
         m_Arguments:
@@ -5213,7 +5245,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Athlete2
         m_Mode: 1
         m_Arguments:
@@ -5360,7 +5392,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114429840066276250}
         m_MethodName: Arcanist5
         m_Mode: 1
         m_Arguments:
@@ -5816,7 +5848,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -5857,7 +5889,7 @@ RectTransform:
   m_Children:
   - {fileID: 224056712211088386}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5894,7 +5926,7 @@ RectTransform:
   m_Children:
   - {fileID: 224126618765421704}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 12
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6392,22 +6424,22 @@ RectTransform:
   - {fileID: 224671841687934840}
   - {fileID: 224852077608436948}
   - {fileID: 224756215872726332}
-  - {fileID: 224489263288534992}
   - {fileID: 224638711132912226}
+  - {fileID: 224583550676547412}
   - {fileID: 224871526735684254}
+  - {fileID: 224489263288534992}
   - {fileID: 224383717800616462}
   - {fileID: 224015622561623670}
-  - {fileID: 224583550676547412}
+  - {fileID: 224505893044218568}
+  - {fileID: 224956778514288512}
   - {fileID: 224022429290343058}
   - {fileID: 224620270807567280}
   - {fileID: 224875687870906936}
-  - {fileID: 224505893044218568}
-  - {fileID: 224956778514288512}
   - {fileID: 224941848845180778}
   - {fileID: 224040687504127894}
   - {fileID: 224617993463728598}
-  - {fileID: 224730394781237882}
   - {fileID: 224542876385458140}
+  - {fileID: 224730394781237882}
   - {fileID: 224348698399517834}
   - {fileID: 224238414022551050}
   - {fileID: 224907671787533798}
@@ -6545,7 +6577,7 @@ RectTransform:
   m_Children:
   - {fileID: 224519609812180268}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6601,7 +6633,7 @@ RectTransform:
   m_Children:
   - {fileID: 224136581736711198}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 6
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6638,7 +6670,7 @@ RectTransform:
   m_Children:
   - {fileID: 224359550030610102}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 15
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6730,7 +6762,7 @@ RectTransform:
   m_Children:
   - {fileID: 224394734768349488}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 21
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6749,7 +6781,7 @@ RectTransform:
   m_Children:
   - {fileID: 224136278454207526}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 11
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6824,7 +6856,7 @@ RectTransform:
   m_Children:
   - {fileID: 224678827336682072}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6861,7 +6893,7 @@ RectTransform:
   m_Children:
   - {fileID: 224194064601129836}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6952,7 +6984,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000306, y: 1.0000306, z: 1.0000306}
   m_Children: []
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7174,7 +7206,7 @@ RectTransform:
   m_Children:
   - {fileID: 224637077525468220}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7302,7 +7334,7 @@ RectTransform:
   m_Children:
   - {fileID: 224502262299975276}
   m_Father: {fileID: 224288754212203590}
-  m_RootOrder: 16
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

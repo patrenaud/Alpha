@@ -6,8 +6,15 @@ public class PlayerManager : MonoBehaviour
 {
     public MainUI m_MainUI;
     public PlayerController m_Player;
-    
+
+    [HideInInspector]
+    public float m_CurrentHealth;
+    public float m_MaxHealth;
     public string m_PlayerPath = "Assets/Prefabs/Player";
+    public PlayerData m_PlayerData;
+    public float m_HealthRegenAbility;
+    public bool m_RangeAttack = false;
+    public bool m_PlayerDied = false;
 
     [HideInInspector]
     public int m_PlayerStrenght = 0;
@@ -22,8 +29,7 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public int m_PlayerRange = 0;
 
-    [SerializeField]
-    private PlayerData m_PlayerData;
+    private float m_MoveSpeed;
 
     private static PlayerManager m_Instance;
     public static PlayerManager Instance
@@ -41,6 +47,32 @@ public class PlayerManager : MonoBehaviour
         {
             m_Instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        m_MoveSpeed = m_PlayerData.MoveSpeed;
+        m_MaxHealth = m_PlayerData.MaxHealth;        
+        m_CurrentHealth = m_MaxHealth;
+        m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
+        m_MainUI.StartHpAndExp();
+
+    }
+
+    private void Update()
+    {
+        if (m_MainUI.m_XpBar.value >= 1)
+        {
+            m_MainUI.m_LevelUpButton.gameObject.SetActive(true);
+        }
+
+        if (Instance.m_MainUI.m_HealthBar.value <= 0)
+        {
+            Instance.m_MainUI.m_HealthBar.value = 1;
+            m_PlayerDied = true;
+            LevelManager.Instance.ChangeLevel("Results"); // THIS IS WHERE THE PLAYER DIES
+            
         }
     }
 
@@ -72,5 +104,29 @@ public class PlayerManager : MonoBehaviour
     {
         float HP = m_PlayerData.MaxHealth + m_PlayerData.HealthPerLevel * m_PlayerConstitution;
         return HP;
+    }
+
+    public void TakeDamage()
+    {
+        m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
+    }
+
+    public void LevelUp()
+    {
+        m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
+    }
+
+    public void ActivateMeleeAttack()
+    {
+        m_Player.m_MeleeButtonIsPressed = !m_Player.m_MeleeButtonIsPressed;
+        // Operateur ternaire determine le scale de la zone du MeleeAttack lorsque l'on appui sur le bouton Attack
+        m_Player.m_AttackZone.transform.localScale = m_Player.m_MeleeButtonIsPressed ? m_Player.m_ScaleOfAttackZone : Vector3.zero;
+    }
+
+    public void ActivateRangeAttack()
+    {
+        m_Player.m_RangeButtonIsPressed = !m_Player.m_RangeButtonIsPressed;
+        // Operateur ternaire determine le scale de la zone ddu RangeAttack lorsque l'on appui sur le bouton Attack
+        m_Player.m_RangeAttackZone.transform.localScale = m_Player.m_RangeButtonIsPressed ? m_Player.m_ScaleOfRangeAttackZone : Vector3.zero;
     }
 }

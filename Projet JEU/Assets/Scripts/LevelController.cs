@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     [SerializeField]
-    private LevelData m_Data;
+    private List<LevelData> m_Data;    
     [SerializeField]
     private Transform m_PlayerSpawnPoint;
     [SerializeField]
@@ -15,19 +15,25 @@ public class LevelController : MonoBehaviour
     private List<Transform> m_EnemySpawnPoints;
     private List<int> m_RandomIndex = new List<int>();
     private List<EnemyAI> m_Enemies = new List<EnemyAI>();
+    private int m_CurrentLevel;
 
     private int m_TurnIndex = 0;
 
     private void Awake()
     {
-        //m_Enemies = m_Data.m_EnemyListData;
+        
     }
 
     private void Start()
     {
+        m_CurrentLevel = LevelManager.Instance.GetLevelIndex();
         GeneratePlayer();
         GenerateEnemies();
-        GenerateBoss();        
+        GenerateBoss();
+        LevelManager.Instance.SetLevelIndex();
+
+        // Si le joueur est mort, il peut recommencer le même niveau. (FreezeLevelIndex)
+
     }
 
     private void GenerateEnemies()
@@ -37,18 +43,18 @@ public class LevelController : MonoBehaviour
             m_RandomIndex.Add(i);
         }
 
-        for (int i = 0; i < m_Data.m_EnemyListData.Count; i++)
+        for (int i = 0; i < m_Data[m_CurrentLevel].m_EnemyListData.Count; i++)
         {
             // Le SpawnIndex sert à ce que les enemies ne se spawn pas l'un par dessu l'autre. Merci Raph !! :)
             int Spawnindex = m_RandomIndex[Random.Range(0, m_RandomIndex.Count)];
 
             // Ceci représente ce que GeneratePlayer fait en 3 lignes. On instancie la liste d'enemy dans les spawnpoitnts au hazard
-            GameObject enemy = Instantiate(m_Data.m_EnemyListData[i].gameObject, m_EnemySpawnPoints[Spawnindex].transform.position, Quaternion.identity);
+            GameObject enemy = Instantiate(m_Data[m_CurrentLevel].m_EnemyListData[i].gameObject, m_EnemySpawnPoints[Spawnindex].transform.position, Quaternion.identity);
             EnemyAI enemyAi = enemy.GetComponent<EnemyAI>();
             m_Enemies.Add(enemyAi);
             enemyAi.m_FinishTurn += OnEnemyDone; // Action
             enemyAi.m_OnDeath += OnEnemyDeath; // Action
-           
+
             m_RandomIndex.Remove(Spawnindex);
 
             enemyAi.m_IsPlaying = false;
@@ -62,17 +68,19 @@ public class LevelController : MonoBehaviour
 
     private void GeneratePlayer()
     {
-        GameObject prefab = Resources.Load("Prefabs/Player") as GameObject;
+        GameObject prefab = Resources.Load("Prefabs/RealPlayer") as GameObject;
         // Ceci est le OneLiner
         // Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity).GetComponent<PlayerController>().m_FinishTurn += OnPlayerDone;
         GameObject go = Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity);
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;
+        PlayerManager.Instance.m_CurrentHealth = PlayerManager.Instance.m_MaxHealth;
         PlayerController player = go.GetComponent<PlayerController>();
         player.m_FinishTurn += OnPlayerDone; // Action
     }
 
     private void OnPlayerDone()
     {
-        PlayerManager.Instance.m_MainUI.DeactivateUI();        
+        PlayerManager.Instance.m_MainUI.DeactivateUI();
         NextTurn();
     }
 
@@ -100,9 +108,12 @@ public class LevelController : MonoBehaviour
     {
         PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;
         m_Enemies.Remove(aEnemy);
-        if(m_Data.m_EnemyListData.Count == 0)
+
+        if (m_Enemies.Count == 0)
         {
             LevelManager.Instance.ChangeLevel("Results");
         }
     }
+
+
 }

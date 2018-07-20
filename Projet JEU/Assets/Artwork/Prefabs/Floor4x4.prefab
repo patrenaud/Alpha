@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4168232794265932}
   - component: {fileID: 33320026702088198}
   - component: {fileID: 23099773771915778}
-  - component: {fileID: 65752365556819234}
   m_Layer: 0
   m_Name: Floor4x4
   m_TagString: Untagged
@@ -36,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1739530263681758}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.9999995, y: 0.10005002, z: 3}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,7 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: b684a15760a61974285a50a5df246cd7, type: 3}
+  - {fileID: 2100002, guid: b684a15760a61974285a50a5df246cd7, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,16 +81,4 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1739530263681758}
-  m_Mesh: {fileID: 4300000, guid: b684a15760a61974285a50a5df246cd7, type: 3}
---- !u!65 &65752365556819234
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1739530263681758}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 5.999998, y: 0.20030016, z: 6}
-  m_Center: {x: 0.00000011920929, y: 0, z: 0}
+  m_Mesh: {fileID: 4300002, guid: b684a15760a61974285a50a5df246cd7, type: 3}

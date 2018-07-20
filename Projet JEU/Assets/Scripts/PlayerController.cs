@@ -9,41 +9,31 @@ public class PlayerController : MonoBehaviour
 {
     [HideInInspector]
     public bool m_EndTurn = false;
-    public bool m_RangeAttack = false;
-
-    [HideInInspector]
-    public float m_CurrentHealth;
-    public float m_MaxHealth;
+    public bool m_MeleeButtonIsPressed = false;
+    public bool m_RangeButtonIsPressed = false;
+    public Vector3 m_ScaleOfAttackZone;
+    public Vector3 m_ScaleOfRangeAttackZone;
 
     [Header("Player Zones")]
     public GameObject m_MoveZone;
     public GameObject m_AttackZone;
     public GameObject m_RangeAttackZone;
     public Material m_PlayerMaterial;
-
     public Action m_FinishTurn;
-
-    [SerializeField]
-    private PlayerData m_PlayerData;
+    
     [SerializeField]
     private GameObject m_ProjectilePrefab;
     [SerializeField]
     private NavMeshAgent m_PlayerAgent;
-    private Vector3 m_ScaleOfAttackZone;
-    private Vector3 m_ScaleOfRangeAttackZone;
-    private Vector3 m_ScaleOfMoveZone;
 
+    private Vector3 m_ScaleOfMoveZone;
     private Vector3 m_TargetPosition;
-    private bool m_MeleeButtonIsPressed = false;
-    private bool m_RangeButtonIsPressed = false;
+
     private bool m_CanMove = false;
     private bool m_CanAttack = false;
     private bool m_CanAbility = false;
-    private float m_BulletSpeed = 50f;
-    private float m_MoveSpeed;
-
-    private float m_HealthRegenAbility;
-
+    private float m_BulletSpeed = 50f; 
+   
     private void Awake()
     {
         PlayerManager.Instance.m_Player = this;
@@ -52,15 +42,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        PlayerManager.Instance.m_MainUI.StartingUI();
-        PlayerManager.Instance.m_MainUI.StartHpAndExp();
-        SetZoneStats(); // Sets the attack zones (range of both melee and range)
-
-        m_MoveSpeed = m_PlayerData.MoveSpeed;
-        m_MaxHealth = m_PlayerData.MaxHealth;
-        m_CurrentHealth = m_MaxHealth;
-
-        m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
+        PlayerManager.Instance.m_MainUI.StartingUI();        
+        SetZoneStats(); // Sets the attack zones (range of both melee and range)               
     }
 
     private void Update()
@@ -91,23 +74,13 @@ public class PlayerController : MonoBehaviour
         {
             EndTurn();
         }
-
-        if (PlayerManager.Instance.m_MainUI.m_XpBar.value >= 1)
-        {
-            PlayerManager.Instance.m_MainUI.m_LevelUpButton.gameObject.SetActive(true);
-        }
-
-        if (PlayerManager.Instance.m_MainUI.m_HealthBar.value <= 0)
-        {
-            LevelManager.Instance.ChangeLevel("Main"); // THIS IS WHERE THE PLAYER DIES
-        }
     }
 
     private void SetZoneStats()
     {
-        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_PlayerData.MeleeAttackRange;
-        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_PlayerData.RangeAttackRange;
-        m_ScaleOfMoveZone = m_MoveZone.transform.localScale * m_PlayerData.MoveDistance;
+        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.MeleeAttackRange;
+        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.RangeAttackRange;
+        m_ScaleOfMoveZone = m_MoveZone.transform.localScale * PlayerManager.Instance.m_PlayerData.MoveDistance;
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
     }
@@ -187,7 +160,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
             // Doit être niveau 2 du prototype pour attacker le Boss.
-            else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && m_RangeAttack)
+            else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && PlayerManager.Instance.m_RangeAttack)
             {
                 // This part is the condition to defeat the Boss
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) 
@@ -207,7 +180,7 @@ public class PlayerController : MonoBehaviour
     private void ShootProjectile(RaycastHit i_Hitinfo)
     {
         //   position de l'ennemi          -       position du joueur - la moitié du scale de l'ennemi         .longueur   > rayon du préfab d'attaque
-        if ((i_Hitinfo.collider.transform.position - transform.position - i_Hitinfo.collider.transform.localScale).magnitude > m_ScaleOfAttackZone.x / 2 && m_RangeAttack)
+        if ((i_Hitinfo.collider.transform.position - transform.position - i_Hitinfo.collider.transform.localScale).magnitude > m_ScaleOfAttackZone.x / 2 && PlayerManager.Instance.m_RangeAttack)
         {
             GameObject m_BulletInstance = Instantiate(m_ProjectilePrefab, transform.position, Quaternion.identity);
             Projectile script = m_BulletInstance.GetComponent<Projectile>();
@@ -219,12 +192,12 @@ public class PlayerController : MonoBehaviour
     {
         // The Enemy takes Damage
         i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerMeleeDamage());
-        
+
         // StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
 
-         // Only when enemy dies
-        PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
+        // Only when enemy dies
         DeactivateAttackZones();
+        PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
 
         m_CanAttack = false;
         m_MeleeButtonIsPressed = false;
@@ -245,9 +218,9 @@ public class PlayerController : MonoBehaviour
     public void ApplyDamage(float i_AttackDamage)
     {
         // Place to Apply damage
-        m_CurrentHealth -= i_AttackDamage;
+        PlayerManager.Instance.m_CurrentHealth -= i_AttackDamage;
 
-        PlayerManager.Instance.m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
+        PlayerManager.Instance.TakeDamage();
 
         StartCoroutine(ApplyDamageFeedback());
     }
@@ -304,7 +277,7 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAttack()
     {
-        if (!m_RangeAttack)
+        if (!PlayerManager.Instance.m_RangeAttack)
         {
             if (m_CanAttack)
             {
@@ -332,19 +305,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ActivateMeleeAttack()
-    {
-        m_MeleeButtonIsPressed = !m_MeleeButtonIsPressed;
-        // Operateur ternaire determine le scale de la zone du MeleeAttack lorsque l'on appui sur le bouton Attack
-        m_AttackZone.transform.localScale = m_MeleeButtonIsPressed ? m_ScaleOfAttackZone : Vector3.zero;
-    }
 
-    public void ActivateRangeAttack()
-    {
-        m_RangeButtonIsPressed = !m_RangeButtonIsPressed;
-        // Operateur ternaire determine le scale de la zone ddu RangeAttack lorsque l'on appui sur le bouton Attack
-        m_RangeAttackZone.transform.localScale = m_RangeButtonIsPressed ? m_ScaleOfRangeAttackZone : Vector3.zero;
-    }
 
     public void ActivateHabilty()
     {
@@ -377,14 +338,11 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility4()
     {
-        PlayerManager.Instance.m_MainUI.OnActivateAbility4(m_HealthRegenAbility);
+        PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
     }
     #endregion
 
-    public void LevelUp()
-    {
-        PlayerManager.Instance.m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
-    }
+
 
     // Lors de la fin du tour des ennemies, le UI des boutons et des zones sont Reset
     public void ActivateActions()

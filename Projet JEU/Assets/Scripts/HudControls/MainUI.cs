@@ -83,7 +83,7 @@ public class MainUI : MonoBehaviour
         m_AbilityButton.interactable = true;
         m_EndTurnButton.interactable = true;
         m_MeleeAttackButton.interactable = true;
-        if (PlayerManager.Instance.m_Player.m_RangeAttack)
+        if (PlayerManager.Instance.m_RangeAttack)
         {
             m_RangeAttackButton.interactable = true;
         }
@@ -115,7 +115,7 @@ public class MainUI : MonoBehaviour
 
     public void DeactivateMove()
     {
-        PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;        
+        PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = false;
     }
 
     public void ActivateSelf()
@@ -127,4 +127,5 @@ public class MainUI : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
 }

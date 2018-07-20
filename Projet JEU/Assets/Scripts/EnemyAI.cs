@@ -186,8 +186,8 @@ public class EnemyAI : MonoBehaviour
                     {
                         // Activate Anim / Camera
                         // Attack();
-                        PlayerManager.Instance.m_Player.m_CurrentHealth -= m_EnemyData.MeleeAttackDamage;
-                        PlayerManager.Instance.m_MainUI.m_HealthBar.value = PlayerManager.Instance.m_Player.m_CurrentHealth / PlayerManager.Instance.m_Player.m_MaxHealth;
+                        PlayerManager.Instance.m_CurrentHealth -= m_EnemyData.MeleeAttackDamage;
+                        PlayerManager.Instance.m_MainUI.m_HealthBar.value = PlayerManager.Instance.m_CurrentHealth / PlayerManager.Instance.m_MaxHealth;
                     }
                     break;
                 }
@@ -273,7 +273,7 @@ public class EnemyAI : MonoBehaviour
     // Les changements de couleurs et le changement du bool se font lorsque la zone d'attaque du joueur entre en collision avec les ennemis
     private void OnTriggerStay(Collider a_Other)
     {
-        if (a_Other.gameObject.layer == LayerMask.NameToLayer("Interractible"))
+        if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
         {
             gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             m_Attackable = true;
@@ -283,7 +283,7 @@ public class EnemyAI : MonoBehaviour
     // Lorsque la zone d'attaque quitte l'ennemi, il reprend sa couleur d'avant
     private void OnTriggerExit(Collider a_Other)
     {
-        if (a_Other.gameObject.layer == LayerMask.NameToLayer("Interractible"))
+        if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
         {
             gameObject.GetComponent<Renderer>().material.color = m_EnemyMaterial.color;
             m_Attackable = false;
