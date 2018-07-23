@@ -16,17 +16,17 @@ public enum BehaviorState
 public class EnemyAI : MonoBehaviour
 {
     public Action m_FinishTurn;
-    public Action<EnemyAI> m_OnDeath;       
+    public Action<EnemyAI> m_OnDeath;
+
+    public GameObject m_AttackZone;
+    public GameObject m_RangeAttackZone;
 
     public bool m_Attackable = false;
-    public bool m_IsPlaying = false;
+    public bool m_IsPlaying = false;    
 
-    public Vector3 m_PatrolPos; // maybe private serialized after done
+    public Transform m_PatrolDestination;
 
     private BehaviorState m_State;
-    private Vector3 m_InitialePos;
-    Vector3 m_PatrolDestination = new Vector3();
-
     [SerializeField]
     private EnemyData m_EnemyData;
     [SerializeField]
@@ -35,25 +35,27 @@ public class EnemyAI : MonoBehaviour
     private float m_CurrentTime = 0;
     private float m_CurrentHealth;
     private NavMeshAgent m_EnemyAgent;
-    private Material m_EnemyMaterial;
+    private Color m_EnemyColor;
 
-    public GameObject m_AttackZone;
-    public GameObject m_RangeAttackZone;
     private Vector3 m_ScaleOfAttackZone;
     private Vector3 m_ScaleOfRangeAttackZone;
-    private Vector3 m_ScaleOfMoveZone;
+    private Vector3 m_InitialePos;
+    private bool m_DestinationReached = false;
 
     private void Start()
     {
         m_State = BehaviorState.Idle;
-        m_InitialePos = transform.position;
-        m_PatrolPos = m_InitialePos  + new Vector3(2,0,0);
-        m_PatrolDestination = m_PatrolPos;
+
+        m_InitialePos = transform.position;        
+
         m_EnemyAgent = GetComponent<NavMeshAgent>();
+
         m_CurrentHealth = m_EnemyData.EnemyMaxHealth;
-        m_EnemyMaterial = GetComponent<Renderer>().material;
+        m_EnemyColor = GetComponent<Renderer>().material.color;
+
         m_HealthBar.value = 1;
         m_HealthBar.gameObject.SetActive(false);
+
         SetZoneStats();
     }
 
@@ -119,25 +121,32 @@ public class EnemyAI : MonoBehaviour
     }
 
     private void UpdatePatrol()
-    {
-        m_EnemyAgent.SetDestination(m_PatrolDestination);
+    {        
         m_CurrentTime += Time.deltaTime;
 
-        if (m_EnemyAgent.destination == m_EnemyAgent.transform.position && m_PatrolDestination != m_InitialePos)
+        if (!m_DestinationReached)
         {
-            m_PatrolDestination = m_InitialePos;
+            m_EnemyAgent.SetDestination(m_PatrolDestination.position);        
+            if(Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
+            {
+                m_DestinationReached = true;
+            }
         }
-        if (m_EnemyAgent.destination == m_EnemyAgent.transform.position && m_PatrolDestination != m_PatrolPos)
+        else if (m_DestinationReached)
         {
-            m_PatrolDestination = m_PatrolPos;
+            m_EnemyAgent.SetDestination(m_InitialePos);
+            if(Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
+            {
+                m_DestinationReached = false;
+            }            
         }
 
-        if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemySight)
+        if (Vector3.Distance(PlayerManager.Instance.m_Player.gameObject.transform.position, transform.position) < m_EnemyData.EnemySight)
         {
             ChangeState(BehaviorState.MoveToPlayer);
         }
 
-        if (m_CurrentTime >= 2f)
+        if (m_CurrentTime >= 1.5f)
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
@@ -159,7 +168,7 @@ public class EnemyAI : MonoBehaviour
             ChangeState(BehaviorState.Attack);
         }
 
-        if (m_CurrentTime >= 2f)
+        if (m_CurrentTime >= 1.5f)
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
@@ -186,8 +195,7 @@ public class EnemyAI : MonoBehaviour
                     {
                         // Activate Anim / Camera
                         // Attack();
-                        PlayerManager.Instance.m_CurrentHealth -= m_EnemyData.MeleeAttackDamage;
-                        PlayerManager.Instance.m_MainUI.m_HealthBar.value = PlayerManager.Instance.m_CurrentHealth / PlayerManager.Instance.m_MaxHealth;
+                        PlayerManager.Instance.TakeDamage(m_EnemyData.MeleeAttackDamage);
                     }
                     break;
                 }
@@ -195,10 +203,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.Patrol)
                     {
-                        // Move to random position around the map
-                        // if (in range) -> m_State = Attack
-                        // else -> m_State = Idle
-                        // m_TurnManager.Instance.m_SwitchCharacter = true;
+                        // Activate Zone as big as sight range for feedback
                     }
                     break;
                 }
@@ -285,7 +290,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
         {
-            gameObject.GetComponent<Renderer>().material.color = m_EnemyMaterial.color;
+            gameObject.GetComponent<Renderer>().material.color = m_EnemyColor;
             m_Attackable = false;
         }
     }

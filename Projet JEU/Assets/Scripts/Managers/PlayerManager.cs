@@ -29,7 +29,12 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public int m_PlayerRange = 0;
 
-    private float m_MoveSpeed;
+    public bool m_ActivateAvility1 = false;
+    public bool m_ActivateAvility2 = false;
+    public bool m_ActivateAvility3 = false;
+    public bool m_ActivateAvility4 = false;
+
+    //private float m_MoveSpeed;
 
     private static PlayerManager m_Instance;
     public static PlayerManager Instance
@@ -52,7 +57,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        m_MoveSpeed = m_PlayerData.MoveSpeed;
+        //m_MoveSpeed = m_PlayerData.MoveSpeed;
         m_MaxHealth = m_PlayerData.MaxHealth;        
         m_CurrentHealth = m_MaxHealth;
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
@@ -78,7 +83,7 @@ public class PlayerManager : MonoBehaviour
 
     public float PlayerMeleeDamage()
     {
-        float Damage = m_PlayerData.AttackDamage + m_PlayerData.AttackDamagePerLevel * m_PlayerStrenght;
+        float Damage = m_PlayerData.AttackDamage + (m_PlayerData.AttackDamagePerLevel * m_PlayerStrenght);
         return Damage;
     }
 
@@ -106,9 +111,10 @@ public class PlayerManager : MonoBehaviour
         return HP;
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float aDamage)
     {
-        m_MainUI.m_HealthBar.value = m_CurrentHealth / m_MaxHealth;
+        m_CurrentHealth -= aDamage;
+        m_MainUI.m_HealthBar.value = m_CurrentHealth / m_PlayerData.MaxHealth;
     }
 
     public void LevelUp()
@@ -128,5 +134,25 @@ public class PlayerManager : MonoBehaviour
         m_Player.m_RangeButtonIsPressed = !m_Player.m_RangeButtonIsPressed;
         // Operateur ternaire determine le scale de la zone ddu RangeAttack lorsque l'on appui sur le bouton Attack
         m_Player.m_RangeAttackZone.transform.localScale = m_Player.m_RangeButtonIsPressed ? m_Player.m_ScaleOfRangeAttackZone : Vector3.zero;
+    }
+
+    public void ActivateAbility1()
+    {
+        m_ActivateAvility1 = true;
+    }
+
+    public void ActivateAbility2()
+    {
+        m_ActivateAvility2 = true;
+    }
+
+    public void ActivateAbility3()
+    {
+        m_ActivateAvility3 = true;
+    }
+
+    public void ActivateAbility4()
+    {
+        m_ActivateAvility4 = true;
     }
 }

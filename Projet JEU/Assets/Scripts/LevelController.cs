@@ -13,6 +13,8 @@ public class LevelController : MonoBehaviour
     private Transform m_BossSpawnPoint;
     [SerializeField]
     private List<Transform> m_EnemySpawnPoints;
+    [SerializeField]
+    private List<Transform> m_EnemyPatrolPoints;
     private List<int> m_RandomIndex = new List<int>();
     private List<EnemyAI> m_Enemies = new List<EnemyAI>();
     private int m_CurrentLevel;
@@ -52,6 +54,7 @@ public class LevelController : MonoBehaviour
             GameObject enemy = Instantiate(m_Data[m_CurrentLevel].m_EnemyListData[i].gameObject, m_EnemySpawnPoints[Spawnindex].transform.position, Quaternion.identity);
             EnemyAI enemyAi = enemy.GetComponent<EnemyAI>();
             m_Enemies.Add(enemyAi);
+            m_Enemies[i].GetComponent<EnemyAI>().m_PatrolDestination = m_EnemyPatrolPoints[i];
             enemyAi.m_FinishTurn += OnEnemyDone; // Action
             enemyAi.m_OnDeath += OnEnemyDeath; // Action
 
@@ -114,6 +117,4 @@ public class LevelController : MonoBehaviour
             LevelManager.Instance.ChangeLevel("Results");
         }
     }
-
-
 }

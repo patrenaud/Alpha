@@ -35,7 +35,6 @@ public class Upgrades : MonoBehaviour
         PlayerManager.Instance.m_MainUI.m_XpBar.value = 0f;
     }
 
-
     // Seulement le premier Upgrade a été fait
     public void ActivateRangedAttack()
     {
@@ -156,7 +155,7 @@ public class Upgrades : MonoBehaviour
 
     public void Arcanist1()
     {
-        // Activate : Root
+        PlayerManager.Instance.ActivateAbility4();
         m_ArcanistButton1.interactable = false;
         m_ArcanistButton2.interactable = true;
         ReturnToGame();
@@ -177,7 +176,7 @@ public class Upgrades : MonoBehaviour
     }
     public void Arcanist4()
     {
-        // Activate : Regenerate
+        PlayerManager.Instance.ActivateAbility1();
         m_ArcanistButton4.interactable = false;
         m_ArcanistButton5.interactable = true;
         ReturnToGame();

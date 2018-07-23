@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EnemyMeleeAttackRange: 1
   m_EnemyMoveSpeed: 1
   m_EnemyMoveDistance: 1
-  m_EnemySight: 100
+  m_EnemySight: 15
   m_MeleeAttackDamage: 10
   m_MeleeAttackDamagePerLevel: 5
   m_MoveDistance: 1

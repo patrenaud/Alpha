@@ -414,13 +414,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19cad52887f74a84f9ec116fd081f19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Attackable: 0
-  m_IsPlaying: 0
-  m_PatrolPos: {x: 5, y: -2.6, z: 12.7}
-  m_EnemyData: {fileID: 11400000, guid: 0a4e612f7f2ec4e46b43ddfc6e9b4aab, type: 2}
-  m_HealthBar: {fileID: 114278974421277032}
   m_AttackZone: {fileID: 1040083938366706}
   m_RangeAttackZone: {fileID: 1911159607895388}
+  m_Attackable: 0
+  m_IsPlaying: 0
+  m_PatrolDestination: {fileID: 0}
+  m_EnemyData: {fileID: 11400000, guid: 0a4e612f7f2ec4e46b43ddfc6e9b4aab, type: 2}
+  m_HealthBar: {fileID: 114278974421277032}
 --- !u!114 &114414590217539854
 MonoBehaviour:
   m_ObjectHideFlags: 1

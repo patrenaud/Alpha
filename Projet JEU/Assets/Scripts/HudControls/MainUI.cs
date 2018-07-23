@@ -39,11 +39,27 @@ public class MainUI : MonoBehaviour
     }
 
     public void ActivateAbilityButtons()
-    {
+    {           
         m_Ability1.gameObject.SetActive(true);
         m_Ability2.gameObject.SetActive(true);
         m_Ability3.gameObject.SetActive(true);
         m_Ability4.gameObject.SetActive(true);
+        if (PlayerManager.Instance.m_ActivateAvility1)
+        {
+            m_Ability1.interactable = true;
+        }
+        if (PlayerManager.Instance.m_ActivateAvility2)
+        {
+            m_Ability2.interactable = true;
+        }
+        if (PlayerManager.Instance.m_ActivateAvility3)
+        {
+            m_Ability3.interactable = true;
+        }
+        if (PlayerManager.Instance.m_ActivateAvility4)
+        {
+            m_Ability4.interactable = true;
+        }
     }
 
     public void DeactivateAbilityButtons()
@@ -121,6 +137,7 @@ public class MainUI : MonoBehaviour
     public void ActivateSelf()
     {
         gameObject.SetActive(true);
+        ReactivateAbilityButtons();
     }
 
     public void DeactivateSelf()
@@ -128,4 +145,23 @@ public class MainUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void ReactivateAbilityButtons()
+    {
+        if(m_Ability1.interactable == false  && PlayerManager.Instance.m_ActivateAvility1)
+        {
+            m_Ability1.interactable = true;
+        }
+        if (m_Ability2.interactable == false && PlayerManager.Instance.m_ActivateAvility2)
+        {
+            m_Ability2.interactable = true;
+        }
+        if (m_Ability3.interactable == false && PlayerManager.Instance.m_ActivateAvility3)
+        {
+            m_Ability3.interactable = true;
+        }
+        if (m_Ability4.interactable == false && PlayerManager.Instance.m_ActivateAvility4)
+        {
+            m_Ability4.interactable = true;
+        }
+    }
 }

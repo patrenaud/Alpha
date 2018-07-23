@@ -42,21 +42,12 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        PlayerManager.Instance.m_MainUI.StartingUI();        
+        PlayerManager.Instance.m_MainUI.StartingUI();
         SetZoneStats(); // Sets the attack zones (range of both melee and range)               
     }
 
     private void Update()
     {
-        /*if(Input.GetKeyDown(KeyCode.A))
-        {
-            if(m_FinishTurn != null)
-            {
-                m_FinishTurn();
-            }
-        }
-        return;*/
-
         // Lorsque les bools sont activés par les boutons, les fonctions respectives sont appelées
         if (m_CanMove)
         {
@@ -80,7 +71,8 @@ public class PlayerController : MonoBehaviour
     {
         m_ScaleOfAttackZone = m_AttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.MeleeAttackRange;
         m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.RangeAttackRange;
-        m_ScaleOfMoveZone = m_MoveZone.transform.localScale * PlayerManager.Instance.m_PlayerData.MoveDistance;
+        m_ScaleOfMoveZone.x = m_MoveZone.transform.localScale.x * PlayerManager.Instance.m_PlayerData.MoveDistance;
+        m_ScaleOfMoveZone.z = m_MoveZone.transform.localScale.z * PlayerManager.Instance.m_PlayerData.MoveDistance;
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
     }
@@ -97,6 +89,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Invalid Move"); // Le joueur ne peut pas se déplacer sur lui-même
 
             }
+
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) // MIGHT NEED TO CHANGE
@@ -104,11 +97,13 @@ public class PlayerController : MonoBehaviour
                     AttackEnd(Hitinfo);
                 }
             }
+
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("UI")))
             {
                 // Si le joueur click à nouveau sur le bouton Move, il annule son mouvement.
                 m_CanMove = false;
             }
+
             // Permet le move seulement si le click est dans la MoveZone et sur le Ground
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Ground")) && Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("MoveZone")))
             {
@@ -129,7 +124,7 @@ public class PlayerController : MonoBehaviour
     private void MovetoPoint(RaycastHit Hitinfo)
     {
         m_PlayerAgent.SetDestination(Hitinfo.point);
-        // Old Code
+        // Old Code to turn before moving
         /* float Timer = 0f;
         {           
             transform.LookAt(m_TargetPosition);
@@ -165,9 +160,8 @@ public class PlayerController : MonoBehaviour
                 // This part is the condition to defeat the Boss
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) 
                 {
-                    //ShootProjectile(Hitinfo);
-                    //ApplyDamage();
                     AttackEnd(Hitinfo);
+                    ShootProjectile(Hitinfo);
                 }
             }
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")))
@@ -180,7 +174,7 @@ public class PlayerController : MonoBehaviour
     private void ShootProjectile(RaycastHit i_Hitinfo)
     {
         //   position de l'ennemi          -       position du joueur - la moitié du scale de l'ennemi         .longueur   > rayon du préfab d'attaque
-        if ((i_Hitinfo.collider.transform.position - transform.position - i_Hitinfo.collider.transform.localScale).magnitude > m_ScaleOfAttackZone.x / 2 && PlayerManager.Instance.m_RangeAttack)
+        if (Vector3.Distance(i_Hitinfo.collider.transform.position, transform.position) > m_ScaleOfAttackZone.x / 2 && PlayerManager.Instance.m_RangeAttack)
         {
             GameObject m_BulletInstance = Instantiate(m_ProjectilePrefab, transform.position, Quaternion.identity);
             Projectile script = m_BulletInstance.GetComponent<Projectile>();
@@ -190,12 +184,16 @@ public class PlayerController : MonoBehaviour
 
     private void AttackEnd(RaycastHit i_Hitinfo)
     {
-        // The Enemy takes Damage
-        i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerMeleeDamage());
+        // The Enemy takes Damage from distance or from melee
+        if (Vector3.Distance(i_Hitinfo.collider.transform.position, transform.position) > m_ScaleOfAttackZone.x / 2 && PlayerManager.Instance.m_RangeAttack)
+        {
+            i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerRangeDamage());
+        }
+        else
+        {
+            i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerMeleeDamage());
+        }
 
-        // StartCoroutine(DestroyEnemy(i_Hitinfo)); // This is to call Death Animation for Enemies
-
-        // Only when enemy dies
         DeactivateAttackZones();
         PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
 
@@ -204,33 +202,6 @@ public class PlayerController : MonoBehaviour
         m_RangeButtonIsPressed = false;
     }
 
-    // Ceci est pour un feedback de la mort de l'ennemi
-    private IEnumerator DestroyEnemy(RaycastHit i_Hitinfo)
-    {
-        yield return new WaitForSeconds(0.2f);
-        for (int i = 9; i > 0; i--)
-        {
-            i_Hitinfo.collider.gameObject.transform.localScale -= new Vector3(0.1F, 0.1f, 0.1f);
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    public void ApplyDamage(float i_AttackDamage)
-    {
-        // Place to Apply damage
-        PlayerManager.Instance.m_CurrentHealth -= i_AttackDamage;
-
-        PlayerManager.Instance.TakeDamage();
-
-        StartCoroutine(ApplyDamageFeedback());
-    }
-
-    private IEnumerator ApplyDamageFeedback() // Feedback will change for ANIM
-    {
-        gameObject.GetComponent<Renderer>().material.color = Color.red;
-        yield return new WaitForSeconds(1f);
-        gameObject.GetComponent<Renderer>().material.color = m_PlayerMaterial.color;
-    }
 
     public void Ability()
     {
@@ -341,8 +312,7 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
     }
     #endregion
-
-
+    
 
     // Lors de la fin du tour des ennemies, le UI des boutons et des zones sont Reset
     public void ActivateActions()
