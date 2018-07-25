@@ -228,6 +228,7 @@ public class PlayerController : MonoBehaviour
     {
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
+        PlayerManager.Instance.m_MainUI.DeactivateAttackChoice();
     }
 
     // Cette région permet aux boutons d'appaler ces fonctions. Les Booleens sont activés et permettent les Move/Attack/Ability/EndTurn

@@ -35,7 +35,6 @@ public class LevelController : MonoBehaviour
         LevelManager.Instance.SetLevelIndex();
 
         // Si le joueur est mort, il peut recommencer le même niveau. (FreezeLevelIndex)
-
     }
 
     private void GenerateEnemies()
@@ -55,6 +54,7 @@ public class LevelController : MonoBehaviour
             EnemyAI enemyAi = enemy.GetComponent<EnemyAI>();
             m_Enemies.Add(enemyAi);
             m_Enemies[i].GetComponent<EnemyAI>().m_PatrolDestination = m_EnemyPatrolPoints[i];
+
             enemyAi.m_FinishTurn += OnEnemyDone; // Action
             enemyAi.m_OnDeath += OnEnemyDeath; // Action
 
@@ -75,9 +75,11 @@ public class LevelController : MonoBehaviour
         // Ceci est le OneLiner
         // Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity).GetComponent<PlayerController>().m_FinishTurn += OnPlayerDone;
         GameObject go = Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity);
-        PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;
-        PlayerManager.Instance.m_CurrentHealth = PlayerManager.Instance.m_MaxHealth;
+        // This is to set the Player's health after Levels (Constitution) have been set up
+        PlayerManager.Instance.m_MaxHealth = PlayerManager.Instance.PlayerHP();
+        PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;        
         PlayerController player = go.GetComponent<PlayerController>();
+
         player.m_FinishTurn += OnPlayerDone; // Action
     }
 

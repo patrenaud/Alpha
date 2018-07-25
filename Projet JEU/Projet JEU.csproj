@@ -298,6 +298,7 @@
     <Compile Include="Assets\Scripts\HudControls\MainUI.cs" />
     <Compile Include="Assets\Scripts\HudControls\UIButtonManager.cs" />
     <Compile Include="Assets\Scripts\LevelController.cs" />
+    <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />

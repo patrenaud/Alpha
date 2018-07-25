@@ -6508,7 +6508,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5dd24a2af57648541bfaaeb60b0535fd, type: 2}
   - {fileID: 11400000, guid: 29f9aaa50fb61fe41b9cdd09b008e294, type: 2}
   - {fileID: 11400000, guid: 13d726944a94e514b947f6e25c8661bf, type: 2}
-  - {fileID: 11400000, guid: 63220a5feb0a93e4eb3ac2b0a68dacd7, type: 2}
+  - {fileID: 11400000, guid: 5dd24a2af57648541bfaaeb60b0535fd, type: 2}
+  - {fileID: 11400000, guid: 29f9aaa50fb61fe41b9cdd09b008e294, type: 2}
+  - {fileID: 11400000, guid: 13d726944a94e514b947f6e25c8661bf, type: 2}
+  - {fileID: 11400000, guid: 5dd24a2af57648541bfaaeb60b0535fd, type: 2}
+  - {fileID: 11400000, guid: 29f9aaa50fb61fe41b9cdd09b008e294, type: 2}
+  - {fileID: 11400000, guid: 13d726944a94e514b947f6e25c8661bf, type: 2}
   m_PlayerSpawnPoint: {fileID: 1720574840}
   m_BossSpawnPoint: {fileID: 135763453}
   m_EnemySpawnPoints:

@@ -58,7 +58,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         //m_MoveSpeed = m_PlayerData.MoveSpeed;
-        m_MaxHealth = m_PlayerData.MaxHealth;        
+        m_MaxHealth = m_PlayerData.MaxHealth;
         m_CurrentHealth = m_MaxHealth;
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
         m_MainUI.StartHpAndExp();

@@ -117,7 +117,7 @@ public class Upgrades : MonoBehaviour
 
     public void Athlete1()
     {
-        PlayerManager.Instance.m_PlayerPrecision += 1;
+        PlayerManager.Instance.m_PlayerConstitution += 1;
         m_AthleteButton1.interactable = false;
         m_AthleteButton2.interactable = true;
         ReturnToGame();

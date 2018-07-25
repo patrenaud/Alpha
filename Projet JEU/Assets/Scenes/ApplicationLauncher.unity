@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -257,7 +257,7 @@ Canvas:
   m_GameObject: {fileID: 653005257}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 480396708}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -351,6 +351,132 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ActivateRangeAttack
       objectReference: {fileID: 0}
+    - target: {fileID: 224590819150725124, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224590819150725124, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224590819150725124, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224590819150725124, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224590819150725124, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1006327947858580, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114376149492269572, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Bow Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 114789302278923798, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Bow Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 114043531519608094, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Bow Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 114326992073802616, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: '+ Bow Range & Dmg
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114263732706819484, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Melee Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 114879784921268990, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + HP
+      objectReference: {fileID: 0}
+    - target: {fileID: 114439455704514694, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Dmg & HP
+      objectReference: {fileID: 0}
+    - target: {fileID: 114481830887175188, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + HP
+      objectReference: {fileID: 0}
+    - target: {fileID: 114358504669229822, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Dmg & HP
+      objectReference: {fileID: 0}
+    - target: {fileID: 114218270833308488, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Move Distance
+      objectReference: {fileID: 0}
+    - target: {fileID: 114108941055241724, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Melee Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 114761244373064608, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Move Distance
+      objectReference: {fileID: 0}
+    - target: {fileID: 114026009242893266, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + Hp & Dmg & Move
+      objectReference: {fileID: 0}
+    - target: {fileID: 114933048164649928, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: Ability Regenerate
+      objectReference: {fileID: 0}
+    - target: {fileID: 114050561530293162, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: Ability Root
+      objectReference: {fileID: 0}
+    - target: {fileID: 114050197322047110, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: '?'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114953593636351906, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + HP
+      objectReference: {fileID: 0}
+    - target: {fileID: 114166007191601822, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: Boost Abilities & Dmg
+      objectReference: {fileID: 0}
+    - target: {fileID: 114986404402014590, guid: cd06b91ebd9bc344fbc52c98e1e76892,
+        type: 2}
+      propertyPath: m_Text
+      value: + HP
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
   m_IsPrefabParent: 0
@@ -418,7 +544,7 @@ RectTransform:
   m_GameObject: {fileID: 770540753}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 19.391779, y: 10.849554, z: 1}
+  m_LocalScale: {x: 8.250369, y: 4.748125, z: 1}
   m_Children: []
   m_Father: {fileID: 653005261}
   m_RootOrder: 0
@@ -635,7 +761,7 @@ RectTransform:
   m_GameObject: {fileID: 1402957105}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.41300032, y: 0.45014116, z: 1}
   m_Children: []
   m_Father: {fileID: 653005261}
   m_RootOrder: 1
@@ -703,7 +829,7 @@ RectTransform:
   m_GameObject: {fileID: 1443147920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 19.237125, y: 10.787385, z: 1}
+  m_LocalScale: {x: 7.9810467, y: 4.4785056, z: 1}
   m_Children: []
   m_Father: {fileID: 653005261}
   m_RootOrder: 2
@@ -837,7 +963,7 @@ RectTransform:
   m_GameObject: {fileID: 1791749395}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.3961244, y: 2.9310703, z: 1}
+  m_LocalScale: {x: 1.258459, y: 1.1369857, z: 1}
   m_Children:
   - {fileID: 973158745}
   m_Father: {fileID: 653005261}
@@ -845,7 +971,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -731, y: 465}
+  m_AnchoredPosition: {x: -290, y: 194}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1791749397
