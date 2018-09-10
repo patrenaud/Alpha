@@ -29,10 +29,10 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public int m_PlayerRange = 0;
 
-    public bool m_ActivateAvility1 = false;
-    public bool m_ActivateAvility2 = false;
-    public bool m_ActivateAvility3 = false;
-    public bool m_ActivateAvility4 = false;
+    public bool m_ActivateAbility1 = false;
+    public bool m_ActivateAbility2 = false;
+    public bool m_ActivateAbility3 = false;
+    public bool m_ActivateAbility4 = false;
 
     //private float m_MoveSpeed;
 
@@ -67,16 +67,18 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        // When exp bar is filled, level up is activated
         if (m_MainUI.m_XpBar.value >= 1)
         {
             m_MainUI.m_LevelUpButton.gameObject.SetActive(true);
         }
 
+        // THIS IS WHERE THE PLAYER DIES
         if (Instance.m_MainUI.m_HealthBar.value <= 0)
         {
             Instance.m_MainUI.m_HealthBar.value = 1;
             m_PlayerDied = true;
-            LevelManager.Instance.ChangeLevel("Results"); // THIS IS WHERE THE PLAYER DIES
+            LevelManager.Instance.ChangeLevel("Results"); 
             
         }
     }
@@ -84,12 +86,20 @@ public class PlayerManager : MonoBehaviour
     public float PlayerMeleeDamage()
     {
         float Damage = m_PlayerData.AttackDamage + (m_PlayerData.AttackDamagePerLevel * m_PlayerStrenght);
+        if(m_Player.m_ExtremeForce)
+        {
+            Damage += 30;
+        }
         return Damage;
     }
 
     public float PlayerRangeDamage()
     {
         float Damage = m_PlayerData.RangeAttackDamage + m_PlayerData.RangeAttackDamagePerLevel * m_PlayerPerception;
+        if (m_Player.m_ExtremeForce)
+        {
+            Damage += 30;
+        }
         return Damage;
     }
 
@@ -117,6 +127,11 @@ public class PlayerManager : MonoBehaviour
         m_MainUI.m_HealthBar.value = m_CurrentHealth / m_PlayerData.MaxHealth;
     }
 
+    public void ResetHealth()
+    {
+        m_CurrentHealth = m_MaxHealth;
+    }
+
     public void LevelUp()
     {
         m_MainUI.m_UpgradeCanvas.gameObject.SetActive(true);
@@ -138,21 +153,21 @@ public class PlayerManager : MonoBehaviour
 
     public void ActivateAbility1()
     {
-        m_ActivateAvility1 = true;
+        m_ActivateAbility1 = true;
     }
 
     public void ActivateAbility2()
     {
-        m_ActivateAvility2 = true;
+        m_ActivateAbility2 = true;
     }
 
     public void ActivateAbility3()
     {
-        m_ActivateAvility3 = true;
+        m_ActivateAbility3 = true;
     }
 
     public void ActivateAbility4()
     {
-        m_ActivateAvility4 = true;
+        m_ActivateAbility4 = true;
     }
 }

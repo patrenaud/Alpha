@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public bool m_EndTurn = false;
     public bool m_MeleeButtonIsPressed = false;
     public bool m_RangeButtonIsPressed = false;
+    public bool m_ExtremeForce = false;
     public Vector3 m_ScaleOfAttackZone;
     public Vector3 m_ScaleOfRangeAttackZone;
 
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public GameObject m_RangeAttackZone;
     public Material m_PlayerMaterial;
     public Action m_FinishTurn;
-    
+
     [SerializeField]
     private GameObject m_ProjectilePrefab;
     [SerializeField]
@@ -32,8 +33,8 @@ public class PlayerController : MonoBehaviour
     private bool m_CanMove = false;
     private bool m_CanAttack = false;
     private bool m_CanAbility = false;
-    private float m_BulletSpeed = 50f; 
-   
+    private float m_BulletSpeed = 50f;
+
     private void Awake()
     {
         PlayerManager.Instance.m_Player = this;
@@ -43,7 +44,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         PlayerManager.Instance.m_MainUI.StartingUI();
-        SetZoneStats(); // Sets the attack zones (range of both melee and range)               
+        PlayerManager.Instance.ResetHealth();
+        SetZoneStats(); // Sets the attack zones (range of both melee and range)
     }
 
     private void Update()
@@ -87,13 +89,12 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Player")))
             {
                 Debug.Log("Invalid Move"); // Le joueur ne peut pas se déplacer sur lui-même
-
             }
 
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) // MIGHT NEED TO CHANGE
-                {                    
+                {
                     AttackEnd(Hitinfo);
                 }
             }
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) 
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
                     ShootProjectile(Hitinfo);
                     //ApplyDamage();
@@ -158,7 +159,7 @@ public class PlayerController : MonoBehaviour
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && PlayerManager.Instance.m_RangeAttack)
             {
                 // This part is the condition to defeat the Boss
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) 
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
                     AttackEnd(Hitinfo);
                     ShootProjectile(Hitinfo);
@@ -194,6 +195,11 @@ public class PlayerController : MonoBehaviour
             i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerMeleeDamage());
         }
 
+        if (m_ExtremeForce)
+        {
+            m_ExtremeForce = false;
+        }
+
         DeactivateAttackZones();
         PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
 
@@ -211,6 +217,8 @@ public class PlayerController : MonoBehaviour
     public void EndTurn()
     {
         DeactivateAttackZones();
+
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[9], transform.position);
 
         // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
         m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
@@ -239,11 +247,13 @@ public class PlayerController : MonoBehaviour
         {
             m_MoveZone.SetActive(false);
             m_CanMove = false;
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[7], transform.position);
         }
         else if (!m_CanMove)
         {
             m_CanMove = true;
             m_MoveZone.SetActive(true);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[6], transform.position);
         }
     }
 
@@ -255,11 +265,13 @@ public class PlayerController : MonoBehaviour
             {
                 m_CanAttack = false;
                 m_AttackZone.transform.localScale = Vector3.zero;
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[7], transform.position);
             }
             else if (!m_CanAttack)
             {
                 m_CanAttack = true;
                 m_AttackZone.transform.localScale = m_ScaleOfAttackZone;
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[6], transform.position);
             }
         }
         else
@@ -268,39 +280,43 @@ public class PlayerController : MonoBehaviour
             {
                 m_CanAttack = false;
                 PlayerManager.Instance.m_MainUI.DeactivateAttackChoice();
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[7], transform.position);
             }
             else if (!m_CanAttack)
             {
                 m_CanAttack = true;
                 PlayerManager.Instance.m_MainUI.ActivateAttackChoice();
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[6], transform.position);
             }
         }
     }
+    
 
-
-
-    public void ActivateHabilty()
+    public void ActivateHabiltyButton()
     {
         if (m_CanAbility)
         {
             m_CanAbility = false;
             PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[8], transform.position);
         }
         else if (!m_CanAbility)
         {
             m_CanAbility = true;
             PlayerManager.Instance.m_MainUI.ActivateAbilityButtons();
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[8], transform.position);
         }
     }
 
     public void ActivateAbility1()
     {
-        // Has to be filled with Abilities
+        // Has to be filled with Root
     }
 
     public void ActivateAbility2()
     {
-        // Has to be filled with Abilities
+        // Has to be filled with Extreme Force
+        m_ExtremeForce = true;
     }
 
     public void ActivateAbility3()
@@ -313,7 +329,7 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
     }
     #endregion
-    
+
 
     // Lors de la fin du tour des ennemies, le UI des boutons et des zones sont Reset
     public void ActivateActions()

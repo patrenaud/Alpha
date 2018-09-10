@@ -44,19 +44,19 @@ public class MainUI : MonoBehaviour
         m_Ability2.gameObject.SetActive(true);
         m_Ability3.gameObject.SetActive(true);
         m_Ability4.gameObject.SetActive(true);
-        if (PlayerManager.Instance.m_ActivateAvility1)
+        if (PlayerManager.Instance.m_ActivateAbility1)
         {
             m_Ability1.interactable = true;
         }
-        if (PlayerManager.Instance.m_ActivateAvility2)
+        if (PlayerManager.Instance.m_ActivateAbility2)
         {
             m_Ability2.interactable = true;
         }
-        if (PlayerManager.Instance.m_ActivateAvility3)
+        if (PlayerManager.Instance.m_ActivateAbility3)
         {
             m_Ability3.interactable = true;
         }
-        if (PlayerManager.Instance.m_ActivateAvility4)
+        if (PlayerManager.Instance.m_ActivateAbility4)
         {
             m_Ability4.interactable = true;
         }
@@ -123,6 +123,21 @@ public class MainUI : MonoBehaviour
         m_XpBar.value = 0;
     }
 
+    public void OnActivateAbility1()
+    {
+        m_Ability1.interactable = false;
+    }
+
+    public void OnActivateAbility2()
+    {
+        m_Ability2.interactable = false;
+    }
+
+    public void OnActivateAbility3()
+    {
+        m_Ability3.interactable = false;
+    }
+
     public void OnActivateAbility4(float aRegenHealth)
     {
         m_Ability4.interactable = false;
@@ -138,6 +153,7 @@ public class MainUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         ReactivateAbilityButtons();
+        ActivatePlayerUiOnTurnBegin();
     }
 
     public void DeactivateSelf()
@@ -147,19 +163,19 @@ public class MainUI : MonoBehaviour
 
     public void ReactivateAbilityButtons()
     {
-        if(m_Ability1.interactable == false  && PlayerManager.Instance.m_ActivateAvility1)
+        if(m_Ability1.interactable == false  && PlayerManager.Instance.m_ActivateAbility1)
         {
             m_Ability1.interactable = true;
         }
-        if (m_Ability2.interactable == false && PlayerManager.Instance.m_ActivateAvility2)
+        if (m_Ability2.interactable == false && PlayerManager.Instance.m_ActivateAbility2)
         {
             m_Ability2.interactable = true;
         }
-        if (m_Ability3.interactable == false && PlayerManager.Instance.m_ActivateAvility3)
+        if (m_Ability3.interactable == false && PlayerManager.Instance.m_ActivateAbility3)
         {
             m_Ability3.interactable = true;
         }
-        if (m_Ability4.interactable == false && PlayerManager.Instance.m_ActivateAvility4)
+        if (m_Ability4.interactable == false && PlayerManager.Instance.m_ActivateAbility4)
         {
             m_Ability4.interactable = true;
         }

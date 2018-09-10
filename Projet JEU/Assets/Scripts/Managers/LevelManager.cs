@@ -59,18 +59,18 @@ public class LevelManager : DontDestroyOnLoad
         }
         if(i_Scene.name == "Main")
         {
-            PlayerManager.Instance.m_MainUI.ActivateSelf();
+            PlayerManager.Instance.m_MainUI.ActivateSelf();            
         }
         if(i_Scene.name == "Results" && PlayerManager.Instance.m_PlayerDied)
         {
-            m_DeathImage.SetActive(true);
+            m_DeathImage.SetActive(true);          
         }
     }
 
     public void ChangeLevel(string i_Scene)
     {
         StartLoading();
-
+        
         StartCoroutine(LoadSceneTimer(i_Scene));
 
         SceneManager.sceneLoaded += OnLoadingDone;
@@ -78,8 +78,29 @@ public class LevelManager : DontDestroyOnLoad
 
     private IEnumerator LoadSceneTimer(string i_Scene)
     {
-        yield return new WaitForSeconds(2f);
+        CheckSound(i_Scene);
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(i_Scene);
+    }
+
+    private void CheckSound(string i_Scene)
+    {
+        if (i_Scene == "Main")
+        {
+            AudioManager.Instance.SwitchMusic(3f, AudioManager.Instance.m_DeepCaveMusic);
+        }
+        if (i_Scene == "Results" && PlayerManager.Instance.m_PlayerDied)
+        {
+            AudioManager.Instance.SwitchMusic(3f, AudioManager.Instance.m_Death);
+        }
+        else if (i_Scene == "Results")
+        {
+            AudioManager.Instance.SwitchMusic(3f, AudioManager.Instance.m_Breathing);
+        }
+        if(i_Scene == "Application Launcher")
+        {
+            AudioManager.Instance.SwitchMusic(3f, AudioManager.Instance.m_Ravens);
+        }
     }
 
     public void SetLevelIndex()
@@ -91,6 +112,4 @@ public class LevelManager : DontDestroyOnLoad
     {
         return m_LevelIndex;
     }
-
-
 }

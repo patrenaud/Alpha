@@ -51,7 +51,9 @@ public class LevelController : MonoBehaviour
 
             // Ceci représente ce que GeneratePlayer fait en 3 lignes. On instancie la liste d'enemy dans les spawnpoitnts au hazard
             GameObject enemy = Instantiate(m_Data[m_CurrentLevel].m_EnemyListData[i].gameObject, m_EnemySpawnPoints[Spawnindex].transform.position, Quaternion.identity);
+            
             EnemyAI enemyAi = enemy.GetComponent<EnemyAI>();
+    
             m_Enemies.Add(enemyAi);
             m_Enemies[i].GetComponent<EnemyAI>().m_PatrolDestination = m_EnemyPatrolPoints[i];
 

@@ -17,7 +17,7 @@ public class UIButtonManager : MonoBehaviour
 
     public void ActivateHability()
     {
-        PlayerManager.Instance.m_Player.ActivateHabilty();
+        PlayerManager.Instance.m_Player.ActivateHabiltyButton();
     }
 
     public void EndTurn()
@@ -27,17 +27,17 @@ public class UIButtonManager : MonoBehaviour
 
     public void Ability1()
     {
-
+        PlayerManager.Instance.m_Player.ActivateAbility1();
     }
 
     public void Ability2()
     {
-
+        PlayerManager.Instance.m_Player.ActivateAbility2();
     }
 
     public void Ability3()
     {
-
+        PlayerManager.Instance.m_Player.ActivateAbility3();
     }
 
     public void Ability4()

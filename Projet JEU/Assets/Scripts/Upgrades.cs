@@ -101,7 +101,9 @@ public class Upgrades : MonoBehaviour
     }
     public void Brute4()
     {
-        // Activate : Extreme Force
+        // This is to activate Extreme force ability
+        PlayerManager.Instance.ActivateAbility2();
+
         PlayerManager.Instance.m_PlayerConstitution += 1;
         m_BruteButton4.interactable = false;
         m_BruteButton5.interactable = true;
@@ -155,14 +157,18 @@ public class Upgrades : MonoBehaviour
 
     public void Arcanist1()
     {
+        // This is to activate Regenerate ability
         PlayerManager.Instance.ActivateAbility4();
+
         m_ArcanistButton1.interactable = false;
         m_ArcanistButton2.interactable = true;
         ReturnToGame();
     }
     public void Arcanist2()
     {
-        // Boosts Root Damage
+        // This is to activate Root ability
+        PlayerManager.Instance.ActivateAbility1();
+
         m_ArcanistButton2.interactable = false;
         m_ArcanistButton3.interactable = true;
         ReturnToGame();

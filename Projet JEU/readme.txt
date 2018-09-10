@@ -22,3 +22,4 @@ TO DO LIST / WHAT WILL CHANGE FOR BETA :
   will create set the stats depending on level.
 - Spells other than regenerate need to be added (Other than precise shot and root)
 - Models and Animations on Enemies and Player
+- highlight patrol path

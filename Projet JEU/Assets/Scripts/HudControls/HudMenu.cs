@@ -27,5 +27,5 @@ public class HudMenu : MonoBehaviour
         m_BackGround.SetActive(false);
     }
 
-    
+
 }
