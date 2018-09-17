@@ -78,15 +78,15 @@ public class PlayerManager : MonoBehaviour
         {
             Instance.m_MainUI.m_HealthBar.value = 1;
             m_PlayerDied = true;
-            LevelManager.Instance.ChangeLevel("Results"); 
-            
+            LevelManager.Instance.ChangeLevel("Results");
+
         }
     }
 
     public float PlayerMeleeDamage()
     {
         float Damage = m_PlayerData.AttackDamage + (m_PlayerData.AttackDamagePerLevel * m_PlayerStrenght);
-        if(m_Player.m_ExtremeForce)
+        if (m_Player.m_ExtremeForce)
         {
             Damage += 30;
         }
@@ -149,6 +149,30 @@ public class PlayerManager : MonoBehaviour
         m_Player.m_RangeButtonIsPressed = !m_Player.m_RangeButtonIsPressed;
         // Operateur ternaire determine le scale de la zone ddu RangeAttack lorsque l'on appui sur le bouton Attack
         m_Player.m_RangeAttackZone.transform.localScale = m_Player.m_RangeButtonIsPressed ? m_Player.m_ScaleOfRangeAttackZone : Vector3.zero;
+    }
+
+    public void SetAnimator()
+    {
+        m_Player.m_Animator.SetTrigger("Idle");
+    }
+
+    public void SetWalkAnim(RaycastHit Hitinfo)
+    {
+        m_Player.m_Animator.SetTrigger("Walk");
+        StartCoroutine(EndWalkAnim(Hitinfo));
+    }
+
+    private IEnumerator EndWalkAnim(RaycastHit Hitinfo)
+    {
+        yield return new WaitForSeconds(1.5f);
+        m_Player.m_Animator.SetTrigger("Idle");
+    }
+
+    public void SetAttackAnim()
+    {
+
+        m_Player.m_Animator.SetTrigger("Attack");
+
     }
 
     public void ActivateAbility1()

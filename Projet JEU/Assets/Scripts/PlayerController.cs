@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public bool m_ExtremeForce = false;
     public Vector3 m_ScaleOfAttackZone;
     public Vector3 m_ScaleOfRangeAttackZone;
+    public Animator m_Animator;
 
     [Header("Player Zones")]
     public GameObject m_MoveZone;
@@ -33,18 +34,21 @@ public class PlayerController : MonoBehaviour
     private bool m_CanMove = false;
     private bool m_CanAttack = false;
     private bool m_CanAbility = false;
-    private float m_BulletSpeed = 50f;
+    private float m_BulletSpeed = 50f;    
 
     private void Awake()
     {
         PlayerManager.Instance.m_Player = this;
-        m_MoveZone.SetActive(false);
+        PlayerManager.Instance.SetAnimator();
+
+        m_MoveZone.SetActive(false);        
     }
 
     private void Start()
     {
         PlayerManager.Instance.m_MainUI.StartingUI();
         PlayerManager.Instance.ResetHealth();
+
         SetZoneStats(); // Sets the attack zones (range of both melee and range)
     }
 
@@ -124,18 +128,10 @@ public class PlayerController : MonoBehaviour
     // Permet le déplacment du joueur 
     private void MovetoPoint(RaycastHit Hitinfo)
     {
+        PlayerManager.Instance.SetWalkAnim(Hitinfo);
+
         m_PlayerAgent.SetDestination(Hitinfo.point);
-        // Old Code to turn before moving
-        /* float Timer = 0f;
-        {           
-            transform.LookAt(m_TargetPosition);
-            while (Vector3.Distance(m_TargetPosition, transform.position) > 0)
-            {
-                transform.position = Vector3.Lerp(transform.position, m_TargetPosition, Timer);
-                Timer += Time.deltaTime * m_MoveSpeed / 60;
-                yield return new WaitForEndOfFrame();
-            }
-        }*/
+
     }
 
     // Permet l'attaque du joueur vers l'ennemi
@@ -150,6 +146,8 @@ public class PlayerController : MonoBehaviour
             {
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
+                    PlayerManager.Instance.SetAttackAnim();
+
                     ShootProjectile(Hitinfo);
                     //ApplyDamage();
                     AttackEnd(Hitinfo);
@@ -161,6 +159,8 @@ public class PlayerController : MonoBehaviour
                 // This part is the condition to defeat the Boss
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
+                    PlayerManager.Instance.SetAttackAnim();
+
                     AttackEnd(Hitinfo);
                     ShootProjectile(Hitinfo);
                 }
@@ -206,6 +206,7 @@ public class PlayerController : MonoBehaviour
         m_CanAttack = false;
         m_MeleeButtonIsPressed = false;
         m_RangeButtonIsPressed = false;
+        m_Animator.SetTrigger("Idle");
     }
 
 
@@ -317,6 +318,7 @@ public class PlayerController : MonoBehaviour
     {
         // Has to be filled with Extreme Force
         m_ExtremeForce = true;
+        m_Animator.SetTrigger("Cast");
     }
 
     public void ActivateAbility3()
@@ -327,6 +329,7 @@ public class PlayerController : MonoBehaviour
     public void ActivateAbility4()
     {
         PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
+        m_Animator.SetTrigger("Cast");
     }
     #endregion
 

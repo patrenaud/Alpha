@@ -110,6 +110,7 @@ public class MainUI : MonoBehaviour
         m_AttackButton.interactable = false;
         m_RangeAttackButton.interactable = false;
         m_MeleeAttackButton.interactable = false;
+        PlayerManager.Instance.SetAttackAnim();
     }
 
     private void OnDestroy()

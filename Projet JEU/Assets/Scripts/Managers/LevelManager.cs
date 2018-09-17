@@ -87,7 +87,7 @@ public class LevelManager : DontDestroyOnLoad
     {
         if (i_Scene == "Main")
         {
-            AudioManager.Instance.SwitchMusic(3f, AudioManager.Instance.m_DeepCaveMusic);
+            AudioManager.Instance.SwitchMusic(3f, AudioManager.Instance.m_Cavern);
         }
         if (i_Scene == "Results" && PlayerManager.Instance.m_PlayerDied)
         {

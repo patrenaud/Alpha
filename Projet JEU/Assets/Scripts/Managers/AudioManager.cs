@@ -22,7 +22,7 @@ public class AudioManager : DontDestroyOnLoad
 
     // Ceci est les 4 différentes musique d'ambiance dans le jeu. Elles changent selon la scene.
     public AudioClip m_Breathing;
-    public AudioClip m_DeepCaveMusic;    
+    public AudioClip m_Cavern;    
     public AudioClip m_Ravens;
     public AudioClip m_Death;
 
@@ -79,7 +79,7 @@ public class AudioManager : DontDestroyOnLoad
     public void PlaySFX(AudioClip i_Clip, Vector3 i_Position) // au lieu du vector, un transform et un bool. Le son se fait sur le character et bool le suit ou pas
     {
         SFXAudio audio = Instantiate(m_SFXAudioPrefab, i_Position, Quaternion.identity);
-        if (i_Clip == m_Ravens || i_Clip == m_DeepCaveMusic || i_Clip == m_Breathing)
+        if (i_Clip == m_Ravens || i_Clip == m_Cavern || i_Clip == m_Breathing)
         {
             audio.GetComponentInChildren<AudioSource>().loop = true;
             audio.Loop(i_Clip);

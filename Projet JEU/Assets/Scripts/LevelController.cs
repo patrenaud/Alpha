@@ -118,7 +118,13 @@ public class LevelController : MonoBehaviour
 
         if (m_Enemies.Count == 0)
         {
-            LevelManager.Instance.ChangeLevel("Results");
+            StartCoroutine(EndRound());
         }
+    }
+
+    private IEnumerator EndRound()
+    {
+        yield return new WaitForSeconds(2f);
+        LevelManager.Instance.ChangeLevel("Results");
     }
 }
