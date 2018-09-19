@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Artwork\Lava_Flowing_Shader\Scripts\ScrollingUVs_Layers.cs" />
     <Compile Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -134,16 +135,20 @@
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\LutGen.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor Resources\Monitors\HistogramRender.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor Resources\UI\CurveBackground.shader" />
+    <None Include="Assets\Artwork\Lava_Flowing_Shader\Shaders\Unlit_Lava_Simple.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Utilities\CustomMotionTexture\Shaders\CustomMotionVectorTexture.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\ACES.cginc" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\Tonemapping.cginc" />
+    <None Include="Assets\Artwork\Lava_Flowing_Shader\Shaders\Diffuse_Lava_Distort.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\Uber.shader" />
+    <None Include="Assets\Artwork\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\Blit.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor Resources\Monitors\WaveformRender.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor Resources\Monitors\VectorscopeCompute.compute" />
+    <None Include="Assets\Artwork\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort_Transparent.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\FXAA3.cginc" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\MotionBlur.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\AmbientOcclusion.shader" />
@@ -152,6 +157,7 @@
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\Common.cginc" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Bluenoise64\COPYING.txt" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor Resources\UI\Trackball.shader" />
+    <None Include="Assets\Artwork\Lava_Flowing_Shader\ReadMe.txt" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\Bloom.cginc" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\TAA.shader" />
     <None Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Resources\Shaders\EyeHistogram.compute" />
