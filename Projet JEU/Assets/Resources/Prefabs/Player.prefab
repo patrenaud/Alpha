@@ -94,7 +94,7 @@ Transform:
   m_GameObject: {fileID: 1162753626683230}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.48799992, z: 0}
-  m_LocalScale: {x: 5, y: 0.02, z: 5}
+  m_LocalScale: {x: 6, y: 0.02, z: 6}
   m_Children: []
   m_Father: {fileID: 4534635873845628}
   m_RootOrder: 2
@@ -154,6 +154,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 6477ba7a9b4161044be94f1ad61a54b6, type: 2}
   m_StaticBatchInfo:
@@ -188,6 +189,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 587e89c45b6496d4b8937199d67e243b, type: 2}
   m_StaticBatchInfo:
@@ -222,6 +224,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 4a6f5a45810e56c469bc0f1c116d4451, type: 2}
   m_StaticBatchInfo:
@@ -256,6 +259,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 1f74ae10b3ad9194683648ec4da9112f, type: 2}
   m_StaticBatchInfo:
@@ -346,8 +350,10 @@ MonoBehaviour:
   m_EndTurn: 0
   m_MeleeButtonIsPressed: 0
   m_RangeButtonIsPressed: 0
+  m_ExtremeForce: 0
   m_ScaleOfAttackZone: {x: 0, y: 0, z: 0}
   m_ScaleOfRangeAttackZone: {x: 0, y: 0, z: 0}
+  m_Animator: {fileID: 0}
   m_MoveZone: {fileID: 1232894202961404}
   m_AttackZone: {fileID: 1162753626683230}
   m_RangeAttackZone: {fileID: 1157162925071988}

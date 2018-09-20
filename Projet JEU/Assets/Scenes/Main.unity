@@ -4230,7 +4230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &454444834
 GameObject:
   m_ObjectHideFlags: 0
@@ -13455,7 +13455,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1295839426286206, guid: 59bc0259e8dca4340987732f4eccd16f, type: 2}
       propertyPath: m_Name
-      value: CHEESE_FLOOR 1
+      value: Floor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 59bc0259e8dca4340987732f4eccd16f, type: 2}
@@ -15407,7 +15407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2123795993}
   m_Layer: 0
-  m_Name: Fromage
+  m_Name: Lava
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

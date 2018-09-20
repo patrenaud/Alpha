@@ -22,31 +22,40 @@ public class EnemyAI : MonoBehaviour
     public GameObject m_RangeAttackZone;
 
     public bool m_Attackable = false;
-    public bool m_IsPlaying = false;    
+    public bool m_IsPlaying = false;
 
     public Transform m_PatrolDestination;
+    public Color m_EnemyColor;
+    public Image m_SpellActive;
 
     private BehaviorState m_State;
     [SerializeField]
     private EnemyData m_EnemyData;
     [SerializeField]
-    private Slider m_HealthBar;
+    private Slider m_HealthBar;    
 
     private float m_CurrentTime = 0;
     private float m_CurrentHealth;
+    [SerializeField]
+    private int m_RootRoundCountdown = 4;
     private NavMeshAgent m_EnemyAgent;
-    private Color m_EnemyColor;
 
     private Vector3 m_ScaleOfAttackZone;
     private Vector3 m_ScaleOfRangeAttackZone;
     private Vector3 m_InitialePos;
+    [SerializeField]
+    private Text m_Text;
     private bool m_DestinationReached = false;
+    private bool m_Rooted = false;
 
     private void Start()
     {
+        m_SpellActive.enabled = false;
+        m_Text.enabled = false;
+
         m_State = BehaviorState.Idle;
 
-        m_InitialePos = transform.position;        
+        m_InitialePos = transform.position;
 
         m_EnemyAgent = GetComponent<NavMeshAgent>();
 
@@ -61,8 +70,8 @@ public class EnemyAI : MonoBehaviour
 
     private void SetZoneStats()
     {
-        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_EnemyData.EnemyMeleeAttackRange ;
-        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_EnemyData.EnemyRange ;
+        m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_EnemyData.EnemyMeleeAttackRange;
+        m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_EnemyData.EnemyRange;
 
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
@@ -94,17 +103,42 @@ public class EnemyAI : MonoBehaviour
                 UpdateAttack();
             }
         }
-        if(m_CurrentHealth <= 0)
+        if (m_CurrentHealth <= 0)
         {
             Die();
         }
+    }
+
+    private IEnumerator RootedText()
+    {
+        m_Text.enabled = true;
+        yield return new WaitForSeconds(1);
+        m_Text.enabled = false;
     }
 
     private void UpdateIdle()
     {
         if (m_IsPlaying)
         {
-            if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
+            // if the enemy is rooted, at the beginning of the turn it takes damage and creates feedback
+            if (m_Rooted)
+            {
+                m_RootRoundCountdown -= 1;
+                TakeDamage(10f);
+                StartCoroutine(RootedText());
+
+                if (m_RootRoundCountdown <= 0)
+                {
+                    m_Rooted = false;
+                    m_SpellActive.enabled = false;
+                }
+                else
+                {
+                    EndTurn();
+                }
+            }
+
+            else if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
             {
                 ChangeState(BehaviorState.Attack);
 
@@ -121,13 +155,13 @@ public class EnemyAI : MonoBehaviour
     }
 
     private void UpdatePatrol()
-    {        
+    {
         m_CurrentTime += Time.deltaTime;
 
         if (!m_DestinationReached)
         {
-            m_EnemyAgent.SetDestination(m_PatrolDestination.position);        
-            if(Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
+            m_EnemyAgent.SetDestination(m_PatrolDestination.position);
+            if (Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
             {
                 m_DestinationReached = true;
             }
@@ -135,10 +169,10 @@ public class EnemyAI : MonoBehaviour
         else if (m_DestinationReached)
         {
             m_EnemyAgent.SetDestination(m_InitialePos);
-            if(Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
+            if (Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
             {
                 m_DestinationReached = false;
-            }            
+            }
         }
 
         if (Vector3.Distance(PlayerManager.Instance.m_Player.gameObject.transform.position, transform.position) < m_EnemyData.EnemySight)
@@ -180,7 +214,7 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateAttack()
     {
-        
+
         ChangeState(BehaviorState.Idle);
         EndTurn();
     }
@@ -238,7 +272,7 @@ public class EnemyAI : MonoBehaviour
         {
             m_AttackZone.transform.localScale = Vector3.zero;
         }
-        m_FinishTurn();        
+        m_FinishTurn();
     }
 
     public void PlayTurn()
@@ -247,7 +281,7 @@ public class EnemyAI : MonoBehaviour
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
         if (gameObject.CompareTag("Archer"))
-        {            
+        {
             m_RangeAttackZone.transform.localScale = m_ScaleOfRangeAttackZone;
         }
         else if (gameObject.CompareTag("Warrior") || (gameObject.CompareTag("Tank")))
@@ -268,11 +302,16 @@ public class EnemyAI : MonoBehaviour
 
     private void Die()
     {
-        if(m_OnDeath != null)
+        if (m_OnDeath != null)
         {
             m_OnDeath(this);
         }
         Destroy(gameObject);
+    }
+
+    public void Rooted()
+    {
+        m_Rooted = true;
     }
 
     // Les changements de couleurs et le changement du bool se font lorsque la zone d'attaque du joueur entre en collision avec les ennemis

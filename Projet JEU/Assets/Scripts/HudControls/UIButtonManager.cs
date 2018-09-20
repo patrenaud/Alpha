@@ -27,7 +27,7 @@ public class UIButtonManager : MonoBehaviour
 
     public void Ability1()
     {
-        PlayerManager.Instance.m_Player.ActivateAbility1();
+        PlayerManager.Instance.m_Player.ActivateAbility1();        
     }
 
     public void Ability2()

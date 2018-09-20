@@ -103,6 +103,8 @@ public class Upgrades : MonoBehaviour
     {
         // This is to activate Extreme force ability
         PlayerManager.Instance.ActivateAbility2();
+        PlayerManager.Instance.m_MainUI.m_Ability2.GetComponentInChildren<Text>().color = Color.white;
+        PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();
 
         PlayerManager.Instance.m_PlayerConstitution += 1;
         m_BruteButton4.interactable = false;
@@ -159,6 +161,8 @@ public class Upgrades : MonoBehaviour
     {
         // This is to activate Regenerate ability
         PlayerManager.Instance.ActivateAbility4();
+        PlayerManager.Instance.m_MainUI.m_Ability4.GetComponentInChildren<Text>().color = Color.white;
+        PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();
 
         m_ArcanistButton1.interactable = false;
         m_ArcanistButton2.interactable = true;
@@ -168,6 +172,8 @@ public class Upgrades : MonoBehaviour
     {
         // This is to activate Root ability
         PlayerManager.Instance.ActivateAbility1();
+        PlayerManager.Instance.m_MainUI.m_Ability1.GetComponentInChildren<Text>().color = Color.white;
+        PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();
 
         m_ArcanistButton2.interactable = false;
         m_ArcanistButton3.interactable = true;

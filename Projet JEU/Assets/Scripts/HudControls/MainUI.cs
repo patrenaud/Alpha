@@ -38,28 +38,37 @@ public class MainUI : MonoBehaviour
         m_MeleeAttackButton.gameObject.SetActive(false);
     }
 
+    public void ResetAbilities()
+    {
+        if (PlayerManager.Instance.m_ActivateAbility1)
+        {
+            m_Ability1.interactable = true;
+            m_Ability1.GetComponentInChildren<Text>().color = Color.white;
+        }
+        if (PlayerManager.Instance.m_ActivateAbility2)
+        {
+            m_Ability2.interactable = true;
+            m_Ability2.GetComponentInChildren<Text>().color = Color.white;
+        }
+        if (PlayerManager.Instance.m_ActivateAbility3)
+        {
+            m_Ability3.interactable = true;
+            m_Ability3.GetComponentInChildren<Text>().color = Color.white;
+        }
+        if (PlayerManager.Instance.m_ActivateAbility4)
+        {
+            m_Ability4.interactable = true;
+            m_Ability4.GetComponentInChildren<Text>().color = Color.white;
+        }
+    }
+
     public void ActivateAbilityButtons()
     {           
         m_Ability1.gameObject.SetActive(true);
         m_Ability2.gameObject.SetActive(true);
         m_Ability3.gameObject.SetActive(true);
         m_Ability4.gameObject.SetActive(true);
-        if (PlayerManager.Instance.m_ActivateAbility1)
-        {
-            m_Ability1.interactable = true;
-        }
-        if (PlayerManager.Instance.m_ActivateAbility2)
-        {
-            m_Ability2.interactable = true;
-        }
-        if (PlayerManager.Instance.m_ActivateAbility3)
-        {
-            m_Ability3.interactable = true;
-        }
-        if (PlayerManager.Instance.m_ActivateAbility4)
-        {
-            m_Ability4.interactable = true;
-        }
+        
     }
 
     public void DeactivateAbilityButtons()
@@ -127,22 +136,26 @@ public class MainUI : MonoBehaviour
     public void OnActivateAbility1()
     {
         m_Ability1.interactable = false;
+        m_Ability1.GetComponentInChildren<Text>().color = Color.grey;
     }
 
     public void OnActivateAbility2()
     {
         m_Ability2.interactable = false;
+        m_Ability2.GetComponentInChildren<Text>().color = Color.grey;
     }
 
     public void OnActivateAbility3()
     {
         m_Ability3.interactable = false;
+        m_Ability3.GetComponentInChildren<Text>().color = Color.grey;
     }
 
     public void OnActivateAbility4(float aRegenHealth)
     {
         m_Ability4.interactable = false;
         m_HealthBar.value += aRegenHealth;
+        m_Ability4.GetComponentInChildren<Text>().color = Color.grey;
     }
 
     public void DeactivateMove()

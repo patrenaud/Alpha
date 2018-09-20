@@ -34,20 +34,24 @@ public class PlayerController : MonoBehaviour
     private bool m_CanMove = false;
     private bool m_CanAttack = false;
     private bool m_CanAbility = false;
-    private float m_BulletSpeed = 50f;    
+    private bool m_RootEnable = false;
+    private float m_BulletSpeed = 50f;
 
     private void Awake()
     {
         PlayerManager.Instance.m_Player = this;
         PlayerManager.Instance.SetAnimator();
 
-        m_MoveZone.SetActive(false);        
+        m_MoveZone.SetActive(false);
     }
 
     private void Start()
     {
         PlayerManager.Instance.m_MainUI.StartingUI();
         PlayerManager.Instance.ResetHealth();
+
+        // Reset abilities that have been unlocked
+        PlayerManager.Instance.m_MainUI.ResetAbilities();
 
         SetZoneStats(); // Sets the attack zones (range of both melee and range)
     }
@@ -71,6 +75,14 @@ public class PlayerController : MonoBehaviour
         {
             EndTurn();
         }
+
+#if !UNITY_CHEATS
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            PlayerManager.Instance.LevelUp();
+        }
+#endif
+
     }
 
     private void SetZoneStats()
@@ -144,7 +156,16 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
+                if (m_RootEnable)
+                {
+                    Debug.Log("Enemy Rooted");
+                    m_Animator.SetTrigger("Cast");
+                    Hitinfo.collider.gameObject.GetComponent<EnemyAI>().Rooted();
+                    FindObjectOfType<EnemyAI>().GetComponent<Renderer>().material.color = FindObjectOfType<EnemyAI>().m_EnemyColor;
+                    m_RootEnable = !m_RootEnable;
+                }
+
+                else if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
                     PlayerManager.Instance.SetAttackAnim();
 
@@ -213,6 +234,34 @@ public class PlayerController : MonoBehaviour
     public void Ability()
     {
         PlayerManager.Instance.m_MainUI.ActivateAbilityButtons();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray rayon = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit Hitinfo;
+
+            if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
+            {
+                if (m_RootEnable)
+                {
+                    Debug.Log("Enemy Rooted");
+                    m_Animator.SetTrigger("Cast");
+                    Hitinfo.collider.gameObject.GetComponent<EnemyAI>().Rooted();
+
+
+                    EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
+                    for (int i = 0; i < EnemyList.Length; i++)
+                    {
+                        EnemyList[i].GetComponent<Renderer>().material.color = EnemyList[i].GetComponent<EnemyAI>().m_EnemyColor;
+                    }   
+
+                    Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_SpellActive.enabled = true;
+
+                    PlayerManager.Instance.m_MainUI.OnActivateAbility1();
+                    m_RootEnable = !m_RootEnable;
+                }
+            }
+        }
     }
 
     public void EndTurn()
@@ -241,7 +290,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Cette région permet aux boutons d'appaler ces fonctions. Les Booleens sont activés et permettent les Move/Attack/Ability/EndTurn
-    #region Activatables
+#region Activatables
     public void ActivateMove()
     {
         if (m_CanMove)
@@ -291,7 +340,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
 
     public void ActivateHabiltyButton()
     {
@@ -311,7 +360,22 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility1()
     {
-        // Has to be filled with Root
+        
+        if (!m_RootEnable)
+        {
+            EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
+            for(int i = 0; i < EnemyList.Length; i++)
+            {
+                EnemyList[i].GetComponent<Renderer>().material.color = Color.cyan;
+            }            
+
+            m_RootEnable = !m_RootEnable;
+        }
+        else if (m_RootEnable)
+        {
+            FindObjectOfType<EnemyAI>().GetComponent<Renderer>().material.color = FindObjectOfType<EnemyAI>().m_EnemyColor;
+            m_RootEnable = !m_RootEnable;
+        }
     }
 
     public void ActivateAbility2()
@@ -331,7 +395,7 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
         m_Animator.SetTrigger("Cast");
     }
-    #endregion
+#endregion
 
 
     // Lors de la fin du tour des ennemies, le UI des boutons et des zones sont Reset

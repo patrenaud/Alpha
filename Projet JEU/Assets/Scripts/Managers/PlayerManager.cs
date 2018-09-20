@@ -178,20 +178,25 @@ public class PlayerManager : MonoBehaviour
     public void ActivateAbility1()
     {
         m_ActivateAbility1 = true;
+        m_MainUI.m_Ability1.interactable = true;
     }
 
     public void ActivateAbility2()
     {
         m_ActivateAbility2 = true;
+        m_MainUI.m_Ability2.interactable = true;
     }
 
     public void ActivateAbility3()
     {
         m_ActivateAbility3 = true;
+        m_MainUI.m_Ability3.interactable = true;
     }
 
     public void ActivateAbility4()
     {
         m_ActivateAbility4 = true;
+        m_MainUI.m_Ability4.interactable = true;
+
     }
 }
