@@ -2420,6 +2420,7 @@ MonoBehaviour:
   m_MeleeButtonIsPressed: 0
   m_RangeButtonIsPressed: 0
   m_ExtremeForce: 0
+  m_NinjaStrike: 0
   m_ScaleOfAttackZone: {x: 0, y: 0, z: 0}
   m_ScaleOfRangeAttackZone: {x: 0, y: 0, z: 0}
   m_Animator: {fileID: 95076162328001462}
@@ -2430,6 +2431,9 @@ MonoBehaviour:
   m_ProjectilePrefab: {fileID: 1806713388442488, guid: 58d24857e4a95d34bb36d1ae8869433b,
     type: 2}
   m_PlayerAgent: {fileID: 195362451275795982}
+  m_HealFeedback: {fileID: 1634037580322548, guid: 6209dfa15219d234f9737769610fffc9,
+    type: 2}
+  m_RootFeedback: {fileID: 167990, guid: 1915ba71ef127a84fb6bb20ebda36f1e, type: 2}
 --- !u!136 &136745250508932424
 CapsuleCollider:
   m_ObjectHideFlags: 1

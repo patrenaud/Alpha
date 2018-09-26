@@ -64,6 +64,7 @@ public class Upgrades : MonoBehaviour
     public void Archer4()
     {
         PlayerManager.Instance.m_PlayerRange += 1;
+        PlayerManager.Instance.m_Player.SetNewZoneStats();
         m_ArcherButton4.interactable = false;
         m_ArcherButton5.interactable = true;
         ReturnToGame();
@@ -73,6 +74,7 @@ public class Upgrades : MonoBehaviour
         PlayerManager.Instance.m_PlayerPrecision += 1;
         PlayerManager.Instance.m_PlayerPerception += 1;
         PlayerManager.Instance.m_PlayerRange += 1;
+        PlayerManager.Instance.m_Player.SetNewZoneStats();
         m_ArcherButton5.interactable = false;
         ReturnToGame();
     }
@@ -105,8 +107,7 @@ public class Upgrades : MonoBehaviour
         PlayerManager.Instance.ActivateAbility2();
         PlayerManager.Instance.m_MainUI.m_Ability2.GetComponentInChildren<Text>().color = Color.white;
         PlayerManager.Instance.m_MainUI.DeactivateAbilityButtons();
-
-        PlayerManager.Instance.m_PlayerConstitution += 1;
+        
         m_BruteButton4.interactable = false;
         m_BruteButton5.interactable = true;
         ReturnToGame();
@@ -129,6 +130,7 @@ public class Upgrades : MonoBehaviour
     public void Athlete2()
     {
         PlayerManager.Instance.m_PlayerDexterity += 1;
+        PlayerManager.Instance.m_Player.SetNewZoneStats();
         m_AthleteButton2.interactable = false;
         m_AthleteButton3.interactable = true;
         ReturnToGame();
@@ -142,8 +144,10 @@ public class Upgrades : MonoBehaviour
     }
     public void Athlete4()
     {
-        // Activate : Precise hit
+        // Activate : Ninja Strike
+        PlayerManager.Instance.ActivateAbility3();
         PlayerManager.Instance.m_PlayerDexterity += 1;
+        PlayerManager.Instance.m_Player.SetNewZoneStats();
         m_AthleteButton4.interactable = false;
         m_AthleteButton5.interactable = true;
         ReturnToGame();

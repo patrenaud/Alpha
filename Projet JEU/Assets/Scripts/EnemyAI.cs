@@ -32,7 +32,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private EnemyData m_EnemyData;
     [SerializeField]
-    private Slider m_HealthBar;    
+    private Slider m_HealthBar;
 
     private float m_CurrentTime = 0;
     private float m_CurrentHealth;
@@ -47,6 +47,9 @@ public class EnemyAI : MonoBehaviour
     private Text m_Text;
     private bool m_DestinationReached = false;
     private bool m_Rooted = false;
+
+    [SerializeField]
+    private Animator m_Animator;
 
     private void Start()
     {
@@ -66,6 +69,7 @@ public class EnemyAI : MonoBehaviour
         m_HealthBar.gameObject.SetActive(false);
 
         SetZoneStats();
+        m_Animator.SetTrigger("Idle");
     }
 
     private void SetZoneStats()
@@ -87,19 +91,21 @@ public class EnemyAI : MonoBehaviour
         if (m_IsPlaying)
         {
             if (CompareState(BehaviorState.Idle))
-            {
+            {                
                 UpdateIdle();
             }
             if (CompareState(BehaviorState.Patrol))
             {
+                
                 UpdatePatrol();
             }
             if (CompareState(BehaviorState.MoveToPlayer))
             {
+                
                 UpdateMovetoPlayer();
             }
             if (CompareState(BehaviorState.Attack))
-            {
+            {                
                 UpdateAttack();
             }
         }
@@ -158,9 +164,11 @@ public class EnemyAI : MonoBehaviour
     {
         m_CurrentTime += Time.deltaTime;
 
+        // This if/else is for the patrolling movement of the enemy path.
         if (!m_DestinationReached)
         {
             m_EnemyAgent.SetDestination(m_PatrolDestination.position);
+
             if (Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
             {
                 m_DestinationReached = true;
@@ -169,6 +177,7 @@ public class EnemyAI : MonoBehaviour
         else if (m_DestinationReached)
         {
             m_EnemyAgent.SetDestination(m_InitialePos);
+
             if (Vector3.Distance(m_EnemyAgent.destination, m_EnemyAgent.transform.position) < 1f)
             {
                 m_DestinationReached = false;
@@ -202,18 +211,33 @@ public class EnemyAI : MonoBehaviour
             ChangeState(BehaviorState.Attack);
         }
 
+        else if ((Vector3.Distance(PlayerManager.Instance.m_Player.transform.position, transform.position) < m_ScaleOfRangeAttackZone.magnitude * 0.5f)
+            && gameObject.CompareTag("Archer"))
+        {
+            m_EnemyAgent.SetDestination(transform.position);
+            m_CurrentTime = 0;
+            ChangeState(BehaviorState.Attack);
+        }
+
         if (m_CurrentTime >= 1.5f)
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
-
-            ChangeState(BehaviorState.Idle);
+                        
             EndTurn();
         }
     }
 
     private void UpdateAttack()
     {
+        if (gameObject.CompareTag("Archer"))
+        {
+            PlayerManager.Instance.TakeDamage(m_EnemyData.EnemyRangeDamage);
+        }
+        else if (gameObject.CompareTag("Warrior") || (gameObject.CompareTag("Tank")))
+        {
+            PlayerManager.Instance.TakeDamage(m_EnemyData.MeleeAttackDamage);
+        }        
 
         ChangeState(BehaviorState.Idle);
         EndTurn();
@@ -227,9 +251,8 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.Attack)
                     {
-                        // Activate Anim / Camera
-                        // Attack();
-                        PlayerManager.Instance.TakeDamage(m_EnemyData.MeleeAttackDamage);
+                        // Activate Anim for all different enemies           
+                        m_Animator.SetTrigger("Attack");
                     }
                     break;
                 }
@@ -237,7 +260,8 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.Patrol)
                     {
-                        // Activate Zone as big as sight range for feedback
+                        // Activate Zone as big as sight range for feedback ???
+                        m_Animator.SetTrigger("Walk");
                     }
                     break;
                 }
@@ -246,6 +270,7 @@ public class EnemyAI : MonoBehaviour
                     if (m_State != BehaviorState.MoveToPlayer)
                     {
                         m_EnemyAgent.SetDestination(PlayerManager.Instance.m_Player.gameObject.transform.position);
+                        m_Animator.SetTrigger("Walk");
                     }
                 }
                 break;
@@ -253,7 +278,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.Idle)
                     {
-                        // Reset Idle Anmiation
+                        // Reset Idle Anmiation                        
                     }
                 }
                 break;
@@ -272,7 +297,8 @@ public class EnemyAI : MonoBehaviour
         {
             m_AttackZone.transform.localScale = Vector3.zero;
         }
-        m_FinishTurn();
+        m_Animator.SetTrigger("Idle");
+        m_FinishTurn();        
     }
 
     public void PlayTurn()
@@ -297,6 +323,7 @@ public class EnemyAI : MonoBehaviour
             m_HealthBar.gameObject.SetActive(true);
         }
         m_CurrentHealth -= aDamage;
+        m_Animator.SetTrigger("Hit");
         m_HealthBar.value = m_CurrentHealth / m_EnemyData.EnemyMaxHealth;
     }
 
@@ -306,6 +333,13 @@ public class EnemyAI : MonoBehaviour
         {
             m_OnDeath(this);
         }
+        m_Animator.SetTrigger("Die");
+        StartCoroutine(DestroyEnemy());
+    }
+
+    private IEnumerator DestroyEnemy()
+    {
+        yield return new WaitForSeconds(2.5f);
         Destroy(gameObject);
     }
 

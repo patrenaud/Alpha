@@ -96,6 +96,12 @@
     <Compile Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor\Utils\FxStyles.cs" />
     <Compile Include="Assets\Artwork\LowpolyDungeonAssets\Demo Scene\PostProcessing\Editor\Utils\ReflectionUtils.cs" />
     <Compile Include="Assets\Editor\SceneAutoLoader.cs" />
+    <Compile Include="Assets\KriptoFX\Realistic Effects Pack v4\PostEffects\PC\Bloom\Editor\BloomEditor_RFX4.cs" />
+    <Compile Include="Assets\KriptoFX\Realistic Effects Pack v4\PostEffects\PC\Bloom\Editor\BloomGraphDrawer_RFX4.cs" />
+    <Compile Include="Assets\KriptoFX\Realistic Effects Pack v4\PostEffects\PC\Common\Editor\EditorGUIHelper_RFX4.cs" />
+    <Compile Include="Assets\KriptoFX\Realistic Effects Pack v4\PostEffects\PC\Common\Editor\FieldFinder_RFX4.cs" />
+    <Compile Include="Assets\KriptoFX\Realistic Effects Pack v4\PostEffects\PC\Common\Editor\MinDrawer_RFX4.cs" />
+    <Compile Include="Assets\KriptoFX\Realistic Effects Pack v4\Scripts\Editor\RFX4_CustomMaterialInspectorParticle.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Users/1810057/Desktop/Alpha/Alpha/Projet JEU/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

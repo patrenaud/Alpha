@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: LevelData1
   m_EditorClassIdentifier: 
   m_EnemyListData:
-  - {fileID: 114394590516715682, guid: a28e16bc5af629641863abeb557f2e9c, type: 2}
+  - {fileID: 114924062946733700, guid: 30f1d20ca3e878f42bca993d8a200335, type: 2}

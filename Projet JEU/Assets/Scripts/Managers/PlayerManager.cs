@@ -78,9 +78,15 @@ public class PlayerManager : MonoBehaviour
         {
             Instance.m_MainUI.m_HealthBar.value = 1;
             m_PlayerDied = true;
-            LevelManager.Instance.ChangeLevel("Results");
+            m_Player.m_Animator.SetTrigger("Die");
 
+            StartCoroutine(DeathDelay());        
         }
+    }
+    private IEnumerator DeathDelay()
+    {
+        yield return new WaitForSeconds(2.5f);
+        LevelManager.Instance.ChangeLevel("Results");
     }
 
     public float PlayerMeleeDamage()

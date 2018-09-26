@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public bool m_MeleeButtonIsPressed = false;
     public bool m_RangeButtonIsPressed = false;
     public bool m_ExtremeForce = false;
+    public bool m_NinjaStrike = false;
     public Vector3 m_ScaleOfAttackZone;
     public Vector3 m_ScaleOfRangeAttackZone;
     public Animator m_Animator;
@@ -37,12 +38,18 @@ public class PlayerController : MonoBehaviour
     private bool m_RootEnable = false;
     private float m_BulletSpeed = 50f;
 
+    [SerializeField]
+    private GameObject m_HealFeedback;
+    [SerializeField]
+    private GameObject m_RootFeedback;
+
     private void Awake()
     {
         PlayerManager.Instance.m_Player = this;
         PlayerManager.Instance.SetAnimator();
 
         m_MoveZone.SetActive(false);
+        
     }
 
     private void Start()
@@ -89,10 +96,16 @@ public class PlayerController : MonoBehaviour
     {
         m_ScaleOfAttackZone = m_AttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.MeleeAttackRange;
         m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.RangeAttackRange;
-        m_ScaleOfMoveZone.x = m_MoveZone.transform.localScale.x * PlayerManager.Instance.m_PlayerData.MoveDistance;
-        m_ScaleOfMoveZone.z = m_MoveZone.transform.localScale.z * PlayerManager.Instance.m_PlayerData.MoveDistance;
+        m_ScaleOfMoveZone.x = m_MoveZone.transform.localScale.x * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
+        m_ScaleOfMoveZone.z = m_MoveZone.transform.localScale.z * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
+    }
+
+    public void SetNewZoneStats()
+    {
+        m_ScaleOfMoveZone.x = m_MoveZone.transform.localScale.x * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
+        m_ScaleOfMoveZone.z = m_MoveZone.transform.localScale.z * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
     }
 
     public void Move()
@@ -155,17 +168,8 @@ public class PlayerController : MonoBehaviour
             RaycastHit Hitinfo;
 
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
-            {
-                if (m_RootEnable)
-                {
-                    Debug.Log("Enemy Rooted");
-                    m_Animator.SetTrigger("Cast");
-                    Hitinfo.collider.gameObject.GetComponent<EnemyAI>().Rooted();
-                    FindObjectOfType<EnemyAI>().GetComponent<Renderer>().material.color = FindObjectOfType<EnemyAI>().m_EnemyColor;
-                    m_RootEnable = !m_RootEnable;
-                }
-
-                else if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
+            {                
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
                     PlayerManager.Instance.SetAttackAnim();
 
@@ -180,7 +184,7 @@ public class PlayerController : MonoBehaviour
                 // This part is the condition to defeat the Boss
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
-                    PlayerManager.Instance.SetAttackAnim();
+                    // NEED A ARCHERY ANIM***
 
                     AttackEnd(Hitinfo);
                     ShootProjectile(Hitinfo);
@@ -244,10 +248,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (m_RootEnable)
                 {
-                    Debug.Log("Enemy Rooted");
                     m_Animator.SetTrigger("Cast");
                     Hitinfo.collider.gameObject.GetComponent<EnemyAI>().Rooted();
 
+                    // Creates the visual effect for the spell
+                    Instantiate(m_RootFeedback, Hitinfo.collider.gameObject.transform, false);
 
                     EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
                     for (int i = 0; i < EnemyList.Length; i++)
@@ -259,6 +264,18 @@ public class PlayerController : MonoBehaviour
 
                     PlayerManager.Instance.m_MainUI.OnActivateAbility1();
                     m_RootEnable = !m_RootEnable;
+                }
+
+                else if (m_NinjaStrike)
+                {
+                    m_Animator.SetTrigger("Cast");
+                    EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
+                    for (int i = 0; i < EnemyList.Length; i++)
+                    {
+                        EnemyList[i].GetComponent<Renderer>().material.color = EnemyList[i].GetComponent<EnemyAI>().m_EnemyColor;
+                    }
+                    Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(40f);
+                    m_NinjaStrike = !m_NinjaStrike;
                 }
             }
         }
@@ -382,18 +399,33 @@ public class PlayerController : MonoBehaviour
     {
         // Has to be filled with Extreme Force
         m_ExtremeForce = true;
-        m_Animator.SetTrigger("Cast");
+        m_Animator.SetTrigger("Cast");        
     }
 
     public void ActivateAbility3()
     {
-        // Has to be filled with Abilities
+        if (!m_NinjaStrike)
+        {
+            EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
+            for (int i = 0; i < EnemyList.Length; i++)
+            {
+                EnemyList[i].GetComponent<Renderer>().material.color = Color.grey;
+            }
+
+            m_NinjaStrike = !m_NinjaStrike;
+        }
+        else if (m_NinjaStrike)
+        {
+            FindObjectOfType<EnemyAI>().GetComponent<Renderer>().material.color = FindObjectOfType<EnemyAI>().m_EnemyColor;
+            m_NinjaStrike = !m_NinjaStrike;
+        }
     }
 
     public void ActivateAbility4()
     {
         PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
         m_Animator.SetTrigger("Cast");
+        Instantiate(m_HealFeedback, gameObject.transform, false);
     }
 #endregion
 
