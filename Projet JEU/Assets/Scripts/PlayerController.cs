@@ -70,15 +70,15 @@ public class PlayerController : MonoBehaviour
         {
             Move();
         }
-        else if (m_CanAttack)
+        if (m_CanAttack)
         {
             Attack();
         }
-        else if (m_CanAbility)
+        if (m_CanAbility)
         {
             Ability();
         }
-        else if (m_EndTurn)
+        if (m_EndTurn)
         {
             EndTurn();
         }
@@ -128,34 +128,38 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
+            // Permet le move seulement si le click est dans la MoveZone et sur le Ground
+            else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Ground")) && Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("MoveZone")))
+            {
+                Debug.Log(Hitinfo.point.y);
+                m_TargetPosition.x = Hitinfo.point.x;
+                m_TargetPosition.z = Hitinfo.point.z;
+                m_TargetPosition.y = transform.position.y;
+
+                MovetoPoint(m_TargetPosition);
+
+                //m_CanMove = false;
+                m_MoveZone.SetActive(false);
+                PlayerManager.Instance.m_MainUI.DeactivateMove();
+            }
+
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("UI")))
             {
                 // Si le joueur click à nouveau sur le bouton Move, il annule son mouvement.
                 m_CanMove = false;
             }
 
-            // Permet le move seulement si le click est dans la MoveZone et sur le Ground
-            else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Ground")) && Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("MoveZone")))
-            {
-                m_TargetPosition.x = Hitinfo.point.x;
-                m_TargetPosition.z = Hitinfo.point.z;
-                m_TargetPosition.y = transform.position.y;
-
-                MovetoPoint(Hitinfo);
-
-                //m_CanMove = false;
-                m_MoveZone.SetActive(false);
-                PlayerManager.Instance.m_MainUI.DeactivateMove();
-            }
         }
     }
 
     // Permet le déplacment du joueur 
-    private void MovetoPoint(RaycastHit Hitinfo)
+    private void MovetoPoint(Vector3 Hitinfo)
     {
-        PlayerManager.Instance.SetWalkAnim(Hitinfo);
+        PlayerManager.Instance.SetWalkAnim();
 
-        m_PlayerAgent.SetDestination(Hitinfo.point);
+        Debug.Log(Hitinfo);
+
+        m_PlayerAgent.SetDestination(Hitinfo);
 
     }
 
@@ -257,7 +261,7 @@ public class PlayerController : MonoBehaviour
                     EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
                     for (int i = 0; i < EnemyList.Length; i++)
                     {
-                        EnemyList[i].GetComponent<Renderer>().material.color = EnemyList[i].GetComponent<EnemyAI>().m_EnemyColor;
+                        EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = false;
                     }   
 
                     Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_SpellActive.enabled = true;
@@ -383,14 +387,18 @@ public class PlayerController : MonoBehaviour
             EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
             for(int i = 0; i < EnemyList.Length; i++)
             {
-                EnemyList[i].GetComponent<Renderer>().material.color = Color.cyan;
+                EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = true;
             }            
 
             m_RootEnable = !m_RootEnable;
         }
         else if (m_RootEnable)
         {
-            FindObjectOfType<EnemyAI>().GetComponent<Renderer>().material.color = FindObjectOfType<EnemyAI>().m_EnemyColor;
+            EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
+            for (int i = 0; i < EnemyList.Length; i++)
+            {
+                EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = false;
+            }
             m_RootEnable = !m_RootEnable;
         }
     }

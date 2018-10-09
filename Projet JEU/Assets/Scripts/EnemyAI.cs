@@ -27,6 +27,7 @@ public class EnemyAI : MonoBehaviour
     public Transform m_PatrolDestination;
     public Color m_EnemyColor;
     public Image m_SpellActive;
+    public Image m_Targetable;
 
     private BehaviorState m_State;
     [SerializeField]
@@ -53,6 +54,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
+        m_Targetable.enabled = false;
         m_SpellActive.enabled = false;
         m_Text.enabled = false;
 
@@ -131,7 +133,10 @@ public class EnemyAI : MonoBehaviour
             {
                 m_RootRoundCountdown -= 1;
                 TakeDamage(10f);
-                StartCoroutine(RootedText());
+                if (m_RootRoundCountdown >= 1)
+                {
+                    StartCoroutine(RootedText());
+                }                
 
                 if (m_RootRoundCountdown <= 0)
                 {
@@ -193,8 +198,7 @@ public class EnemyAI : MonoBehaviour
         {
             m_EnemyAgent.SetDestination(transform.position);
             m_CurrentTime = 0;
-
-            ChangeState(BehaviorState.Idle);
+            
             EndTurn();
         }
     }
@@ -297,6 +301,7 @@ public class EnemyAI : MonoBehaviour
         {
             m_AttackZone.transform.localScale = Vector3.zero;
         }
+        m_State = BehaviorState.Idle;
         m_Animator.SetTrigger("Idle");
         m_FinishTurn();        
     }

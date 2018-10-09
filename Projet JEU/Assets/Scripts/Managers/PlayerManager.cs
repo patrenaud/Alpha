@@ -162,13 +162,13 @@ public class PlayerManager : MonoBehaviour
         m_Player.m_Animator.SetTrigger("Idle");
     }
 
-    public void SetWalkAnim(RaycastHit Hitinfo)
+    public void SetWalkAnim()
     {
         m_Player.m_Animator.SetTrigger("Walk");
-        StartCoroutine(EndWalkAnim(Hitinfo));
+        StartCoroutine(EndWalkAnim());
     }
 
-    private IEnumerator EndWalkAnim(RaycastHit Hitinfo)
+    private IEnumerator EndWalkAnim()
     {
         yield return new WaitForSeconds(1.5f);
         m_Player.m_Animator.SetTrigger("Idle");
