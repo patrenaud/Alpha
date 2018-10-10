@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
             // Permet le move seulement si le click est dans la MoveZone et sur le Ground
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Ground")) && Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("MoveZone")))
             {
-                Debug.Log(Hitinfo.point.y);
+                Debug.Log(Hitinfo.collider.gameObject);
                 m_TargetPosition.x = Hitinfo.point.x;
                 m_TargetPosition.z = Hitinfo.point.z;
                 m_TargetPosition.y = transform.position.y;
