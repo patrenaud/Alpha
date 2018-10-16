@@ -170,7 +170,7 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator EndWalkAnim()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.8f);
         m_Player.m_Animator.SetTrigger("Idle");
     }
 

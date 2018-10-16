@@ -769,8 +769,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4103911466074788}
   - component: {fileID: 33694989995776250}
-  - component: {fileID: 136946566887753378}
   - component: {fileID: 23745874656662396}
+  - component: {fileID: 135462246581031998}
   m_Layer: 12
   m_Name: MoveZone
   m_TagString: Untagged
@@ -1190,7 +1190,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1284551231834388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -37.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4967493682307430}
@@ -2434,6 +2434,18 @@ MonoBehaviour:
   m_HealFeedback: {fileID: 1634037580322548, guid: 6209dfa15219d234f9737769610fffc9,
     type: 2}
   m_RootFeedback: {fileID: 167990, guid: 1915ba71ef127a84fb6bb20ebda36f1e, type: 2}
+--- !u!135 &135462246581031998
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1581094829810836}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.67405516
+  m_Center: {x: 0.000000059604645, y: -46.532223, z: -0.00000011920929}
 --- !u!136 &136745250508932424
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2453,19 +2465,6 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1334818455072416}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &136946566887753378
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1581094829810836}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1

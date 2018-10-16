@@ -79,7 +79,7 @@ public class LevelManager : DontDestroyOnLoad
     private IEnumerator LoadSceneTimer(string i_Scene)
     {
         CheckSound(i_Scene);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(i_Scene);
     }
 

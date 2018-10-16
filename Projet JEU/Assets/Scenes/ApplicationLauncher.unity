@@ -358,11 +358,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114570154145949344, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4335014157443766, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0.84946483
@@ -395,86 +390,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 224448174257687358, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224448174257687358, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224732590573430604, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224590819150725124, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224774952755614106, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1006327947858580, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1635253200250918, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114570154145949344, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114570154145949344, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114570154145949344, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 719687033}
-    - target: {fileID: 114570154145949344, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Ability3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114570154145949344, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1635253200250918, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1523690960285276, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114729550336329802, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-        type: 2}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd06b91ebd9bc344fbc52c98e1e76892, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &719687033 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114497779941528624, guid: cd06b91ebd9bc344fbc52c98e1e76892,
-    type: 2}
-  m_PrefabInternal: {fileID: 719687032}
-  m_Script: {fileID: 11500000, guid: 13b7dd9ae8e0ec444a4d45091035a6a1, type: 3}
 --- !u!1 &770540753
 GameObject:
   m_ObjectHideFlags: 0

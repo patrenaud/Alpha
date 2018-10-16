@@ -131,14 +131,12 @@ public class PlayerController : MonoBehaviour
             // Permet le move seulement si le click est dans la MoveZone et sur le Ground
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Ground")) && Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("MoveZone")))
             {
-                Debug.Log(Hitinfo.collider.gameObject);
                 m_TargetPosition.x = Hitinfo.point.x;
                 m_TargetPosition.z = Hitinfo.point.z;
                 m_TargetPosition.y = transform.position.y;
 
                 MovetoPoint(m_TargetPosition);
 
-                //m_CanMove = false;
                 m_MoveZone.SetActive(false);
                 PlayerManager.Instance.m_MainUI.DeactivateMove();
             }
@@ -156,11 +154,7 @@ public class PlayerController : MonoBehaviour
     private void MovetoPoint(Vector3 Hitinfo)
     {
         PlayerManager.Instance.SetWalkAnim();
-
-        Debug.Log(Hitinfo);
-
         m_PlayerAgent.SetDestination(Hitinfo);
-
     }
 
     // Permet l'attaque du joueur vers l'ennemi
@@ -178,10 +172,10 @@ public class PlayerController : MonoBehaviour
                     PlayerManager.Instance.SetAttackAnim();
 
                     ShootProjectile(Hitinfo);
-                    //ApplyDamage();
                     AttackEnd(Hitinfo);
                 }
             }
+            /* 
             // Doit être niveau 2 du prototype pour attacker le Boss.
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && PlayerManager.Instance.m_RangeAttack)
             {
@@ -197,7 +191,7 @@ public class PlayerController : MonoBehaviour
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")))
             {
                 Debug.Log("Can't attack Boss yet");
-            }
+            }*/
         }
     }
 
@@ -293,7 +287,7 @@ public class PlayerController : MonoBehaviour
 
         // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
         m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
-        m_MoveZone.GetComponent<CapsuleCollider>().enabled = false;
+        m_MoveZone.GetComponent<SphereCollider>().enabled = false;
         m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = false;
 
         if (m_FinishTurn != null)
@@ -445,7 +439,7 @@ public class PlayerController : MonoBehaviour
         m_CanAttack = false;
         m_CanMove = false;
         m_AttackZone.GetComponent<CapsuleCollider>().enabled = true;
-        m_MoveZone.GetComponent<CapsuleCollider>().enabled = true;
+        m_MoveZone.GetComponent<SphereCollider>().enabled = true;
         m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = true;
     }
 }

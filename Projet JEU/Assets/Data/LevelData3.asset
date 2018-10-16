@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: LevelData3
   m_EditorClassIdentifier: 
   m_EnemyListData:
-  - {fileID: 114394590516715682, guid: a28e16bc5af629641863abeb557f2e9c, type: 2}
-  - {fileID: 114223859792943476, guid: d758b129706f5424d959d32123724518, type: 2}
-  - {fileID: 114439898293356764, guid: f351ed90f9feec448bc6288e5e81b0b3, type: 2}
+  - {fileID: 114940975876306990, guid: 0ba1720a322509c43a9b2830aae3207d, type: 2}
+  - {fileID: 114924062946733700, guid: 30f1d20ca3e878f42bca993d8a200335, type: 2}
+  - {fileID: 114986855811304630, guid: 10acb9514e5c2a74caed1c2bfa44556c, type: 2}

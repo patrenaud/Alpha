@@ -18,6 +18,7 @@ public class LevelController : MonoBehaviour
     private List<int> m_RandomIndex = new List<int>();
     private List<EnemyAI> m_Enemies = new List<EnemyAI>();
     private int m_CurrentLevel;
+    private bool m_CanLoadScene = true;
 
     private int m_TurnIndex = 0;
 
@@ -33,6 +34,7 @@ public class LevelController : MonoBehaviour
         GenerateEnemies();
         GenerateBoss();
         LevelManager.Instance.SetLevelIndex();
+        m_CanLoadScene = true;
 
         // Si le joueur est mort, il peut recommencer le même niveau. (FreezeLevelIndex)
     }
@@ -116,15 +118,10 @@ public class LevelController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;
         m_Enemies.Remove(aEnemy);
 
-        if (m_Enemies.Count == 0)
+        if (m_Enemies.Count == 0 && m_CanLoadScene)
         {
-            StartCoroutine(EndRound());
+            m_CanLoadScene = false;
+            LevelManager.Instance.ChangeLevel("Results");
         }
-    }
-
-    private IEnumerator EndRound()
-    {
-        yield return new WaitForSeconds(2f);
-        LevelManager.Instance.ChangeLevel("Results");
     }
 }
