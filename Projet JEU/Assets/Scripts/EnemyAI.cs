@@ -25,7 +25,6 @@ public class EnemyAI : MonoBehaviour
     public bool m_IsPlaying = false;
 
     public Transform m_PatrolDestination;
-    public Color m_EnemyColor;
     public Image m_SpellActive;
     public Image m_Targetable;
 
@@ -36,7 +35,7 @@ public class EnemyAI : MonoBehaviour
     private Slider m_HealthBar;
 
     private float m_CurrentTime = 0;
-    private float m_CurrentHealth;
+    public float m_CurrentHealth;
     [SerializeField]
     private int m_RootRoundCountdown = 4;
     private NavMeshAgent m_EnemyAgent;
@@ -65,7 +64,6 @@ public class EnemyAI : MonoBehaviour
         m_EnemyAgent = GetComponent<NavMeshAgent>();
 
         m_CurrentHealth = m_EnemyData.EnemyMaxHealth;
-        m_EnemyColor = GetComponent<Renderer>().material.color;
 
         m_HealthBar.value = 1;
         m_HealthBar.gameObject.SetActive(false);
@@ -336,15 +334,16 @@ public class EnemyAI : MonoBehaviour
     {
         if (m_OnDeath != null)
         {
-            m_OnDeath(this);
+            m_Animator.SetTrigger("Die");
+            StartCoroutine(DestroyEnemy());            
         }
-        m_Animator.SetTrigger("Die");
-        StartCoroutine(DestroyEnemy());
+
     }
 
     private IEnumerator DestroyEnemy()
     {
         yield return new WaitForSeconds(2.5f);
+        m_OnDeath(this);
         Destroy(gameObject);
     }
 
@@ -353,22 +352,19 @@ public class EnemyAI : MonoBehaviour
         m_Rooted = true;
     }
 
-    // Les changements de couleurs et le changement du bool se font lorsque la zone d'attaque du joueur entre en collision avec les ennemis
-    private void OnTriggerStay(Collider a_Other)
+    private void OnTriggerEnter(Collider a_Other)
     {
         if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
         {
-            gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             m_Attackable = true;
         }
     }
 
-    // Lorsque la zone d'attaque quitte l'ennemi, il reprend sa couleur d'avant
+
     private void OnTriggerExit(Collider a_Other)
     {
         if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
         {
-            gameObject.GetComponent<Renderer>().material.color = m_EnemyColor;
             m_Attackable = false;
         }
     }

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23cbcbfb857d51d4d8d34c8cfa527bbd, type: 3}
+  m_Name: LevelData4
+  m_EditorClassIdentifier: 
+  m_EnemyListData:
+  - {fileID: 114986855811304630, guid: 10acb9514e5c2a74caed1c2bfa44556c, type: 2}
+  - {fileID: 114986855811304630, guid: 10acb9514e5c2a74caed1c2bfa44556c, type: 2}

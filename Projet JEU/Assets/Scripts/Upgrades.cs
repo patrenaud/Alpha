@@ -146,6 +146,7 @@ public class Upgrades : MonoBehaviour
     {
         // Activate : Ninja Strike
         PlayerManager.Instance.ActivateAbility3();
+        PlayerManager.Instance.m_MainUI.m_Ability3.GetComponentInChildren<Text>().color = Color.white;
         PlayerManager.Instance.m_PlayerDexterity += 1;
         PlayerManager.Instance.m_Player.SetNewZoneStats();
         m_AthleteButton4.interactable = false;

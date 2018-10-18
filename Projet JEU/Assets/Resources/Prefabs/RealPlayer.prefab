@@ -1190,7 +1190,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1284551231834388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -37.35}
+  m_LocalPosition: {x: 9.71, y: 0.1, z: 3.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4967493682307430}
@@ -2016,8 +2016,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1334818455072416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -0.04, z: -0.09}
-  m_LocalScale: {x: 5, y: 0.02, z: 5}
+  m_LocalPosition: {x: -0.01, y: 0.016, z: -0.09}
+  m_LocalScale: {x: 6, y: 0.02, z: 6}
   m_Children: []
   m_Father: {fileID: 4045437385249052}
   m_RootOrder: 6
@@ -2434,6 +2434,9 @@ MonoBehaviour:
   m_HealFeedback: {fileID: 1634037580322548, guid: 6209dfa15219d234f9737769610fffc9,
     type: 2}
   m_RootFeedback: {fileID: 167990, guid: 1915ba71ef127a84fb6bb20ebda36f1e, type: 2}
+  m_ExtremeForceFeedback: {fileID: 1614648838348040, guid: 6b12f08cfea33d1429a5fb9ca7e5f9fe,
+    type: 2}
+  m_NinjaFeedback: {fileID: 111372, guid: 87738b5a38cb9d34aaa6cbf49c05e518, type: 2}
 --- !u!135 &135462246581031998
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2468,10 +2471,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.5293428
+  m_Height: 264.6714
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.0051041604, y: 0, z: 0}
 --- !u!137 &137278505646845212
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

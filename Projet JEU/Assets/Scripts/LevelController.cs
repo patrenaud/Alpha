@@ -22,10 +22,6 @@ public class LevelController : MonoBehaviour
 
     private int m_TurnIndex = 0;
 
-    private void Awake()
-    {
-        
-    }
 
     private void Start()
     {
@@ -70,7 +66,7 @@ public class LevelController : MonoBehaviour
 
     private void GenerateBoss()
     {
-
+        // DLC material
     }
 
     private void GeneratePlayer()
@@ -115,7 +111,7 @@ public class LevelController : MonoBehaviour
 
     private void OnEnemyDeath(EnemyAI aEnemy)
     {
-        PlayerManager.Instance.m_MainUI.m_XpBar.value += 0.35f;
+        PlayerManager.Instance.m_MainUI.m_XpBar.value += PlayerManager.Instance.m_XPGainedPerKill;
         m_Enemies.Remove(aEnemy);
 
         if (m_Enemies.Count == 0 && m_CanLoadScene)

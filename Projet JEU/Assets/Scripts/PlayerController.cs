@@ -42,6 +42,11 @@ public class PlayerController : MonoBehaviour
     private GameObject m_HealFeedback;
     [SerializeField]
     private GameObject m_RootFeedback;
+    [SerializeField]
+    private GameObject m_ExtremeForceFeedback;
+    [SerializeField]
+    private GameObject m_NinjaFeedback;
+    
 
     private void Awake()
     {
@@ -61,6 +66,8 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.ResetAbilities();
 
         SetZoneStats(); // Sets the attack zones (range of both melee and range)
+
+
     }
 
     private void Update()
@@ -82,14 +89,6 @@ public class PlayerController : MonoBehaviour
         {
             EndTurn();
         }
-
-#if !UNITY_CHEATS
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            PlayerManager.Instance.LevelUp();
-        }
-#endif
-
     }
 
     private void SetZoneStats()
@@ -176,7 +175,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
             /* 
-            // Doit être niveau 2 du prototype pour attacker le Boss.
+            // DLC Boss material
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Boss")) && PlayerManager.Instance.m_RangeAttack)
             {
                 // This part is the condition to defeat the Boss
@@ -266,17 +265,36 @@ public class PlayerController : MonoBehaviour
 
                 else if (m_NinjaStrike)
                 {
-                    m_Animator.SetTrigger("Cast");
-                    EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
+                    m_Animator.SetTrigger("Attack");
+                    
+                    EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>(); 
                     for (int i = 0; i < EnemyList.Length; i++)
                     {
-                        EnemyList[i].GetComponent<Renderer>().material.color = EnemyList[i].GetComponent<EnemyAI>().m_EnemyColor;
+                        EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = false;
                     }
-                    Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(40f);
+                    Vector3 OldPos = transform.position;
+                    
+                    m_PlayerAgent.acceleration += 1000;
+                    m_PlayerAgent.speed += 1000;
+                    m_PlayerAgent.destination = Hitinfo.collider.gameObject.transform.position;                    
+
+                    StartCoroutine(ReturnFromStrike(OldPos, Hitinfo));
+                    PlayerManager.Instance.m_MainUI.OnActivateAbility3();
                     m_NinjaStrike = !m_NinjaStrike;
                 }
             }
         }
+    }
+
+    private IEnumerator ReturnFromStrike(Vector3 OldPos, RaycastHit Hitinfo)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(50f);
+        Instantiate(m_NinjaFeedback, Hitinfo.collider.gameObject.transform, false);
+        m_PlayerAgent.destination = OldPos;
+        yield return new WaitForSeconds(1f);
+        m_PlayerAgent.speed -= 1000;
+        m_PlayerAgent.acceleration -= 1000;        
     }
 
     public void EndTurn()
@@ -400,27 +418,33 @@ public class PlayerController : MonoBehaviour
     public void ActivateAbility2()
     {
         // Has to be filled with Extreme Force
+        Instantiate(m_ExtremeForceFeedback, gameObject.transform, true);
         m_ExtremeForce = true;
-        m_Animator.SetTrigger("Cast");        
+        m_Animator.SetTrigger("Cast");  
+        PlayerManager.Instance.m_MainUI.OnActivateAbility2();      
     }
 
     public void ActivateAbility3()
     {
-        if (!m_NinjaStrike)
-        {
-            EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
-            for (int i = 0; i < EnemyList.Length; i++)
-            {
-                EnemyList[i].GetComponent<Renderer>().material.color = Color.grey;
-            }
+        EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
 
+        if (!m_NinjaStrike)
+        {            
+            for(int i = 0; i < EnemyList.Length; i++)
+            {
+                EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = true;
+            }
             m_NinjaStrike = !m_NinjaStrike;
         }
         else if (m_NinjaStrike)
-        {
-            FindObjectOfType<EnemyAI>().GetComponent<Renderer>().material.color = FindObjectOfType<EnemyAI>().m_EnemyColor;
+        {            
+            for (int i = 0; i < EnemyList.Length; i++)
+            {
+                EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = false;
+            }
             m_NinjaStrike = !m_NinjaStrike;
         }
+        
     }
 
     public void ActivateAbility4()
@@ -430,7 +454,6 @@ public class PlayerController : MonoBehaviour
         Instantiate(m_HealFeedback, gameObject.transform, false);
     }
 #endregion
-
 
     // Lors de la fin du tour des ennemies, le UI des boutons et des zones sont Reset
     public void ActivateActions()

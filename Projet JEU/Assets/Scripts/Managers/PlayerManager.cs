@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerManager : MonoBehaviour
     public float m_HealthRegenAbility;
     public bool m_RangeAttack = false;
     public bool m_PlayerDied = false;
+    public float m_XPGainedPerKill = 1;
 
     [HideInInspector]
     public int m_PlayerStrenght = 0;
@@ -33,6 +35,27 @@ public class PlayerManager : MonoBehaviour
     public bool m_ActivateAbility2 = false;
     public bool m_ActivateAbility3 = false;
     public bool m_ActivateAbility4 = false;
+
+
+#if UNITY_CHEATS
+
+    // Cheat variables for Cheat UI
+    [SerializeField]
+    private GameObject m_CheatCanvas;
+    [SerializeField]
+    private Text m_InfiniteHPText;
+    private bool m_HPCheat = false;
+    [SerializeField]
+    private Text m_InfiniteAbilitiesText;
+    private bool m_AbilityCheat = false;
+    [SerializeField]
+    private Text m_InfiniteMoveText;
+    private bool m_MoveCheat = false;
+    [SerializeField]
+    private Text m_InfiniteAttacksText;
+    private bool m_AttackCheat = false;
+
+#endif
 
     //private float m_MoveSpeed;
 
@@ -63,6 +86,11 @@ public class PlayerManager : MonoBehaviour
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
         m_MainUI.StartHpAndExp();
 
+
+#if UNITY_CHEATS
+        m_CheatCanvas.SetActive(true);
+#endif
+
     }
 
     private void Update()
@@ -82,6 +110,70 @@ public class PlayerManager : MonoBehaviour
 
             StartCoroutine(DeathDelay());        
         }
+
+
+#if UNITY_CHEATS
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            LevelUp();
+        }
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            if(!m_HPCheat)
+            {
+                m_InfiniteHPText.text = "ON";
+                m_HPCheat = !m_HPCheat;
+            }
+            else if (m_HPCheat)
+            {
+                m_InfiniteHPText.text = "OFF";
+                m_HPCheat = !m_HPCheat;
+            }
+            
+        }
+        if(Input.GetKeyDown(KeyCode.J))
+        {
+            if(!m_AbilityCheat)
+            {
+                m_InfiniteAbilitiesText.text = "ON";
+                m_AbilityCheat = !m_AbilityCheat;
+            }
+            else if (m_AbilityCheat)
+            {
+                m_InfiniteAbilitiesText.text = "OFF";
+                m_AbilityCheat = !m_AbilityCheat;
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            if(!m_MoveCheat)
+            {
+                m_InfiniteMoveText.text = "ON";
+                m_MoveCheat = !m_MoveCheat;
+            }
+            else if (m_MoveCheat)
+            {
+                m_InfiniteMoveText.text = "OFF";
+                m_MoveCheat = !m_MoveCheat;
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            if(!m_AttackCheat)
+            {
+                m_InfiniteAttacksText.text = "ON";
+                m_AttackCheat = !m_AttackCheat;
+            }
+            else if (m_AttackCheat)
+            {
+                m_InfiniteAttacksText.text = "OFF";
+                m_AttackCheat = !m_AttackCheat;
+            }
+        }
+#endif
+
+
     }
     private IEnumerator DeathDelay()
     {
