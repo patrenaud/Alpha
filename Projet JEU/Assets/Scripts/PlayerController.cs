@@ -435,7 +435,7 @@ public class PlayerController : MonoBehaviour
     public void ActivateAbility2()
     {
         // Has to be filled with Extreme Force
-        Instantiate(m_ExtremeForceFeedback, gameObject.transform, true);
+        Instantiate(m_ExtremeForceFeedback, gameObject.transform, false);
         m_ExtremeForce = true;
         m_Animator.SetTrigger("Cast");  
         PlayerManager.Instance.m_MainUI.OnActivateAbility2();      
