@@ -51,7 +51,7 @@ public class PlayerData : ScriptableObject
     }
 
     [SerializeField]
-    private float m_MoveDistancePerLevel = 0.1f;
+    private float m_MoveDistancePerLevel = 2f;
     public float MoveDistancePerLevel
     {
         get { return m_MoveDistancePerLevel; }
@@ -101,14 +101,4 @@ public class PlayerData : ScriptableObject
     {
         get { return m_HealthPerLevel; }
     }
-
-    // NEED TO ADD FOR ALPHA
-
-    //  Force	      Augmente les dégâts lors d’une attaque au corps à corps                                       DONE
-    //  Dextérité	  Augmente la chance d’éviter les attaques ennemies ET le déplacement du joueur                 % ?
-    //  Constitution  Augmente les points de vie du personnage                                                      DONE
-    //  Perception	  Augmente les dégâts avec l’arc à flèche                                                       DONE
-    //  Précision	  Augmente la chance de toucher l’ennemi lors d’une attaque à distance et en corps à corps      % ?
-    //  Portée	      Augmente la portée de l’arc à flèche                                                          DONE
-
 }

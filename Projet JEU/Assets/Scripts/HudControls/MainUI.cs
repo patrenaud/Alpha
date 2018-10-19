@@ -106,10 +106,10 @@ public class MainUI : MonoBehaviour
         m_AttackButton.interactable = true;
         m_MoveButton.interactable = true;
         m_AbilityButton.interactable = true;
-        m_EndTurnButton.interactable = true;
-        m_MeleeAttackButton.interactable = true;
+        m_EndTurnButton.interactable = true;        
         if (PlayerManager.Instance.m_RangeAttack)
         {
+            m_MeleeAttackButton.interactable = true;
             m_RangeAttackButton.interactable = true;
         }
     }
@@ -118,8 +118,13 @@ public class MainUI : MonoBehaviour
     {
         m_AttackButton.interactable = false;
         m_RangeAttackButton.interactable = false;
-        m_MeleeAttackButton.interactable = false;
-        PlayerManager.Instance.SetAttackAnim();
+        m_MeleeAttackButton.interactable = false;        
+        PlayerManager.Instance.m_Player.m_MeleeButtonIsPressed = false;
+        PlayerManager.Instance.m_Player.m_RangeButtonIsPressed = false;
+        PlayerManager.Instance.m_Player.m_Animator.SetTrigger("Idle");
+        PlayerManager.Instance.m_Player.m_AttackZone.transform.localScale = Vector3.zero;
+        PlayerManager.Instance.m_Player.m_RangeAttackZone.transform.localScale = Vector3.zero;
+
     }
 
     private void OnDestroy()
@@ -137,18 +142,39 @@ public class MainUI : MonoBehaviour
     {
         m_Ability1.interactable = false;
         m_Ability1.GetComponentInChildren<Text>().color = Color.grey;
+#if UNITY_CHEATS
+        if (PlayerManager.Instance.m_AbilityCheat)
+        {
+            PlayerManager.Instance.ActivateAbility1();
+
+        }
+#endif
     }
 
     public void OnActivateAbility2()
     {
         m_Ability2.interactable = false;
         m_Ability2.GetComponentInChildren<Text>().color = Color.grey;
+#if UNITY_CHEATS
+        if (PlayerManager.Instance.m_AbilityCheat)
+        {
+            PlayerManager.Instance.ActivateAbility2();
+
+        }
+#endif
     }
 
     public void OnActivateAbility3()
     {
         m_Ability3.interactable = false;
         m_Ability3.GetComponentInChildren<Text>().color = Color.grey;
+#if UNITY_CHEATS
+        if (PlayerManager.Instance.m_AbilityCheat)
+        {
+            PlayerManager.Instance.ActivateAbility3();
+
+        }
+#endif
     }
 
     public void OnActivateAbility4(float aRegenHealth)
@@ -156,6 +182,13 @@ public class MainUI : MonoBehaviour
         m_Ability4.interactable = false;
         m_HealthBar.value += aRegenHealth;
         m_Ability4.GetComponentInChildren<Text>().color = Color.grey;
+#if UNITY_CHEATS
+        if (PlayerManager.Instance.m_AbilityCheat)
+        {
+            PlayerManager.Instance.ActivateAbility4();
+
+        }
+#endif
     }
 
     public void DeactivateMove()

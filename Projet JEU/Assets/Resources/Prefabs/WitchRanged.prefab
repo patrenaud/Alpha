@@ -1228,7 +1228,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1520346473868768}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.01, y: 0, z: -2.31}
+  m_LocalPosition: {x: 1.43, y: 0, z: 1.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4390250917425868}
@@ -2173,7 +2173,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 0}
   m_StaticBatchInfo:
@@ -2208,7 +2207,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d908c6a841d4036448013b926569523f, type: 2}
   m_StaticBatchInfo:
@@ -2243,7 +2241,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 1f74ae10b3ad9194683648ec4da9112f, type: 2}
   m_StaticBatchInfo:
@@ -2323,7 +2320,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114073584024232034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2577,14 +2573,16 @@ MonoBehaviour:
   m_Attackable: 0
   m_IsPlaying: 0
   m_PatrolDestination: {fileID: 0}
-  m_EnemyColor: {r: 0, g: 0, b: 0, a: 0}
   m_SpellActive: {fileID: 114455228169039566}
   m_Targetable: {fileID: 114564059576418978}
   m_EnemyData: {fileID: 11400000, guid: 02da61cbb7cc3c145acc6471376c83ef, type: 2}
   m_HealthBar: {fileID: 114751635274418574}
+  m_CurrentHealth: 0
   m_RootRoundCountdown: 4
   m_Text: {fileID: 114665348726289614}
   m_Animator: {fileID: 95413572392437358}
+  m_RingOfFire: {fileID: 1967491460922094, guid: 8c446a74ba1e76244a5a66cb32aedc9b,
+    type: 2}
 --- !u!136 &136575617367456908
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2624,7 +2622,6 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d9371c457f7b8594090023e86ad986fd, type: 2}
   m_StaticBatchInfo:

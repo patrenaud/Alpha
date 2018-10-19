@@ -46,7 +46,9 @@ public class PlayerController : MonoBehaviour
     private GameObject m_ExtremeForceFeedback;
     [SerializeField]
     private GameObject m_NinjaFeedback;
-    
+    [SerializeField]
+    private GameObject m_RingOfFire;
+
 
     private void Awake()
     {
@@ -54,7 +56,15 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.SetAnimator();
 
         m_MoveZone.SetActive(false);
-        
+
+        GameObject Ring = Instantiate(m_RingOfFire, transform, false);
+        StartCoroutine(EndRing(Ring));
+    }
+
+    private IEnumerator EndRing(GameObject ring)
+    {
+        yield return new WaitForSeconds(5);
+        ring.SetActive(false);
     }
 
     private void Start()
@@ -93,18 +103,25 @@ public class PlayerController : MonoBehaviour
 
     private void SetZoneStats()
     {
+        // This is when player picks an upgrade that gets attack zones larger
         m_ScaleOfAttackZone = m_AttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.MeleeAttackRange;
         m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * PlayerManager.Instance.m_PlayerData.RangeAttackRange;
+
+        // This is for Move Zone power up
         m_ScaleOfMoveZone.x = m_MoveZone.transform.localScale.x * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
+        m_ScaleOfMoveZone.y = m_MoveZone.transform.localScale.y;
         m_ScaleOfMoveZone.z = m_MoveZone.transform.localScale.z * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
+
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
     }
 
     public void SetNewZoneStats()
     {
+        // When the upgrade is done, it resets move zone
         m_ScaleOfMoveZone.x = m_MoveZone.transform.localScale.x * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
         m_ScaleOfMoveZone.z = m_MoveZone.transform.localScale.z * PlayerManager.Instance.PlayerMoveDistanceMultiplier();
+        m_MoveZone.transform.localScale = m_ScaleOfMoveZone;
     }
 
     public void Move()
@@ -121,7 +138,7 @@ public class PlayerController : MonoBehaviour
 
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
-                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable) // MIGHT NEED TO CHANGE
+                if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
                 {
                     AttackEnd(Hitinfo);
                 }
@@ -138,6 +155,14 @@ public class PlayerController : MonoBehaviour
 
                 m_MoveZone.SetActive(false);
                 PlayerManager.Instance.m_MainUI.DeactivateMove();
+
+#if UNITY_CHEATS
+                if (PlayerManager.Instance.m_MoveCheat)
+                {
+                    PlayerManager.Instance.m_MainUI.m_MoveButton.interactable = true;
+                    m_CanMove = false;
+                }
+#endif
             }
 
             else if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("UI")))
@@ -145,7 +170,6 @@ public class PlayerController : MonoBehaviour
                 // Si le joueur click à nouveau sur le bouton Move, il annule son mouvement.
                 m_CanMove = false;
             }
-
         }
     }
 
@@ -180,8 +204,7 @@ public class PlayerController : MonoBehaviour
             {
                 // This part is the condition to defeat the Boss
                 if (Hitinfo.collider.gameObject.GetComponent<EnemyAI>().m_Attackable)
-                {
-                    // NEED A ARCHERY ANIM***
+                {                   
 
                     AttackEnd(Hitinfo);
                     ShootProjectile(Hitinfo);
@@ -196,7 +219,7 @@ public class PlayerController : MonoBehaviour
 
     private void ShootProjectile(RaycastHit i_Hitinfo)
     {
-        //   position de l'ennemi          -       position du joueur - la moitié du scale de l'ennemi         .longueur   > rayon du préfab d'attaque
+        //   position de l'ennemi          -       position du joueur - la moitié du scale de l'ennemi         .longueur   > rayon du préfab de zone Attack
         if (Vector3.Distance(i_Hitinfo.collider.transform.position, transform.position) > m_ScaleOfAttackZone.x / 2 && PlayerManager.Instance.m_RangeAttack)
         {
             GameObject m_BulletInstance = Instantiate(m_ProjectilePrefab, transform.position, Quaternion.identity);
@@ -222,13 +245,21 @@ public class PlayerController : MonoBehaviour
             m_ExtremeForce = false;
         }
 
-        DeactivateAttackZones();
         PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
+        PlayerManager.Instance.SetAttackAnim();
 
         m_CanAttack = false;
-        m_MeleeButtonIsPressed = false;
-        m_RangeButtonIsPressed = false;
-        m_Animator.SetTrigger("Idle");
+#if UNITY_CHEATS
+        if (PlayerManager.Instance.m_AttackCheat)
+        {
+            PlayerManager.Instance.m_MainUI.m_AttackButton.interactable = true;
+            PlayerManager.Instance.m_MainUI.m_RangeAttackButton.interactable = true;
+            PlayerManager.Instance.m_MainUI.m_MeleeAttackButton.interactable = true;
+            PlayerManager.Instance.m_Player.m_MeleeButtonIsPressed = false;
+            PlayerManager.Instance.m_Player.m_RangeButtonIsPressed = false;
+
+        }
+#endif
     }
 
 
@@ -243,6 +274,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(rayon, out Hitinfo, 500f, LayerMask.GetMask("Enemy")))
             {
+                // If spell is Root
                 if (m_RootEnable)
                 {
                     m_Animator.SetTrigger("Cast");
@@ -250,7 +282,7 @@ public class PlayerController : MonoBehaviour
 
                     // Creates the visual effect for the spell
                     Instantiate(m_RootFeedback, Hitinfo.collider.gameObject.transform, false);
-
+                    // Finds target for feedback
                     EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
                     for (int i = 0; i < EnemyList.Length; i++)
                     {
@@ -262,7 +294,7 @@ public class PlayerController : MonoBehaviour
                     PlayerManager.Instance.m_MainUI.OnActivateAbility1();
                     m_RootEnable = !m_RootEnable;
                 }
-
+                // If spell is NinjaStrike
                 else if (m_NinjaStrike)
                 {
                     m_Animator.SetTrigger("Attack");
@@ -273,15 +305,16 @@ public class PlayerController : MonoBehaviour
                         EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = false;
                     }
                     Vector3 OldPos = transform.position;
-                    
+                    // Needed because of NavMesh...
                     m_PlayerAgent.acceleration += 1000;
                     m_PlayerAgent.speed += 1000;
-                    m_PlayerAgent.destination = Hitinfo.collider.gameObject.transform.position;                    
-
+                    m_PlayerAgent.destination = Hitinfo.collider.gameObject.transform.position;
                     StartCoroutine(ReturnFromStrike(OldPos, Hitinfo));
+
                     PlayerManager.Instance.m_MainUI.OnActivateAbility3();
                     m_NinjaStrike = !m_NinjaStrike;
                 }
+
             }
         }
     }
@@ -292,37 +325,21 @@ public class PlayerController : MonoBehaviour
         Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(50f);
         Instantiate(m_NinjaFeedback, Hitinfo.collider.gameObject.transform, false);
         m_PlayerAgent.destination = OldPos;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         m_PlayerAgent.speed -= 1000;
         m_PlayerAgent.acceleration -= 1000;        
     }
 
     public void EndTurn()
     {
-        DeactivateAttackZones();
-
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[9], transform.position);
-
-        // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
-        m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
-        m_MoveZone.GetComponent<SphereCollider>().enabled = false;
-        m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = false;
-
         if (m_FinishTurn != null)
         {
             m_FinishTurn();
         }
     }
 
-    // Désactive la zone d'attack et de range attack
-    private void DeactivateAttackZones()
-    {
-        m_AttackZone.transform.localScale = Vector3.zero;
-        m_RangeAttackZone.transform.localScale = Vector3.zero;
-        PlayerManager.Instance.m_MainUI.DeactivateAttackChoice();
-    }
 
-    // Cette région permet aux boutons d'appaler ces fonctions. Les Booleens sont activés et permettent les Move/Attack/Ability/EndTurn
+    // Cette région permet aux boutons d'appeler ces fonctions. Les Booleens sont activés et permettent les Move/Attack/Ability/EndTurn
 #region Activatables
     public void ActivateMove()
     {

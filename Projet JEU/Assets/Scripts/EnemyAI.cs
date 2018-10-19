@@ -51,6 +51,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private Animator m_Animator;
 
+    [SerializeField]
+    private GameObject m_RingOfFire;
+
     private void Start()
     {
         m_Targetable.enabled = false;
@@ -70,6 +73,15 @@ public class EnemyAI : MonoBehaviour
 
         SetZoneStats();
         m_Animator.SetTrigger("Idle");
+
+        GameObject Ring = Instantiate(m_RingOfFire, transform, false);
+        StartCoroutine(EndRing(Ring));
+    }
+
+    private IEnumerator EndRing(GameObject ring)
+    {
+        yield return new WaitForSeconds(5);
+        ring.SetActive(false);
     }
 
     private void SetZoneStats()

@@ -19,17 +19,17 @@ public class PlayerManager : MonoBehaviour
     public float m_XPGainedPerKill = 1;
 
     [HideInInspector]
-    public int m_PlayerStrenght = 0;
+    public int m_PlayerStrenght = 1;
     [HideInInspector]
-    public int m_PlayerDexterity = 0;
+    public int m_PlayerDexterity = 1;
     [HideInInspector]
-    public int m_PlayerConstitution = 0;
+    public int m_PlayerConstitution = 1;
     [HideInInspector]
-    public int m_PlayerPerception = 0;
+    public int m_PlayerPerception = 1;
     [HideInInspector]
-    public int m_PlayerPrecision = 0;
+    public int m_PlayerPrecision = 1;
     [HideInInspector]
-    public int m_PlayerRange = 0;
+    public int m_PlayerRange = 1;
 
     public bool m_ActivateAbility1 = false;
     public bool m_ActivateAbility2 = false;
@@ -37,9 +37,9 @@ public class PlayerManager : MonoBehaviour
     public bool m_ActivateAbility4 = false;
 
 
-#if UNITY_CHEATS
 
     // Cheat variables for Cheat UI
+    private bool m_CheatsActivated = false;
     [SerializeField]
     private GameObject m_CheatCanvas;
     [SerializeField]
@@ -47,17 +47,15 @@ public class PlayerManager : MonoBehaviour
     private bool m_HPCheat = false;
     [SerializeField]
     private Text m_InfiniteAbilitiesText;
-    private bool m_AbilityCheat = false;
+    public bool m_AbilityCheat = false;
     [SerializeField]
     private Text m_InfiniteMoveText;
-    private bool m_MoveCheat = false;
+    public bool m_MoveCheat = false;
     [SerializeField]
     private Text m_InfiniteAttacksText;
-    private bool m_AttackCheat = false;
+    public bool m_AttackCheat = false;
+    
 
-#endif
-
-    //private float m_MoveSpeed;
 
     private static PlayerManager m_Instance;
     public static PlayerManager Instance
@@ -86,9 +84,13 @@ public class PlayerManager : MonoBehaviour
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
         m_MainUI.StartHpAndExp();
 
-
 #if UNITY_CHEATS
         m_CheatCanvas.SetActive(true);
+        m_CheatsActivated = true;
+#endif
+#if !UNITY_CHEATS
+        m_CheatCanvas.SetActive(false);
+        m_CheatsActivated = false;
 #endif
 
     }
@@ -113,7 +115,14 @@ public class PlayerManager : MonoBehaviour
 
 
 #if UNITY_CHEATS
-
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            m_CheatsActivated = !m_CheatsActivated;
+            m_CheatCanvas.SetActive(m_CheatsActivated);
+        }
+        
+        if(m_CheatsActivated)
+        {
         if(Input.GetKeyDown(KeyCode.Space))
         {
             LevelUp();
@@ -171,8 +180,8 @@ public class PlayerManager : MonoBehaviour
                 m_AttackCheat = !m_AttackCheat;
             }
         }
+        }
 #endif
-
 
     }
     private IEnumerator DeathDelay()
@@ -223,6 +232,13 @@ public class PlayerManager : MonoBehaviour
     {
         m_CurrentHealth -= aDamage;
         m_MainUI.m_HealthBar.value = m_CurrentHealth / m_PlayerData.MaxHealth;
+#if UNITY_CHEATS
+        if(m_HPCheat)
+        {
+            m_CurrentHealth += aDamage;
+            m_MainUI.m_HealthBar.value = m_PlayerData.MaxHealth;
+        }
+#endif
     }
 
     public void ResetHealth()

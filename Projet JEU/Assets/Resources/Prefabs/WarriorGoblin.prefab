@@ -2203,7 +2203,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 1f74ae10b3ad9194683648ec4da9112f, type: 2}
   m_StaticBatchInfo:
@@ -2238,7 +2237,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d908c6a841d4036448013b926569523f, type: 2}
   m_StaticBatchInfo:
@@ -2273,7 +2271,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 0}
   m_StaticBatchInfo:
@@ -2353,7 +2350,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114020930530283962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2516,9 +2512,12 @@ MonoBehaviour:
   m_Targetable: {fileID: 114965688101222098}
   m_EnemyData: {fileID: 11400000, guid: 0a4e612f7f2ec4e46b43ddfc6e9b4aab, type: 2}
   m_HealthBar: {fileID: 114986972277828988}
+  m_CurrentHealth: 0
   m_RootRoundCountdown: 4
   m_Text: {fileID: 114265977807725664}
   m_Animator: {fileID: 95007753330465096}
+  m_RingOfFire: {fileID: 1967491460922094, guid: 8c446a74ba1e76244a5a66cb32aedc9b,
+    type: 2}
 --- !u!114 &114965688101222098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2654,7 +2653,6 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 9a6f6d00aef4fbc4ab4f4e72c9a9bfac, type: 2}
   m_StaticBatchInfo:
@@ -2705,7 +2703,6 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 9a6f6d00aef4fbc4ab4f4e72c9a9bfac, type: 2}
   m_StaticBatchInfo:
