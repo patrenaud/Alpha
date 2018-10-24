@@ -259,10 +259,10 @@
      <None Include="Assets\KriptoFX\Realistic Effects Pack v4\Shaders\RFX4_Ice.shader" />
      <None Include="Assets\KriptoFX\Realistic Effects Pack v4\PostEffects\Mobile\Resources\RFX4_Bloom.shader" />
  <Reference Include="UnityEditor.StandardEvents">
- <HintPath>D:/Users/1810057/Desktop/Alpha/Alpha/Projet JEU/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+ <HintPath>D:/Users/1810057/Desktop/Alpha2/Alpha/Projet JEU/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
  <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>D:/Users/1810057/Desktop/Alpha/Alpha/Projet JEU/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ <HintPath>D:/Users/1810057/Desktop/Alpha2/Alpha/Projet JEU/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity2018.1.6/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

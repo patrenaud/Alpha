@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     private GameObject m_NinjaFeedback;
     [SerializeField]
     private GameObject m_RingOfFire;
+    [SerializeField]
+    private GameObject m_SmokeEffect;
 
 
     private void Awake()
@@ -76,8 +78,6 @@ public class PlayerController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.ResetAbilities();
 
         SetZoneStats(); // Sets the attack zones (range of both melee and range)
-
-
     }
 
     private void Update()
@@ -297,6 +297,7 @@ public class PlayerController : MonoBehaviour
                 // If spell is NinjaStrike
                 else if (m_NinjaStrike)
                 {
+                    Instantiate(m_SmokeEffect, gameObject.transform.position, Quaternion.identity);
                     m_Animator.SetTrigger("Attack");
                     
                     EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>(); 
@@ -305,13 +306,13 @@ public class PlayerController : MonoBehaviour
                         EnemyList[i].GetComponent<EnemyAI>().m_Targetable.enabled = false;
                     }
                     Vector3 OldPos = transform.position;
-                    // Needed because of NavMesh...
-                    m_PlayerAgent.acceleration += 1000;
-                    m_PlayerAgent.speed += 1000;
-                    m_PlayerAgent.destination = Hitinfo.collider.gameObject.transform.position;
-                    StartCoroutine(ReturnFromStrike(OldPos, Hitinfo));
+
 
                     PlayerManager.Instance.m_MainUI.OnActivateAbility3();
+                    
+                    m_PlayerAgent.Warp(Hitinfo.collider.gameObject.transform.position);
+                    StartCoroutine(ReturnFromStrike(OldPos, Hitinfo));
+                    
                     m_NinjaStrike = !m_NinjaStrike;
                 }
 
@@ -321,13 +322,11 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ReturnFromStrike(Vector3 OldPos, RaycastHit Hitinfo)
     {
-        yield return new WaitForSeconds(0.5f);
-        Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(50f);
+        yield return new WaitForSeconds(1f);        
+        Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(50f);        
         Instantiate(m_NinjaFeedback, Hitinfo.collider.gameObject.transform, false);
-        m_PlayerAgent.destination = OldPos;
-        yield return new WaitForSeconds(1.5f);
-        m_PlayerAgent.speed -= 1000;
-        m_PlayerAgent.acceleration -= 1000;        
+        m_PlayerAgent.Warp(OldPos);
+        Instantiate(m_SmokeEffect, gameObject.transform.position, Quaternion.identity);
     }
 
     public void EndTurn()

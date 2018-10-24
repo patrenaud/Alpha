@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Rock
+  m_Name: ROCK
   m_Shader: {fileID: 4800000, guid: 4f726be83ba72084792ae45251375596, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _NORMALMAP
   m_LightmapFlags: 5
@@ -69,7 +69,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.20708428
+    - _Cutoff: 0
     - _Cutout: 0.456
     - _Cutout2: 0
     - _CutoutThickness: 0.02

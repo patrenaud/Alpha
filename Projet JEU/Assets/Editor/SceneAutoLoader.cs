@@ -34,7 +34,7 @@ static class SceneAutoLoader
 		}
 	}
 
-	// Play mode change callback handles the scene load/reload.
+	// Play mode change callback handles the scene load/reload
 	private static void OnPlayModeChanged(PlayModeStateChange state)
 	{
 		if (!EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode)
