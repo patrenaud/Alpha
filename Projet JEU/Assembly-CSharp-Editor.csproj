@@ -100,6 +100,12 @@
  <Reference Include="Unity.PackageManagerUI.Editor">
  <HintPath>D:/Users/1810057/Desktop/Alpha2/Alpha/Projet JEU/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Cinemachine">
+ <HintPath>D:/Users/1810057/Desktop/Alpha2/Alpha/Projet JEU/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+ </Reference>
+ <Reference Include="com.unity.cinemachine.editor">
+ <HintPath>D:/Users/1810057/Desktop/Alpha2/Alpha/Projet JEU/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity2018.1.6/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
  </Reference>

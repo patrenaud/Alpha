@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,10 @@ public class LevelController : MonoBehaviour
     private int m_CurrentLevel;
     private bool m_CanLoadScene = true;
 
+    private Transform m_CameraFocus;
+    [SerializeField]
+    private CinemachineVirtualCamera m_CMmainCam;
+
     private int m_TurnIndex = 0;
 
 
@@ -31,9 +36,12 @@ public class LevelController : MonoBehaviour
         GenerateBoss();
         LevelManager.Instance.SetLevelIndex();
         m_CanLoadScene = true;
+        m_CameraFocus = transform;
+        m_CMmainCam.Follow = m_CameraFocus;
 
         // Si le joueur est mort, il peut recommencer le même niveau. (FreezeLevelIndex)
     }
+
 
     private void GenerateEnemies()
     {
@@ -110,15 +118,31 @@ public class LevelController : MonoBehaviour
     private void NextTurn()
     {
         if (m_TurnIndex < m_Enemies.Count)
-        {
+        {            
             m_Enemies[m_TurnIndex].PlayTurn();
+            m_CameraFocus = m_Enemies[m_TurnIndex].SetCameraFocus();
+            CameraLerp();
         }
         else
-        {
+        {   
+            m_CameraFocus = PlayerManager.Instance.m_Player.transform;
+            CameraLerp();            
             PlayerManager.Instance.m_MainUI.ActivatePlayerUiOnTurnBegin();
             PlayerManager.Instance.m_Player.ActivateActions();
-            m_TurnIndex = 0;
+            m_TurnIndex = 0;            
         }
+    }
+
+    private void CameraLerp()
+    {
+        Transform OldPos = m_CameraFocus;        
+        
+        float t = 0.0f;
+        while(t < 1.0)
+        {
+            t+= Time.deltaTime;
+            m_CMmainCam.Follow.position = Vector3.Lerp(OldPos.position, m_CameraFocus.position, 1.0f);
+        }         
     }
 
     private void OnEnemyDeath(EnemyAI aEnemy)

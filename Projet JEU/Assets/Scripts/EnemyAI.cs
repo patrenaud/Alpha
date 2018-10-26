@@ -319,6 +319,7 @@ public class EnemyAI : MonoBehaviour
     public void PlayTurn()
     {
         m_IsPlaying = true;
+        
         m_AttackZone.transform.localScale = Vector3.zero;
         m_RangeAttackZone.transform.localScale = Vector3.zero;
         if (gameObject.CompareTag("Archer"))
@@ -342,6 +343,11 @@ public class EnemyAI : MonoBehaviour
         m_HealthBar.value = m_CurrentHealth / m_EnemyData.EnemyMaxHealth;
     }
 
+    public Transform SetCameraFocus()
+    {
+        return transform;
+    }
+
     private void Die()
     {
         if (m_OnDeath != null)
@@ -349,8 +355,7 @@ public class EnemyAI : MonoBehaviour
             m_Animator.SetTrigger("Die");
             StartCoroutine(DestroyEnemy());            
         }
-
-    }
+    }    
 
     private IEnumerator DestroyEnemy()
     {
