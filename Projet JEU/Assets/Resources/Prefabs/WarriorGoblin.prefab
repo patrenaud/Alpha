@@ -1093,8 +1093,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4642041603417860}
   - component: {fileID: 54596377355727650}
-  - component: {fileID: 23988150564979482}
   - component: {fileID: 95007753330465096}
+  - component: {fileID: 23988150564979482}
   - component: {fileID: 195055289474110602}
   - component: {fileID: 114940975876306990}
   - component: {fileID: 65035569715023350}
@@ -2203,6 +2203,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 1f74ae10b3ad9194683648ec4da9112f, type: 2}
   m_StaticBatchInfo:
@@ -2237,6 +2238,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d908c6a841d4036448013b926569523f, type: 2}
   m_StaticBatchInfo:
@@ -2271,6 +2273,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 0}
   m_StaticBatchInfo:
@@ -2350,6 +2353,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114020930530283962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2502,14 +2506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19cad52887f74a84f9ec116fd081f19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AttackZone: {fileID: 1016877117440548}
-  m_RangeAttackZone: {fileID: 1466184220703282}
-  m_Attackable: 0
-  m_IsPlaying: 0
-  m_PatrolDestination: {fileID: 4377048855995380, guid: 4f5e2f8141659c2448a8a29b1609227d,
-    type: 2}
-  m_SpellActive: {fileID: 114245090255883282}
-  m_Targetable: {fileID: 114965688101222098}
   m_EnemyData: {fileID: 11400000, guid: 0a4e612f7f2ec4e46b43ddfc6e9b4aab, type: 2}
   m_HealthBar: {fileID: 114986972277828988}
   m_CurrentHealth: 0
@@ -2518,6 +2514,14 @@ MonoBehaviour:
   m_Animator: {fileID: 95007753330465096}
   m_RingOfFire: {fileID: 1967491460922094, guid: 8c446a74ba1e76244a5a66cb32aedc9b,
     type: 2}
+  m_AttackZone: {fileID: 1016877117440548}
+  m_RangeAttackZone: {fileID: 1466184220703282}
+  m_Attackable: 0
+  m_IsPlaying: 0
+  m_PatrolDestination: {fileID: 4377048855995380, guid: 4f5e2f8141659c2448a8a29b1609227d,
+    type: 2}
+  m_SpellActive: {fileID: 114245090255883282}
+  m_Targetable: {fileID: 114965688101222098}
 --- !u!114 &114965688101222098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2653,6 +2657,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 9a6f6d00aef4fbc4ab4f4e72c9a9bfac, type: 2}
   m_StaticBatchInfo:
@@ -2703,6 +2708,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 9a6f6d00aef4fbc4ab4f4e72c9a9bfac, type: 2}
   m_StaticBatchInfo:

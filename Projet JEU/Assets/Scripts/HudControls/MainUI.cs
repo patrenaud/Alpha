@@ -20,7 +20,6 @@ public class MainUI : MonoBehaviour
     public Button m_LevelUpButton;
     public GameObject m_UpgradeCanvas;
 
-
     private void Awake()
     {
         PlayerManager.Instance.m_MainUI = this;

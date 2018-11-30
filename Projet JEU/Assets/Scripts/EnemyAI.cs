@@ -15,19 +15,6 @@ public enum BehaviorState
 
 public class EnemyAI : MonoBehaviour
 {
-    public Action m_FinishTurn;
-    public Action<EnemyAI> m_OnDeath;
-
-    public GameObject m_AttackZone;
-    public GameObject m_RangeAttackZone;
-
-    public bool m_Attackable = false;
-    public bool m_IsPlaying = false;
-
-    public Transform m_PatrolDestination;
-    public Image m_SpellActive;
-    public Image m_Targetable;
-
     private BehaviorState m_State;
     [SerializeField]
     private EnemyData m_EnemyData;
@@ -47,6 +34,7 @@ public class EnemyAI : MonoBehaviour
     private Text m_Text;
     private bool m_DestinationReached = false;
     private bool m_Rooted = false;
+    private bool m_IsDead;
 
     [SerializeField]
     private Animator m_Animator;
@@ -54,38 +42,54 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private GameObject m_RingOfFire;
 
+    public Action m_FinishTurn;
+    public Action<EnemyAI> m_OnDeath;
+
+    public GameObject m_AttackZone;
+    public GameObject m_RangeAttackZone;
+
+    // Player accesses these when collided with player attack zones
+    public bool m_Attackable = false;
+    public bool m_IsPlaying = false;
+
+    public Transform m_PatrolDestination;
+    public Image m_SpellActive;
+    public Image m_Targetable;
+
     private void Start()
     {
         m_Targetable.enabled = false;
         m_SpellActive.enabled = false;
         m_Text.enabled = false;
+        m_IsDead = false;
 
+        // Position
         m_State = BehaviorState.Idle;
-
         m_InitialePos = transform.position;
-
         m_EnemyAgent = GetComponent<NavMeshAgent>();
 
+        // Health
         m_CurrentHealth = m_EnemyData.EnemyMaxHealth;
-
         m_HealthBar.value = 1;
         m_HealthBar.gameObject.SetActive(false);
 
         SetZoneStats();
         m_Animator.SetTrigger("Idle");
 
+        // Starting pos feedback
         GameObject Ring = Instantiate(m_RingOfFire, transform, false);
         StartCoroutine(EndRing(Ring));
     }
 
     private IEnumerator EndRing(GameObject ring)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4.0f);
         ring.SetActive(false);
     }
 
     private void SetZoneStats()
     {
+        // Gets proper scale for zones depending on stats
         m_ScaleOfAttackZone = m_AttackZone.transform.localScale * m_EnemyData.EnemyMeleeAttackRange;
         m_ScaleOfRangeAttackZone = m_RangeAttackZone.transform.localScale * m_EnemyData.EnemyRange;
 
@@ -121,17 +125,11 @@ public class EnemyAI : MonoBehaviour
                 UpdateAttack();
             }
         }
-        if (m_CurrentHealth <= 0)
+        if (m_CurrentHealth <= 0 && m_IsDead == false)
         {
+            m_IsDead = true;
             Die();
         }
-    }
-
-    private IEnumerator RootedText()
-    {
-        m_Text.enabled = true;
-        yield return new WaitForSeconds(1);
-        m_Text.enabled = false;
     }
 
     private void UpdateIdle()
@@ -159,7 +157,7 @@ public class EnemyAI : MonoBehaviour
                 }
             }
 
-            else if ((PlayerManager.Instance.m_Player.gameObject.transform.position - transform.position).magnitude < m_EnemyData.EnemyMeleeAttackRange)
+            else if ((Vector3.Distance(PlayerManager.Instance.m_Player.transform.position, transform.position) < m_ScaleOfAttackZone.magnitude * 0.5f))
             {
                 ChangeState(BehaviorState.Attack);
 
@@ -225,7 +223,7 @@ public class EnemyAI : MonoBehaviour
             ChangeState(BehaviorState.Attack);
         }
 
-        else if ((Vector3.Distance(PlayerManager.Instance.m_Player.transform.position, transform.position) < m_ScaleOfRangeAttackZone.magnitude * 0.5f)
+        else if ((Vector3.Distance(PlayerManager.Instance.m_Player.transform.position, transform.position) < m_ScaleOfRangeAttackZone.magnitude * 0.4f)
             && gameObject.CompareTag("Archer"))
         {
             m_EnemyAgent.SetDestination(transform.position);
@@ -246,15 +244,32 @@ public class EnemyAI : MonoBehaviour
     {
         if (gameObject.CompareTag("Archer"))
         {
-            PlayerManager.Instance.TakeDamage(m_EnemyData.EnemyRangeDamage);
+            m_IsPlaying = false;
+            StartCoroutine(RangeAttack());
         }
         else if (gameObject.CompareTag("Warrior") || (gameObject.CompareTag("Tank")))
         {
-            PlayerManager.Instance.TakeDamage(m_EnemyData.MeleeAttackDamage);
+            m_IsPlaying = false;
+            StartCoroutine(MeleeAttack());            
         }        
 
         ChangeState(BehaviorState.Idle);
+    }
+
+    private IEnumerator RangeAttack()
+    {
+        // This is to fit attack anim
+        yield return new WaitForSeconds(1.7f);
+        PlayerManager.Instance.TakeDamage(m_EnemyData.EnemyRangeDamage);
         EndTurn();
+    }
+
+    private IEnumerator MeleeAttack()
+    {
+        // This is to fit attack anim
+        yield return new WaitForSeconds(1.7f);
+        PlayerManager.Instance.TakeDamage(m_EnemyData.MeleeAttackDamage);
+        EndTurn();    
     }
 
     private void ChangeState(BehaviorState i_State)
@@ -274,7 +289,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.Patrol)
                     {
-                        // Activate Zone as big as sight range for feedback ???
+                        // Activate Zone as big as sight range for feedback *** TODO
                         m_Animator.SetTrigger("Walk");
                     }
                     break;
@@ -292,7 +307,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (m_State != BehaviorState.Idle)
                     {
-                        // Reset Idle Anmiation                        
+                        m_Animator.SetTrigger("Idle");                     
                     }
                 }
                 break;
@@ -341,8 +356,17 @@ public class EnemyAI : MonoBehaviour
         m_CurrentHealth -= aDamage;
         m_Animator.SetTrigger("Hit");
         m_HealthBar.value = m_CurrentHealth / m_EnemyData.EnemyMaxHealth;
+        m_Animator.SetTrigger("Idle");
     }
 
+    private IEnumerator RootedText()
+    {
+        m_Text.enabled = true;
+        yield return new WaitForSeconds(1);
+        m_Text.enabled = false;
+    }
+
+    // This is so Camera can get enemy Position
     public Transform SetCameraFocus()
     {
         return transform;
@@ -350,10 +374,11 @@ public class EnemyAI : MonoBehaviour
 
     private void Die()
     {
-        if (m_OnDeath != null)
+        if (m_OnDeath != null && m_IsDead)
         {
             m_Animator.SetTrigger("Die");
-            StartCoroutine(DestroyEnemy());            
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[2], transform.position);
+            StartCoroutine(DestroyEnemy());
         }
     }    
 
@@ -371,19 +396,13 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider a_Other)
     {
-        if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
-        {
-            m_Attackable = true;
-        }
+        m_Attackable = true;
     }
 
 
     private void OnTriggerExit(Collider a_Other)
     {
-        if (a_Other.gameObject.layer == LayerMask.NameToLayer("PlayerInterractible"))
-        {
-            m_Attackable = false;
-        }
+        m_Attackable = false;
     }
 }
 

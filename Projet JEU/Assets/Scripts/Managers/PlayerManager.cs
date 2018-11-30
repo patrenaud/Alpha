@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public float m_CurrentHealth;
     public float m_MaxHealth;
-    public string m_PlayerPath = "Assets/Prefabs/Player";
+
     public PlayerData m_PlayerData;
     public float m_HealthRegenAbility;
     public bool m_RangeAttack = false;
@@ -55,6 +55,8 @@ public class PlayerManager : MonoBehaviour
     private Text m_InfiniteAttacksText;
     public bool m_AttackCheat = false;
     
+    [SerializeField]
+    private GameObject m_BloodFeedback;
 
 
     private static PlayerManager m_Instance;
@@ -78,11 +80,11 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        //m_MoveSpeed = m_PlayerData.MoveSpeed;
         m_MaxHealth = m_PlayerData.MaxHealth;
         m_CurrentHealth = m_MaxHealth;
         m_HealthRegenAbility = m_PlayerData.HealthRegenAbility;
         m_MainUI.StartHpAndExp();
+        m_PlayerDied = false;
 
 #if UNITY_CHEATS
         m_CheatCanvas.SetActive(true);
@@ -106,11 +108,14 @@ public class PlayerManager : MonoBehaviour
         // THIS IS WHERE THE PLAYER DIES
         if (Instance.m_MainUI.m_HealthBar.value <= 0)
         {
-            Instance.m_MainUI.m_HealthBar.value = 1;
-            m_PlayerDied = true;
-            m_Player.m_Animator.SetTrigger("Die");
+            if(!m_PlayerDied)
+            {
+                m_PlayerDied = true;
+                m_Player.m_Animator.SetTrigger("Death");
 
-            StartCoroutine(DeathDelay());        
+                m_MainUI.DeactivateUI();
+                StartCoroutine(DeathDelay());
+            }     
         }
 
 
@@ -186,7 +191,10 @@ public class PlayerManager : MonoBehaviour
     }
     private IEnumerator DeathDelay()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.0f);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[4], m_Player.transform.position);
+        yield return new WaitForSeconds(2.0f);
+        Instance.m_MainUI.m_HealthBar.value = 1;
         LevelManager.Instance.ChangeLevel("Results");
     }
 
@@ -232,12 +240,18 @@ public class PlayerManager : MonoBehaviour
     {
         m_CurrentHealth -= aDamage;
         m_MainUI.m_HealthBar.value = m_CurrentHealth / m_PlayerData.MaxHealth;
+
+        Instantiate(m_BloodFeedback, m_Player.transform.position, Random.rotation);
+        m_Player.m_Animator.SetTrigger("Hit");
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[3], m_Player.transform.position);
+
 #if UNITY_CHEATS
         if(m_HPCheat)
         {
             m_CurrentHealth += aDamage;
             m_MainUI.m_HealthBar.value = m_PlayerData.MaxHealth;
         }
+        m_Player.m_Animator.SetTrigger("Idle");
 #endif
     }
 
@@ -311,6 +325,5 @@ public class PlayerManager : MonoBehaviour
     {
         m_ActivateAbility4 = true;
         m_MainUI.m_Ability4.interactable = true;
-
     }
 }

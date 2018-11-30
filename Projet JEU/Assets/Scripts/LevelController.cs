@@ -10,8 +10,8 @@ public class LevelController : MonoBehaviour
     private List<LevelData> m_Data;    
     [SerializeField]
     private Transform m_PlayerSpawnPoint;
-    [SerializeField]
-    private Transform m_BossSpawnPoint;
+    //[SerializeField]
+    //private Transform m_BossSpawnPoint; --- DLC material
     [SerializeField]
     private List<Transform> m_EnemySpawnPoints;
     [SerializeField]
@@ -24,6 +24,9 @@ public class LevelController : MonoBehaviour
     private Transform m_CameraFocus;
     [SerializeField]
     private CinemachineVirtualCamera m_CMmainCam;
+    [SerializeField]
+    private Transform m_StartingFocus;
+
 
     private int m_TurnIndex = 0;
 
@@ -31,15 +34,18 @@ public class LevelController : MonoBehaviour
     private void Start()
     {
         m_CurrentLevel = LevelManager.Instance.GetLevelIndex();
+
         GeneratePlayer();
         GenerateEnemies();
-        GenerateBoss();
+        // GenerateBoss(); DLC Material
+
+        // Get Level index for enemy spawns
         LevelManager.Instance.SetLevelIndex();
         m_CanLoadScene = true;
-        m_CameraFocus = transform;
-        m_CMmainCam.Follow = m_CameraFocus;
 
-        // Si le joueur est mort, il peut recommencer le même niveau. (FreezeLevelIndex)
+        // Camera starts focussing middle of level then goes to active player or enemy
+        m_CameraFocus = m_StartingFocus;
+        m_CMmainCam.Follow = m_CameraFocus;
     }
 
 
@@ -52,7 +58,7 @@ public class LevelController : MonoBehaviour
 
         for (int i = 0; i < m_Data[m_CurrentLevel].m_EnemyListData.Count; i++)
         {
-            // Le SpawnIndex sert à ce que les enemies ne se spawn pas l'un par dessu l'autre. Merci Raph !! :)
+            // Le SpawnIndex sert à ce que les enemies ne se spawn pas l'un par dessu l'autre
             int Spawnindex = m_RandomIndex[Random.Range(0, m_RandomIndex.Count)];
 
             // Ceci représente ce que GeneratePlayer fait en 3 lignes. On instancie la liste d'enemy dans les spawnpoitnts au hazard
@@ -61,11 +67,13 @@ public class LevelController : MonoBehaviour
             EnemyAI enemyAi = enemy.GetComponent<EnemyAI>();
     
             m_Enemies.Add(enemyAi);
+            // Procure une ligne de patrouille pour chaques ennemis
             m_Enemies[i].GetComponent<EnemyAI>().m_PatrolDestination = m_EnemyPatrolPoints[i];
 
             enemyAi.m_FinishTurn += OnEnemyDone; // Action
             enemyAi.m_OnDeath += OnEnemyDeath; // Action
 
+            // Enlève la possibilité d'un Spawn double au même endroit
             m_RandomIndex.Remove(Spawnindex);
 
             enemyAi.m_IsPlaying = false;
@@ -80,17 +88,55 @@ public class LevelController : MonoBehaviour
     private void GeneratePlayer()
     {
         GameObject prefab = Resources.Load("Prefabs/RealPlayer") as GameObject;
+
         // Ceci est le OneLiner
         // Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity).GetComponent<PlayerController>().m_FinishTurn += OnPlayerDone;
         GameObject go = Instantiate((GameObject)prefab, m_PlayerSpawnPoint.position, Quaternion.identity);
+        PlayerController player = go.GetComponent<PlayerController>();
+        player.m_FinishTurn += OnPlayerDone; // Action
+
         // This is to set the Player's health after Levels (Constitution) have been set up
         PlayerManager.Instance.m_MaxHealth = PlayerManager.Instance.PlayerHP();
         PlayerManager.Instance.m_MainUI.m_HealthBar.value = 1;        
-        PlayerController player = go.GetComponent<PlayerController>();
 
-        player.m_FinishTurn += OnPlayerDone; // Action
     }
 
+    private void NextTurn()
+    {
+        if (m_TurnIndex < m_Enemies.Count)
+        {   
+            // Changes focus of camera to active unit. Lerps to unit.
+            m_Enemies[m_TurnIndex].PlayTurn();
+            m_CameraFocus = m_Enemies[m_TurnIndex].SetCameraFocus();
+            CameraLerp();
+        }
+        else
+        {   
+            m_CameraFocus = PlayerManager.Instance.m_Player.transform;
+            CameraLerp();
+
+            if(PlayerManager.Instance.m_MainUI.m_HealthBar.value > 0)
+            {
+                PlayerManager.Instance.m_MainUI.ActivatePlayerUiOnTurnBegin();
+                PlayerManager.Instance.m_Player.ActivateActions();
+            }
+            m_TurnIndex = 0;            
+        }
+    }
+
+    private void CameraLerp()
+    {
+        Transform OldPos = m_CameraFocus;        
+        float lerpTime = 0.0f;
+
+        while(lerpTime < 1.5f)
+        {
+            lerpTime += Time.deltaTime;
+            m_CMmainCam.Follow.position = Vector3.Lerp(OldPos.position, m_CameraFocus.position, 1.5f);
+        }
+    }
+
+    // Action Player
     private void OnPlayerDone()
     {
         PlayerManager.Instance.m_MainUI.DeactivateUI();
@@ -109,42 +155,14 @@ public class LevelController : MonoBehaviour
         NextTurn();
     }
 
+    // Action Ennemy
     private void OnEnemyDone()
     {
         m_TurnIndex++;
         NextTurn();
     }
 
-    private void NextTurn()
-    {
-        if (m_TurnIndex < m_Enemies.Count)
-        {            
-            m_Enemies[m_TurnIndex].PlayTurn();
-            m_CameraFocus = m_Enemies[m_TurnIndex].SetCameraFocus();
-            CameraLerp();
-        }
-        else
-        {   
-            m_CameraFocus = PlayerManager.Instance.m_Player.transform;
-            CameraLerp();            
-            PlayerManager.Instance.m_MainUI.ActivatePlayerUiOnTurnBegin();
-            PlayerManager.Instance.m_Player.ActivateActions();
-            m_TurnIndex = 0;            
-        }
-    }
-
-    private void CameraLerp()
-    {
-        Transform OldPos = m_CameraFocus;        
-        
-        float t = 0.0f;
-        while(t < 1.0)
-        {
-            t+= Time.deltaTime;
-            m_CMmainCam.Follow.position = Vector3.Lerp(OldPos.position, m_CameraFocus.position, 1.0f);
-        }         
-    }
-
+    // Action Ennemy
     private void OnEnemyDeath(EnemyAI aEnemy)
     {
         PlayerManager.Instance.m_MainUI.m_XpBar.value += PlayerManager.Instance.m_XPGainedPerKill;
@@ -152,6 +170,7 @@ public class LevelController : MonoBehaviour
 
         if (m_Enemies.Count == 0 && m_CanLoadScene)
         {
+            // bool = bugfix where result scene was called more than once
             m_CanLoadScene = false;
             LevelManager.Instance.ChangeLevel("Results");
         }

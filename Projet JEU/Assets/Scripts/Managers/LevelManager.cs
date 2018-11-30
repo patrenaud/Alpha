@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LevelManager : DontDestroyOnLoad
 {
-    public int m_LevelIndex = 0;
+    private int m_LevelIndex = 0;
 
     [SerializeField]
     private GameObject m_LoadingScreen;
@@ -14,6 +14,8 @@ public class LevelManager : DontDestroyOnLoad
     private GameObject m_BackGround;
     [SerializeField]
     private Button m_StartButton;
+    [SerializeField]
+    private Button m_QuitButton;
     [SerializeField]
     private GameObject m_DeathImage;
 
@@ -35,10 +37,13 @@ public class LevelManager : DontDestroyOnLoad
             DontDestroyOnLoad(gameObject);
         }
         base.Awake();
+
+        // Sets main screen UI
         m_LoadingScreen.SetActive(false);
         m_BackGround.SetActive(true);
         m_StartButton.gameObject.SetActive(true);
         m_DeathImage.SetActive(false);
+        m_QuitButton.gameObject.SetActive(false);
     }
 
     private void StartLoading()
@@ -63,7 +68,8 @@ public class LevelManager : DontDestroyOnLoad
         }
         if(i_Scene.name == "Results" && PlayerManager.Instance.m_PlayerDied)
         {
-            m_DeathImage.SetActive(true);          
+            m_DeathImage.SetActive(true);
+            m_QuitButton.gameObject.SetActive(true);
         }
     }
 
@@ -108,8 +114,24 @@ public class LevelManager : DontDestroyOnLoad
         m_LevelIndex++;
     }
 
+    public void RestartLevelIndex()
+    {
+        m_LevelIndex--;
+    }
+
     public int GetLevelIndex()
     {
         return m_LevelIndex;
+    }
+
+    public void RestartMain()
+    {
+        m_BackGround.SetActive(true);
+        m_StartButton.gameObject.SetActive(true);
+    }
+
+    public void CloseApp()
+    {
+        Application.Quit();
     }
 }

@@ -12,9 +12,16 @@ public class HudMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void RestartLevel()
+    {
+        LevelManager.Instance.ChangeLevel("Main");
+        LevelManager.Instance.RestartLevelIndex();
+    }
+
     public void SwitchToMainMenu()
     {
         LevelManager.Instance.ChangeLevel("ApplicationLauncher");
+        LevelManager.Instance.RestartMain();
     }
 
     public void SwitchToResults()
@@ -27,5 +34,8 @@ public class HudMenu : MonoBehaviour
         m_BackGround.SetActive(false);
     }
 
-
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

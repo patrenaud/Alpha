@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject m_SmokeEffect;
 
-
     private void Awake()
     {
         PlayerManager.Instance.m_Player = this;
@@ -234,10 +233,12 @@ public class PlayerController : MonoBehaviour
         if (Vector3.Distance(i_Hitinfo.collider.transform.position, transform.position) > m_ScaleOfAttackZone.x / 2 && PlayerManager.Instance.m_RangeAttack)
         {
             i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerRangeDamage());
+            // Might need a box sound
         }
         else
         {
             i_Hitinfo.collider.gameObject.GetComponent<EnemyAI>().TakeDamage(PlayerManager.Instance.PlayerMeleeDamage());
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[5],transform.position);
         }
 
         if (m_ExtremeForce)
@@ -246,9 +247,10 @@ public class PlayerController : MonoBehaviour
         }
 
         PlayerManager.Instance.m_MainUI.OnPlayerAttackEnd();
-        PlayerManager.Instance.SetAttackAnim();
+        PlayerManager.Instance.SetAttackAnim();        
 
         m_CanAttack = false;
+        
 #if UNITY_CHEATS
         if (PlayerManager.Instance.m_AttackCheat)
         {
@@ -433,7 +435,7 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility2()
     {
-        // Has to be filled with Extreme Force
+        // Extreme Force
         Instantiate(m_ExtremeForceFeedback, gameObject.transform, false);
         m_ExtremeForce = true;
         m_Animator.SetTrigger("Cast");  
@@ -442,6 +444,7 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility3()
     {
+        // Ninja Strike
         EnemyAI[] EnemyList = FindObjectsOfType<EnemyAI>();
 
         if (!m_NinjaStrike)
@@ -465,8 +468,10 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateAbility4()
     {
+        // Regenerate
         PlayerManager.Instance.m_MainUI.OnActivateAbility4(PlayerManager.Instance.m_HealthRegenAbility);
         m_Animator.SetTrigger("Cast");
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[0], transform.position);
         Instantiate(m_HealFeedback, gameObject.transform, false);
     }
 #endregion

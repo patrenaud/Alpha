@@ -17,5 +17,5 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector]
     public int m_EnemyRange = 0;
 
-    // This script will be to control the enemy's stats when we instantiate them in the level controller.
+    // This script is to control the enemy's stats when we instantiate them in the level controller.
 }
