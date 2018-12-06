@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-D:/Users/1810057/Desktop/GamesBuilds/GamesBuilds.exe
+D:/Users/1810057/Desktop/ProjetDemo/ProjetDemo.exe
 SceneListBegin?
 Assets/Scenes/ApplicationLauncher.unity
 Assets/Scenes/Main.unity
@@ -23,7 +23,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 4c75752238fd236ce350bb4f9dc2936d Cinemachine.dll:Cinemachine.CinemachineFollowZoom
 5d66aa2aec870dd80f3e5bfc8dff6c20 Cinemachine.dll:Cinemachine.CinemachineFixedSignal
 59e72391b03b1513a29e1c71b7e0e12d Assembly-CSharp.dll:.RFX4_DemoGUI
-cf5f0d84aa2aa77777e60233bd11d52b Assembly-CSharp.dll:.PlayerManager
+c4b0485140e8a1f6d73458c06848d1c4 Assembly-CSharp.dll:.PlayerManager
 e917832d8d12a8e05d6fa5fdc1326bae Assembly-CSharp.dll:.ScrollingUVs_Layers
 7d9f0022fc83b7438f746d6e187818bf Cinemachine.dll:Cinemachine.CinemachineCollisionImpulseSource
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DontDestroyOnLoad
@@ -60,6 +60,7 @@ f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RFX4_FPS
+de7e9d5dc568b24a9148508e260c8a21 Assembly-CSharp.dll:.ProgressBarCircle
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -100,7 +101,6 @@ ee77a3dbeba6278eff4bc4bb4a1ca647 Cinemachine.dll:Cinemachine.CinemachineStoryboa
 b5a266961ba7839bdf663bbd99977645 Assembly-CSharp.dll:.Upgrades
 2fb55e87a4a12e658505d565d6a2d4fb Assembly-CSharp.dll:.RFX4_ReplaceModelOnCollision
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RFX4_RealtimeReflection
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PoolManager
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 cf455f7a806648c6ed4c7d3e3f8a0e03 UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
 13bdb7c23815c33a33b37b0ba8dd39be UnityEngine.Timeline.dll:UnityEngine.Timeline.AnimationPlayableAsset
@@ -114,7 +114,6 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 30afa8783a8bbee2e465ec9ce1efaee2 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 607d64d2c4bc76ac9876e6f7b9cc7edf UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 7cac9331f5484652eca56a52542da1f7 Assembly-CSharp.dll:.RFX4_EffectSettingVisible
-4a64ae1594bbccd081b3c5c09e7948c1 Assembly-CSharp.dll:.PoolableItems
 e5c25ffee1e604fd1323b3464758b17e Assembly-CSharp.dll:.RFX4_PhysXSetImpulse
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -133,6 +132,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 cd94abc4e2f063f0b7d618f27e8fc4fd Assembly-CSharp.dll:.RFX4_ParticleCollisionHandler
 d02bf5da9083400974bd29b057f0d067 Cinemachine.dll:Cinemachine.CinemachineFreeLook
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
+df6e29bf4a242c1f7a8788bd236d8134 Assembly-CSharp.dll:.ProgressBar
 c9bfbc7800acb02b38b438286dd1924c Cinemachine.dll:Cinemachine.NoiseSettings
 b18a3fe8d368c281bf71bc7c48bc6b5a Assembly-CSharp.dll:.EnemyManager
 322cb40e1e282f28af980cbef7922a90 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsEventTracker
@@ -234,15 +234,15 @@ e9906ca6c56d55d88b2255190c1d930e Assembly-CSharp.dll:.EnemyData
 c3b726e1ef77ecefcf78c4586a6bf32e Cinemachine.dll:Cinemachine.CinemachineTrackedDolly
 360a6cae81479b22a524b8afa7d297fe Assembly-CSharp.dll:.MainUI
 05524b8f659e7bfe5756d1335fec24ba Cinemachine.dll:Cinemachine.CinemachinePipeline
-ee8f0d6bcb9de7434d9fb1cad9ee6c11 Assembly-CSharp.dll:.EnemyAI
+566da7eb71ef3ca90b2dda04666541bd Assembly-CSharp.dll:.EnemyAI
 3ec19d12bd49807b227162829c5c72f0 Assembly-CSharp.dll:.RFX4_ShaderFloatCurve
 1d0ed45a65af4d08065a79ace88b43fc Cinemachine.dll:Cinemachine.CinemachinePath
 d23f7266ebae45c59c663f12f05b3382 Assembly-CSharp.dll:.RFX4_EffectSettingsTimeScale
 610504c349577f09825dbfba19afd96d Assembly-CSharp.dll:.PlayerController
 166f2fb08a5bd8e5be94b11ac3fce237 Cinemachine.dll:Cinemachine.CinemachineTargetGroup
 7bc83c003dc38bac45f688ecb60482da Assembly-CSharp.dll:.RFX4_UVScroll
-498354cf7fa1545acb65e24378b896a4 Assembly-CSharp.dll:.LevelController
-a37f1a2ee8056735d672e63b7b89248e Assembly-CSharp.dll:.LevelManager
+7c1f1764e94b5249678208990ab6800a Assembly-CSharp.dll:.LevelController
+1dc026100ff22381d658523fe52de66b Assembly-CSharp.dll:.LevelManager
 9f380cf579205e5a40ac188453c073a4 Assembly-CSharp.dll:.RFX4_PhysicsForceCurves
 b5cdc353739684ee39d2384630cffd42 Assembly-CSharp.dll:.RFX4_TornadoParticles
 01871d49a9abb3105a831dff099ec768 Cinemachine.dll:Cinemachine.CinemachineTransposer
@@ -306,6 +306,7 @@ a764ed39791e886a53f13cfce418447e Assembly-CSharp.dll:UnityEngine.PostProcessing.
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 9bf4606118874c36e6aa4745881f1e1b Assembly-CSharp.dll:.RFX4_RotateAround
 53d68b66abc6cd7edec737a3500702cf Assembly-CSharp.dll:.RFX4_AudioCurves
+0be16fb641e5cc554dc4dc3c4b5882df Assembly-CSharp.dll:.Demo
 f739fe68956c7babcc274f024cbc4a87 Cinemachine.dll:Cinemachine.CinemachineSmoothPath
 05524b8f659e7bfe5756d1335fec24ba Cinemachine.dll:Cinemachine.CinemachineHardLookAt
 c4536d152f211dddf8ee6869b4019d97 Assembly-CSharp.dll:.AudioManager

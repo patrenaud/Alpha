@@ -5937,7 +5937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e63326952a8579468815ba52a469f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LevelIndex: 0
   m_LoadingScreen: {fileID: 1402957105}
   m_BackGround: {fileID: 1443147920}
   m_StartButton: {fileID: 1791749397}

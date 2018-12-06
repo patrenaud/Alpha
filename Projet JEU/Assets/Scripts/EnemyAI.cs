@@ -328,7 +328,7 @@ public class EnemyAI : MonoBehaviour
         }
         m_State = BehaviorState.Idle;
         m_Animator.SetTrigger("Idle");
-        m_FinishTurn();        
+        m_FinishTurn(); // Calls action
     }
 
     public void PlayTurn()

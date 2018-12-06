@@ -142,15 +142,15 @@ public class LevelController : MonoBehaviour
         PlayerManager.Instance.m_MainUI.DeactivateUI();
         AudioManager.Instance.PlaySFX(AudioManager.Instance.m_SoundList[9], transform.position);
 
-        // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
-        PlayerManager.Instance.m_Player.m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
-        PlayerManager.Instance.m_Player.m_MoveZone.GetComponent<SphereCollider>().enabled = false;
-        PlayerManager.Instance.m_Player.m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = false;
-
         // Reduces scale of attack zones until next turn.
         PlayerManager.Instance.m_Player.m_AttackZone.transform.localScale = Vector3.zero;
         PlayerManager.Instance.m_Player.m_RangeAttackZone.transform.localScale = Vector3.zero;
         PlayerManager.Instance.m_MainUI.DeactivateAttackChoice();
+
+        // Les capsules sont détectées malgré leur scale de Vector3.zero. Il faut donc le désactiver entre les tours.
+        PlayerManager.Instance.m_Player.m_AttackZone.GetComponent<CapsuleCollider>().enabled = false;
+        PlayerManager.Instance.m_Player.m_MoveZone.GetComponent<SphereCollider>().enabled = false;
+        PlayerManager.Instance.m_Player.m_RangeAttackZone.GetComponent<CapsuleCollider>().enabled = false;
 
         NextTurn();
     }

@@ -31,14 +31,13 @@ public class AudioManager : DontDestroyOnLoad
 
     protected override void Awake()
     {
-        // Ici, on s'assure qu'il n'y ait qu'un seul
         if (m_Instance != null)
         {
-            Destroy(gameObject); // On détruit le 2e
+            Destroy(gameObject);
         }
         else
         {
-            m_Instance = this; // Celui-ci est roi de la montagne (On l'assigne au static)
+            m_Instance = this;
         }
         base.Awake(); // On doit appeler le parent pour que le DontDestroy se fasse.
     }
